@@ -1,0 +1,11 @@
+etapa1: main.o lex.yy.o 
+	gcc -o etapa1 main.o lex.yy.o
+
+main.o: main.c
+	gcc -c main.c 
+
+lex.yy.c: scanner.l
+	lex scanner.l
+
+clean:
+	rm lex.yy.c *.o etapa1
