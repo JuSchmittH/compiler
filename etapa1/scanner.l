@@ -5,6 +5,7 @@
 
 %x ML_COMMENT
 %option yylineno
+%option noyywrap
 
 %%
 
