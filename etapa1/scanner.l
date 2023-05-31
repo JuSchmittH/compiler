@@ -27,7 +27,7 @@
 "|"						{ return TK_OC_OR; }
 "->"					{ return TK_OC_MAP; }
 
-"//".*\n                { }
+"//".*                  { }
 
 [0-9]+                  { return TK_LIT_INT; }
 [0-9]*\.[0-9]+          { return TK_LIT_FLOAT; }
@@ -45,6 +45,7 @@
 <ML_COMMENT>.	        { }
 <ML_COMMENT>\n	        { }
 
+\n                      { }                     
 %%
 
 int get_line_number(void){

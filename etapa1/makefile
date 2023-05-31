@@ -8,7 +8,7 @@ lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
 
 lex.yy.c: scanner.l
-	flex scanner.l
+	flex --yylineno --nomain scanner.l
 
 clean:
 	rm lex.yy.c *.o etapa1
