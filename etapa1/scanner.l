@@ -1,6 +1,5 @@
 %{
     #include "tokens.h"
-    int lineNumber;
 %}
 
 %x ML_COMMENT

@@ -1,3 +1,5 @@
+#Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+
 etapa1: main.o lex.yy.o
 	gcc -o etapa1 main.o lex.yy.o
 
