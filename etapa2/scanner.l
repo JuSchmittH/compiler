@@ -1,5 +1,6 @@
 %{
-    #include "tokens.h"
+    //Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+    #include "parser.tab.h"
 %}
 
 %x ML_COMMENT

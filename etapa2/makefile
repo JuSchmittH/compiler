@@ -1,4 +1,5 @@
 #Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+#TODO slide 7/13 da aula do lab
 
 etapa2: y.tab.c main.o lex.yy.o
 	gcc -o etapa2 main.o lex.yy.o
