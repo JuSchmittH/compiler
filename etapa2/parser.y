@@ -3,7 +3,8 @@ int yylex(void);
 void yyerror (char const *s);
 %}
 
-%define parse.error detailed
+{//TODO arrumar isso aqui 
+//%define parser.error detailed}
 
 %token TK_PR_INT
 %token TK_PR_FLOAT
@@ -70,22 +71,27 @@ argumentos: argumentos expressao | expressao;
 
 op_retorno: TK_PR_RETURN expressao;
 
- A linguagem
-possui uma construção condicional e uma iterativa para controle estruturado de fluxo. A condicional 
-consiste no token if seguido de uma expressão entre parênteses e então por um bloco de comandos obrigatório.
- O else, sendo opcional, é seguido de um bloco de comandos, obrigatório caso
-o else seja empregado. Temos apenas uma construção de repetição que é o token while seguido
-de uma expressão entre parênteses e de um bloco
-de comandos.
+fluxo_ctrl: condicional | interativa ;
 
-expressao: ;
+condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd | TK_PR_IF '(' expressao ')' bloco_cmd
 
-literal: ;
+interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd
+
+{//TODO ver o lance da precedencia e testar tudo}
+expressao: operandos | operadores;
+
+operandos: TK_IDENTIFICADOR | literal | chamada_funcao;
+
+operadores: '-' expressao | '!' expressao | '(' expressao ')'
+    | expressao '+' expressao | expressao '-' expressao | expressao '*' expressao | expressao '/' expressao | expressao '%' expressao 
+    | expressao TK_OC_AND expressao | expressao TK_OC_EQ expressao | expressao TK_OC_GE expressao | expressao TK_OC_LE expressao | expressao TK_OC_NE expressao | expressao TK_OC_OR expressao;
+
+literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE;
 
 tipo: TK_PR_INT | TK_PR_FLOAT | TK_PR_BOOL;
 
 %%
 void yyerror (char const *s){
     //TODO: adicionar nro da linha
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error: %s\n", );
 }
