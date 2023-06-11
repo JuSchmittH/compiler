@@ -1,10 +1,11 @@
 %{
+    #include <stdio.h>
 int yylex(void);
 void yyerror (char const *s);
 %}
 
-{//TODO arrumar isso aqui 
-//%define parser.error detailed}
+//TODO arrumar isso aqui 
+//%define parser.error detailed
 
 %token TK_PR_INT
 %token TK_PR_FLOAT
@@ -77,7 +78,7 @@ condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd | TK_PR_I
 
 interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd
 
-{//TODO ver o lance da precedencia e testar tudo}
+//TODO ver o lance da precedencia e testar tudo
 expressao: operandos | operadores;
 
 operandos: TK_IDENTIFICADOR | literal | chamada_funcao;
@@ -93,5 +94,5 @@ tipo: TK_PR_INT | TK_PR_FLOAT | TK_PR_BOOL;
 %%
 void yyerror (char const *s){
     //TODO: adicionar nro da linha
-    fprintf(stderr, "Error: %s\n", );
+    fprintf(stderr, "Error: %s\n", s);
 }
