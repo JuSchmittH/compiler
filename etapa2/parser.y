@@ -1,11 +1,12 @@
 %{
     #include <stdio.h>
-int yylex(void);
-void yyerror (char const *s);
+    int yylex(void);
+    extern int yylineno;
+    void yyerror (const char *s);
 %}
 
-//TODO arrumar isso aqui 
-//%define parser.error detailed
+//TODO arrumar isso aqui
+%define parse.error verbose
 
 %token TK_PR_INT
 %token TK_PR_FLOAT
@@ -92,7 +93,7 @@ literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE;
 tipo: TK_PR_INT | TK_PR_FLOAT | TK_PR_BOOL;
 
 %%
-void yyerror (char const *s){
+void yyerror (const char *s){
     //TODO: adicionar nro da linha
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error on line %d: %s\n", yylineno, s);
 }
