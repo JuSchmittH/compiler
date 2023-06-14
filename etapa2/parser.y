@@ -69,7 +69,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao;
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')' | TK_IDENTIFICADOR '(' ')';
 
-argumentos: argumentos expressao | expressao;
+argumentos: argumentos ',' expressao | expressao;
 
 op_retorno: TK_PR_RETURN expressao;
 
@@ -79,8 +79,7 @@ condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd | TK_PR_I
 
 interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd
 
-//TODO ver o lance da precedencia e testar tudo
-expressao: operandos | operadores;
+expressao: operadores;
 
 operandos: TK_IDENTIFICADOR | literal | chamada_funcao;
 
@@ -105,7 +104,8 @@ ops_mult_div: ops_unario
     | ops_mult_div op_pre_2 ops_unario;
 
 ops_unario: operandos
-    | op_pre_1 ops_unario;
+    | op_pre_1 ops_unario
+    |  '(' op_or ')';
 
 op_pre_1: '-'
     | '!';
