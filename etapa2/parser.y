@@ -1,11 +1,11 @@
 %{
+    //Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
 %}
 
-//TODO arrumar isso aqui
 %define parse.error verbose
 
 %token TK_PR_INT
@@ -84,9 +84,50 @@ expressao: operandos | operadores;
 
 operandos: TK_IDENTIFICADOR | literal | chamada_funcao;
 
-operadores: '-' expressao | '!' expressao | '(' expressao ')'
-    | expressao '+' expressao | expressao '-' expressao | expressao '*' expressao | expressao '/' expressao | expressao '%' expressao 
-    | expressao TK_OC_AND expressao | expressao TK_OC_EQ expressao | expressao TK_OC_GE expressao | expressao TK_OC_LE expressao | expressao TK_OC_NE expressao | expressao TK_OC_OR expressao;
+operadores: op_or;
+
+op_or: op_and
+    |  op_or op_pre_7 op_and;
+
+op_and: ops_equal
+    | op_and op_pre_6 ops_equal;
+
+ops_equal: ops_comp
+    | ops_equal op_pre_5 ops_comp;
+
+ops_comp: ops_add_sub
+    | ops_comp op_pre_4 ops_add_sub;
+
+ops_add_sub: ops_mult_div
+    | ops_add_sub op_pre_3 ops_mult_div;
+
+ops_mult_div: ops_unario
+    | ops_mult_div op_pre_2 ops_unario;
+
+ops_unario: operandos
+    | op_pre_1 ops_unario;
+
+op_pre_1: '-'
+    | '!';
+
+op_pre_2: '*'
+    | '/'
+    | '%';
+
+op_pre_3: '+'
+    | '-';
+
+op_pre_4: '<'
+    | '>'
+    | TK_OC_LE
+    | TK_OC_GE;
+
+op_pre_5: TK_OC_EQ
+    | TK_OC_NE;
+
+op_pre_6: TK_OC_AND;
+
+op_pre_7: TK_OC_OR;
 
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE;
 
@@ -94,6 +135,5 @@ tipo: TK_PR_INT | TK_PR_FLOAT | TK_PR_BOOL;
 
 %%
 void yyerror (const char *s){
-    //TODO: adicionar nro da linha
     fprintf(stderr, "Error on line %d: %s\n", yylineno, s);
 }
