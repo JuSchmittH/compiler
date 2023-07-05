@@ -37,7 +37,7 @@
 [a-z_]+					{ return TK_IDENTIFICADOR; }
 
 " "                     { }
-[ \t]                   { }
+\t                      { }
 
 .						{ return TK_ERRO; }
 
