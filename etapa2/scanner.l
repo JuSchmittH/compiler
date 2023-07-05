@@ -28,6 +28,7 @@
 "->"					{ return TK_OC_MAP; }
 
 "//".*                  { }
+[ \t]                   { }
 
 [0-9]+                  { return TK_LIT_INT; }
 [0-9]*\.[0-9]+          { return TK_LIT_FLOAT; }
