@@ -1,10 +1,13 @@
 #Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
 
-etapa2: parser.tab.o main.o lex.yy.o
-	gcc -o etapa2 main.o lex.yy.o parser.tab.o
+etapa3: parser.tab.o main.o ast.o lex.yy.o 
+	gcc -o etapa3 main.o ast.o lex.yy.o parser.tab.o
 
 main.o: main.c
 	gcc -c main.c
+
+ast.o: ast.c
+	gcc -c ast.c
 
 lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
@@ -19,4 +22,4 @@ parser.tab.c: parser.y
 	bison -d parser.y
 
 clean:
-	rm lex.yy.c parser.tab.c *.o etapa2
+	rm lex.yy.c parser.tab.c *.o etapa3
