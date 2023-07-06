@@ -1,12 +1,18 @@
 %{
     //Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
+    #include <vl.h>
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
 %}
 
 %define parse.error verbose
+
+%union
+{
+    VL *valor_lexico;
+}
 
 %token TK_PR_INT
 %token TK_PR_FLOAT

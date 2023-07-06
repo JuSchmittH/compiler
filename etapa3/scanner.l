@@ -1,5 +1,11 @@
 %{
     //Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+    #define SPECIAL_CHAR        1
+    #define RESERVED_WORD       2
+    #define COMPOSED_OPERATOR   3
+    #define IDENTIFIER          4
+    #define LITERAL             5
+
     #include "parser.tab.h"
 %}
 
@@ -29,12 +35,12 @@
 
 "//".*                  { }
 
-[0-9]+                  { return TK_LIT_INT; }
-[0-9]*\.[0-9]+          { return TK_LIT_FLOAT; }
-"false"                 { return TK_LIT_FALSE; }
-"true"                  { return TK_LIT_TRUE; }
+[0-9]+                  { yylval.valor_lexico = vl_new(yylineno, LITERAL, yytext); return TK_LIT_INT; }
+[0-9]*\.[0-9]+          { yylval.valor_lexico = vl_new(yylineno, LITERAL, yytext); return TK_LIT_FLOAT; }
+"false"                 { yylval.valor_lexico = vl_new(yylineno, LITERAL, yytext); return TK_LIT_FALSE; }
+"true"                  { yylval.valor_lexico = vl_new(yylineno, LITERAL, yytext); return TK_LIT_TRUE; }
 
-[a-z_]+					{ return TK_IDENTIFICADOR; }
+[a-z_]+					{ yylval.valor_lexico = add_node(yytext); return TK_IDENTIFICADOR; }
 
 " "                     { }
 \t                      { }

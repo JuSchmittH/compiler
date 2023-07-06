@@ -1,34 +1,35 @@
-#ifndef _ARVORE_H_
-#define _ARVORE_H_
+#ifndef AST_HEADER
+#define AST_HEADER
 
-typedef struct asd_node {
+typedef struct ast_node {
   char *label;
+  //TODO: Chenck if we really need this here
   int number_of_children;
-  struct asd_tree **children;
-} asd_node_t;
+  struct ast_node **children;
+} AST;
 
 /*
- * Função asd_new, cria um nó sem filhos com o label informado.
+ * Função ast_new, cria um nó sem filhos com o label informado.
  */
-asd_node_t *asd_new(const char *label);
+AST *ast_new(const char *label);
 
 /*
- * Função asd_tree, libera recursivamente o nó e seus filhos.
+ * Função ast_node, libera recursivamente o nó e seus filhos.
  */
-void asd_free(asd_node_t *tree);
+void ast_free(AST *tree);
 
 /*
- * Função asd_add_child, adiciona child como filho de tree.
+ * Função ast_add_child, adiciona child como filho de tree.
  */
-void asd_add_child(asd_node_t *tree, asd_node_t *child);
+void ast_add_child(AST *tree, AST *child);
 
 /*
- * Função asd_print, imprime recursivamente a árvore.
+ * Função ast_print, imprime recursivamente a árvore.
  */
-void asd_print(asd_node_t *tree);
+void ast_print(AST *tree);
 
 /*
- * Função asd_print_graphviz, idem, em formato DOT
+ * Função ast_print_graphviz, idem, em formato DOT
  */
-void asd_print_graphviz (asd_node_t *tree);
-#endif //_ARVORE_H_
+void ast_print_graphviz (AST *tree);
+#endif //AST_HEADER
