@@ -1,3 +1,4 @@
+//Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
 #ifndef AST_HEADER
 #define AST_HEADER
 
@@ -7,6 +8,8 @@ typedef struct ast_node {
   int number_of_children;
   struct ast_node **children;
 } AST;
+
+//TODO: check if we have all this implemented com funções habituais tais como criação de nó, remoção, alteração e impressão re- cursiva da árvore através de um percurso em profun- didade.
 
 /*
  * Função ast_new, cria um nó sem filhos com o label informado.

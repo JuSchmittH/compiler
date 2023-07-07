@@ -39,55 +39,75 @@
 
 programa: lista | ;
 
-lista: lista elemento | elemento;
+lista: lista elemento 
+    | elemento;
 
-elemento: funcao | decl_var_global;
+elemento: funcao 
+    | decl_var_global;
 
 decl_var_global: tipo lista_var_global ';';
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR | TK_IDENTIFICADOR;
+lista_var_global: lista_var_global ',' TK_IDENTIFICADOR 
+    | TK_IDENTIFICADOR;                                             { $$ = ast_new($1); }
 
 funcao: cabecalho corpo;
 
 cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo;
 
-parametros: '(' lista_param ')' | '(' ')';
+parametros: '(' lista_param ')' 
+    | '(' ')';
 
-lista_param: lista_param ',' param | param;
+lista_param: lista_param ',' param 
+    | param;
 
 param: tipo TK_IDENTIFICADOR;
 
 corpo: bloco_cmd;
 
-bloco_cmd: '{' lista_cmd_simples '}' | '{' '}';
+bloco_cmd: '{' lista_cmd_simples '}' 
+    | '{' '}';
 
-lista_cmd_simples: lista_cmd_simples cmd ';' | cmd ';';
+lista_cmd_simples: lista_cmd_simples cmd ';' 
+    | cmd ';';
 
-cmd: bloco_cmd | decl_var_local | atribuicao | fluxo_ctrl | op_retorno | chamada_funcao;
+cmd: bloco_cmd 
+    | decl_var_local 
+    | atribuicao 
+    | fluxo_ctrl 
+    | op_retorno 
+    | chamada_funcao;
 
 decl_var_local: tipo lista_var_local;
 
-lista_var_local: lista_var_local ',' var_local | var_local;
+lista_var_local: lista_var_local ',' var_local 
+    | var_local;
 
-var_local: TK_IDENTIFICADOR | TK_IDENTIFICADOR TK_OC_LE literal;
+var_local: TK_IDENTIFICADOR 
+    | TK_IDENTIFICADOR TK_OC_LE literal;
 
 atribuicao: TK_IDENTIFICADOR '=' expressao;
 
-chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')' | TK_IDENTIFICADOR '(' ')';
+chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')' 
+    | TK_IDENTIFICADOR '(' ')';
 
-argumentos: argumentos ',' expressao | expressao;
+argumentos: argumentos ',' expressao 
+    | expressao;
 
 op_retorno: TK_PR_RETURN expressao;
 
-fluxo_ctrl: condicional | interativa ;
+fluxo_ctrl: condicional 
+    | interativa ;
 
-condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd | TK_PR_IF '(' expressao ')' bloco_cmd
+condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd 
+    | TK_PR_IF '(' expressao ')' bloco_cmd
 
 interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd
 
 expressao: operadores;
 
-operandos: TK_IDENTIFICADOR | literal | chamada_funcao;
+operandos: TK_IDENTIFICADOR 
+    | literal 
+    | chamada_funcao;
 
 operadores: op_or;
 
@@ -113,31 +133,36 @@ ops_unario: operandos
     | op_pre_1 ops_unario
     |  '(' op_or ')';
 
-op_pre_1: '-'
-    | '!';
+op_pre_1: '-'               { $$ = ast_new($1); }
+    | '!';                  { $$ = ast_new($1); }
 
-op_pre_2: '*'
-    | '/'
-    | '%';
+op_pre_2: '*'               { $$ = ast_new($1); }
+    | '/'                   { $$ = ast_new($1); }
+    | '%';                  { $$ = ast_new($1); }
 
-op_pre_3: '+'
-    | '-';
+op_pre_3: '+'               { $$ = ast_new($1); }
+    | '-';                  { $$ = ast_new($1); }
 
-op_pre_4: '<'
-    | '>'
-    | TK_OC_LE
-    | TK_OC_GE;
+op_pre_4: '<'               { $$ = ast_new($1); }
+    | '>'                   { $$ = ast_new($1); }
+    | TK_OC_LE              { $$ = ast_new($1); }
+    | TK_OC_GE;             { $$ = ast_new($1); }
 
-op_pre_5: TK_OC_EQ
-    | TK_OC_NE;
+op_pre_5: TK_OC_EQ          { $$ = ast_new($1); }
+    | TK_OC_NE;             { $$ = ast_new($1); }
 
-op_pre_6: TK_OC_AND;
+op_pre_6: TK_OC_AND;        { $$ = ast_new($1); }
 
-op_pre_7: TK_OC_OR;
+op_pre_7: TK_OC_OR;         { $$ = ast_new($1); }
 
-literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE;
+literal: TK_LIT_INT         { $$ = ast_new($1); }
+    | TK_LIT_FLOAT          { $$ = ast_new($1); }
+    | TK_LIT_FALSE          { $$ = ast_new($1); }
+    | TK_LIT_TRUE;          { $$ = ast_new($1); }
 
-tipo: TK_PR_INT | TK_PR_FLOAT | TK_PR_BOOL;
+tipo: TK_PR_INT             { $$ = ast_new($1); }
+    | TK_PR_FLOAT           { $$ = ast_new($1); }
+    | TK_PR_BOOL;           { $$ = ast_new($1); }
 
 %%
 void yyerror (const char *s){
