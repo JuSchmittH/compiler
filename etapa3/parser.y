@@ -101,44 +101,44 @@ fluxo_ctrl: condicional
 condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd 
     | TK_PR_IF '(' expressao ')' bloco_cmd
 
-interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd
+interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd     { ast_add_child(tree, $1); ast_add_child(tree, $3); ast_add_child(tree, $5); }
 
-expressao: operadores;
+expressao: operadores;                      { ast_add_child(tree, $1); }
 
-operandos: TK_IDENTIFICADOR 
-    | literal 
-    | chamada_funcao;
+operandos: TK_IDENTIFICADOR                 { $$ = ast_new($1); }
+    | literal                               { ast_add_child(tree, $1); }
+    | chamada_funcao;                       { ast_add_child(tree, $1); }
 
 operadores: op_or;
 
-op_or: op_and
-    |  op_or op_pre_7 op_and;
+op_or: op_and                               { ast_add_child(tree, $1); }
+    |  op_or op_pre_7 op_and;               { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-op_and: ops_equal
-    | op_and op_pre_6 ops_equal;
+op_and: ops_equal                           { ast_add_child(tree, $1); }
+    | op_and op_pre_6 ops_equal;            { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-ops_equal: ops_comp
-    | ops_equal op_pre_5 ops_comp;
+ops_equal: ops_comp                         { ast_add_child(tree, $1); }
+    | ops_equal op_pre_5 ops_comp;          { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-ops_comp: ops_add_sub
-    | ops_comp op_pre_4 ops_add_sub;
+ops_comp: ops_add_sub                       { ast_add_child(tree, $1); }
+    | ops_comp op_pre_4 ops_add_sub;        { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-ops_add_sub: ops_mult_div
-    | ops_add_sub op_pre_3 ops_mult_div;
+ops_add_sub: ops_mult_div                   { ast_add_child(tree, $1); }
+    | ops_add_sub op_pre_3 ops_mult_div;    { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-ops_mult_div: ops_unario
-    | ops_mult_div op_pre_2 ops_unario;
+ops_mult_div: ops_unario                    { ast_add_child(tree, $1); }
+    | ops_mult_div op_pre_2 ops_unario;     { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
 
-ops_unario: operandos
-    | op_pre_1 ops_unario
-    |  '(' op_or ')';
+ops_unario: operandos                       { ast_add_child(tree, $1); }
+    | op_pre_1 ops_unario                   { ast_add_child(tree, $1); ast_add_child(tree, $2); }
+    |  '(' op_or ')';                       { ast_add_child(tree, $2); }
 
-op_pre_1: '-'               { $$ = ast_new($1); }
-    | '!';                  { $$ = ast_new($1); }
+op_pre_1: '-'                               { $$ = ast_new($1); }
+    | '!';                                  { $$ = ast_new($1); }
 
-op_pre_2: '*'               { $$ = ast_new($1); }
-    | '/'                   { $$ = ast_new($1); }
-    | '%';                  { $$ = ast_new($1); }
+op_pre_2: '*'                               { $$ = ast_new($1); }
+    | '/'                                   { $$ = ast_new($1); }
+    | '%';                                  { $$ = ast_new($1); }
 
 op_pre_3: '+'               { $$ = ast_new($1); }
     | '-';                  { $$ = ast_new($1); }

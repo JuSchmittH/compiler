@@ -9,10 +9,10 @@ typedef struct ast_node {
   struct ast_node **children;
 } AST;
 
-//TODO: check if we have all this implemented com funções habituais tais como criação de nó, remoção, alteração e impressão re- cursiva da árvore através de um percurso em profun- didade.
+//TODO: check if we have all this implemented com funções habituais tais como  remoção e impressão re- cursiva da árvore através de um percurso em profun- didade.
 
 /*
- * Função ast_new, cria um nó sem filhos com o label informado.
+ * Função ast_new, cria um nó sem filhos com o label informado. -> criação de nó
  */
 AST *ast_new(const char *label);
 
@@ -22,7 +22,7 @@ AST *ast_new(const char *label);
 void ast_free(AST *tree);
 
 /*
- * Função ast_add_child, adiciona child como filho de tree.
+ * Função ast_add_child, adiciona child como filho de tree. -> alteração 
  */
 void ast_add_child(AST *tree, AST *child);
 
