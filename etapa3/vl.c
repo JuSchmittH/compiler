@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include vl.h
+#include "vl.h"
 
 VL *vl_new(int line_number, char *token_type, char *token_value){
   VL *valor_lexico = NULL;
