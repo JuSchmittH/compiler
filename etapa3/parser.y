@@ -44,7 +44,7 @@ programa: lista                                             { $$ = arvore; }
     | ;
 
 lista: lista elemento                                       { ast_add_child($$, $1); }
-    | elemento;                                             { ast_add_child($$, $1); }
+    | elemento                                              { ast_add_child($$, $1); }
 
 elemento: funcao                                            { ast_add_child($$, $1); }
     | decl_var_global;                                      { ast_add_child($$, $1); }
