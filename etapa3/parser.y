@@ -12,6 +12,7 @@
 %union
 {
     VL *valor_lexico;
+    AST *tree;
 }
 
 %token TK_PR_INT
@@ -37,7 +38,8 @@
 
 %%
 
-programa: lista | ;
+programa: lista                     { $$ = tree; }
+    | ;                             { $$ = tree; }
 
 lista: lista elemento 
     | elemento;
@@ -90,48 +92,48 @@ atribuicao: TK_IDENTIFICADOR '=' expressao;
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')' 
     | TK_IDENTIFICADOR '(' ')';
 
-argumentos: argumentos ',' expressao 
-    | expressao;
+argumentos: argumentos ',' expressao        { ast_add_child($$, $1); st_add_child($$, $3); }
+    | expressao;                            { ast_add_child($$, $1); }
 
-op_retorno: TK_PR_RETURN expressao;
+op_retorno: TK_PR_RETURN expressao;         { $$ = ast_new($1); ast_add_child($$, $1); }
 
-fluxo_ctrl: condicional 
-    | interativa ;
+fluxo_ctrl: condicional                     { ast_add_child($$, $1); }
+    | interativa ;                          { ast_add_child($$, $1); }
 
-condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd 
-    | TK_PR_IF '(' expressao ')' bloco_cmd
+condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new($1); ast_add_child($$, $3); ast_add_child($$, $5); $$ = ast_new($6); ast_add_child($$, $7); }
+    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new($1); ast_add_child($$, $3); ast_add_child($$, $5); }
 
-interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd     { ast_add_child(tree, $1); ast_add_child(tree, $3); ast_add_child(tree, $5); }
+interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd     { $$ = ast_new($1); ast_add_child($$, $3); ast_add_child($$, $5); }
 
-expressao: operadores;                      { ast_add_child(tree, $1); }
+expressao: operadores;                      { ast_add_child($$, $1); }
 
 operandos: TK_IDENTIFICADOR                 { $$ = ast_new($1); }
-    | literal                               { ast_add_child(tree, $1); }
-    | chamada_funcao;                       { ast_add_child(tree, $1); }
+    | literal                               { ast_add_child($$, $1); }
+    | chamada_funcao;                       { ast_add_child($$, $1); }
 
-operadores: op_or;
+operadores: op_or;                          { ast_add_child($$, $1); }
 
-op_or: op_and                               { ast_add_child(tree, $1); }
-    |  op_or op_pre_7 op_and;               { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+op_or: op_and                               { ast_add_child($$, $1); }
+    |  op_or op_pre_7 op_and;               { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-op_and: ops_equal                           { ast_add_child(tree, $1); }
-    | op_and op_pre_6 ops_equal;            { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+op_and: ops_equal                           { ast_add_child($$, $1); }
+    | op_and op_pre_6 ops_equal;            { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_equal: ops_comp                         { ast_add_child(tree, $1); }
-    | ops_equal op_pre_5 ops_comp;          { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+ops_equal: ops_comp                         { ast_add_child($$, $1); }
+    | ops_equal op_pre_5 ops_comp;          { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_comp: ops_add_sub                       { ast_add_child(tree, $1); }
-    | ops_comp op_pre_4 ops_add_sub;        { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+ops_comp: ops_add_sub                       { ast_add_child($$, $1); }
+    | ops_comp op_pre_4 ops_add_sub;        { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_add_sub: ops_mult_div                   { ast_add_child(tree, $1); }
-    | ops_add_sub op_pre_3 ops_mult_div;    { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+ops_add_sub: ops_mult_div                   { ast_add_child($$, $1); }
+    | ops_add_sub op_pre_3 ops_mult_div;    { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_mult_div: ops_unario                    { ast_add_child(tree, $1); }
-    | ops_mult_div op_pre_2 ops_unario;     { ast_add_child(tree, $1); ast_add_child(tree, $2); ast_add_child(tree, $3); }
+ops_mult_div: ops_unario                    { ast_add_child($$, $1); }
+    | ops_mult_div op_pre_2 ops_unario;     { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_unario: operandos                       { ast_add_child(tree, $1); }
-    | op_pre_1 ops_unario                   { ast_add_child(tree, $1); ast_add_child(tree, $2); }
-    |  '(' op_or ')';                       { ast_add_child(tree, $2); }
+ops_unario: operandos                       { ast_add_child($$, $1); }
+    | op_pre_1 ops_unario                   { ast_add_child($$, $1); ast_add_child($$, $2); }
+    |  '(' op_or ')';                       { ast_add_child($$, $2); }
 
 op_pre_1: '-'                               { $$ = ast_new($1); }
     | '!';                                  { $$ = ast_new($1); }

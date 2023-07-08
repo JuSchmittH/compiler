@@ -1,8 +1,3 @@
-//CORRECT
-f()->int
-{
-  if (c)
-	 {
-	 }else{
-  };
+/main() -> int{
+  int x <= 1 + 3;
 }
