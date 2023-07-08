@@ -5,6 +5,8 @@
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
+    //TODO: not sure about that
+    extern void *arvore;
 %}
 
 %define parse.error verbose
@@ -12,7 +14,7 @@
 %union
 {
     VL *valor_lexico;
-    AST *tree;
+    AST *arvore;
 }
 
 %token TK_PR_INT
@@ -38,8 +40,8 @@
 
 %%
 
-programa: lista                                             { $$ = tree; }
-    | ;                                                     { $$ = tree; }
+programa: lista                                             { $$ = arvore; }
+    | ;                                                     { $$ = arvore; }
 
 lista: lista elemento                                       { ast_add_child($$, $1); }
     | elemento;                                             { ast_add_child($$, $1); }
@@ -119,52 +121,52 @@ op_or: op_and                                               { ast_add_child($$, 
 op_and: ops_equal                                           { ast_add_child($$, $1); }
     | op_and op_pre_6 ops_equal;                            { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_equal: ops_comp                         { ast_add_child($$, $1); }
-    | ops_equal op_pre_5 ops_comp;          { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
+ops_equal: ops_comp                                         { ast_add_child($$, $1); }
+    | ops_equal op_pre_5 ops_comp;                          { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_comp: ops_add_sub                       { ast_add_child($$, $1); }
-    | ops_comp op_pre_4 ops_add_sub;        { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
+ops_comp: ops_add_sub                                       { ast_add_child($$, $1); }
+    | ops_comp op_pre_4 ops_add_sub;                        { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_add_sub: ops_mult_div                   { ast_add_child($$, $1); }
-    | ops_add_sub op_pre_3 ops_mult_div;    { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
+ops_add_sub: ops_mult_div                                   { ast_add_child($$, $1); }
+    | ops_add_sub op_pre_3 ops_mult_div;                    { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_mult_div: ops_unario                    { ast_add_child($$, $1); }
-    | ops_mult_div op_pre_2 ops_unario;     { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
+ops_mult_div: ops_unario                                    { ast_add_child($$, $1); }
+    | ops_mult_div op_pre_2 ops_unario;                     { ast_add_child($$, $1); ast_add_child($$, $2); ast_add_child($$, $3); }
 
-ops_unario: operandos                       { ast_add_child($$, $1); }
-    | op_pre_1 ops_unario                   { ast_add_child($$, $1); ast_add_child($$, $2); }
-    |  '(' op_or ')';                       { ast_add_child($$, $2); }
+ops_unario: operandos                                       { ast_add_child($$, $1); }
+    | op_pre_1 ops_unario                                   { ast_add_child($$, $1); ast_add_child($$, $2); }
+    |  '(' op_or ')';                                       { ast_add_child($$, $2); }
 
-op_pre_1: '-'                               { $$ = ast_new($1); }
-    | '!';                                  { $$ = ast_new($1); }
+op_pre_1: '-'                                               { $$ = ast_new($1); }
+    | '!';                                                  { $$ = ast_new($1); }
 
-op_pre_2: '*'                               { $$ = ast_new($1); }
-    | '/'                                   { $$ = ast_new($1); }
-    | '%';                                  { $$ = ast_new($1); }
+op_pre_2: '*'                                               { $$ = ast_new($1); }
+    | '/'                                                   { $$ = ast_new($1); }
+    | '%';                                                  { $$ = ast_new($1); }
 
-op_pre_3: '+'               { $$ = ast_new($1); }
-    | '-';                  { $$ = ast_new($1); }
+op_pre_3: '+'                                               { $$ = ast_new($1); }
+    | '-';                                                  { $$ = ast_new($1); }
 
-op_pre_4: '<'               { $$ = ast_new($1); }
-    | '>'                   { $$ = ast_new($1); }
-    | TK_OC_LE              { $$ = ast_new($1); }
-    | TK_OC_GE;             { $$ = ast_new($1); }
+op_pre_4: '<'                                               { $$ = ast_new($1); }
+    | '>'                                                   { $$ = ast_new($1); }
+    | TK_OC_LE                                              { $$ = ast_new($1); }
+    | TK_OC_GE;                                             { $$ = ast_new($1); }
 
-op_pre_5: TK_OC_EQ          { $$ = ast_new($1); }
-    | TK_OC_NE;             { $$ = ast_new($1); }
+op_pre_5: TK_OC_EQ                                          { $$ = ast_new($1); }
+    | TK_OC_NE;                                             { $$ = ast_new($1); }
 
-op_pre_6: TK_OC_AND;        { $$ = ast_new($1); }
+op_pre_6: TK_OC_AND;                                        { $$ = ast_new($1); }
 
-op_pre_7: TK_OC_OR;         { $$ = ast_new($1); }
+op_pre_7: TK_OC_OR;                                         { $$ = ast_new($1); }
 
-literal: TK_LIT_INT         { $$ = ast_new($1); }
-    | TK_LIT_FLOAT          { $$ = ast_new($1); }
-    | TK_LIT_FALSE          { $$ = ast_new($1); }
-    | TK_LIT_TRUE;          { $$ = ast_new($1); }
+literal: TK_LIT_INT                                         { $$ = ast_new($1); }
+    | TK_LIT_FLOAT                                          { $$ = ast_new($1); }
+    | TK_LIT_FALSE                                          { $$ = ast_new($1); }
+    | TK_LIT_TRUE;                                          { $$ = ast_new($1); }
 
-tipo: TK_PR_INT             { $$ = ast_new($1); }
-    | TK_PR_FLOAT           { $$ = ast_new($1); }
-    | TK_PR_BOOL;           { $$ = ast_new($1); }
+tipo: TK_PR_INT                                             { $$ = ast_new($1); }
+    | TK_PR_FLOAT                                           { $$ = ast_new($1); }
+    | TK_PR_BOOL;                                           { $$ = ast_new($1); }
 
 %%
 void yyerror (const char *s){
