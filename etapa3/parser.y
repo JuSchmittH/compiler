@@ -14,8 +14,6 @@
 %}
 
 %define parse.error verbose
-%define api.value.type { VL* }
-%define api.value.type { AST* }
 
 %union
 {
