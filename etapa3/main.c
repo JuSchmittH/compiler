@@ -12,24 +12,17 @@ int main (int argc, char **argv)
   return ret;
 }
 
+//TODO: Check if this is suppose to be implemented here
 void exporta (void *arvore)
 {
-  //TODO: should we add file interaction?
-  //FILE *foutput = fopen(ARQUIVO_SAIDA, "w+");
-  if(arvore == 0)
-    return;
-
-  if(arvore){
-    int i = 0;
-
-    for (i; i<number_of_children; i++)
-    {
-      //TODO: check if we print arvore or arvore->label
-      //Check if we should do it like this or %p,$p
-      printf("%p [ label=\"%s\"]/n", arvore, arvore->label);
+  int i;
+  if (arvore != NULL){
+    printf("%p [ label=\"%s\" ];\n", arvore, tree->label);
+    for (i = 0; i < arvore->number_of_children; i++){
+      fprintf("%p, %p;\n", arvore, arvore->children[i]);
       exporta(arvore->children[i]);
     }
+  }else{
+    printf("Erro: %s recebeu parâmetro arvore = %p.\n", __FUNCTION__, arvore);
   }
-
-  return;
 }

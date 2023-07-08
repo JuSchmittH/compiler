@@ -13,14 +13,14 @@
     extern void *arvore;
 %}
 
-%code requires { #include "ast.h" }
-
 %define parse.error verbose
+%define api.value.type { VL* }
 %define api.value.type { AST* }
 
 %union
 {
     VL *valor_lexico;
+    AST *arvore;
 }
 
 %token TK_PR_INT
@@ -37,12 +37,54 @@
 %token TK_OC_AND
 %token TK_OC_OR
 %token TK_OC_MAP
-%token TK_IDENTIFICADOR
-%token TK_LIT_INT
-%token TK_LIT_FLOAT
-%token TK_LIT_FALSE
-%token TK_LIT_TRUE
+%token<valor_lexico> TK_IDENTIFICADOR
+%token<valor_lexico> TK_LIT_INT
+%token<valor_lexico> TK_LIT_FLOAT
+%token<valor_lexico> TK_LIT_FALSE
+%token<valor_lexico> TK_LIT_TRUE
 %token TK_ERRO
+
+%type<arvore> programa
+%type<arvore> lista
+%type<arvore> elemento
+%type<arvore> decl_var_global
+%type<arvore> lista_var_global
+%type<arvore> funcao
+%type<arvore> cabecalho
+%type<arvore> parametros
+%type<arvore> lista_param
+%type<arvore> param
+%type<arvore> corpo
+%type<arvore> bloco_cmd
+%type<arvore> lista_cmd_simples
+%type<arvore> cmd
+%type<arvore> decl_var_local
+%type<arvore> lista_var_local
+%type<arvore> var_local
+%type<arvore> atribuicao
+%type<arvore> chamada_funcao
+%type<arvore> argumentos
+%type<arvore> op_retorno
+%type<arvore> fluxo_ctrl
+%type<arvore> condicional
+%type<arvore> interativa
+%type<arvore> expressao
+%type<arvore> operandos
+%type<arvore> operadores
+%type<arvore> op_or
+%type<arvore> op_and
+%type<arvore> ops_equal
+%type<arvore> ops_comp
+%type<arvore> ops_add_sub
+%type<arvore> ops_mult_div
+%type<arvore> ops_unario
+%type<arvore> op_pre_1
+%type<arvore> op_pre_2
+%type<arvore> op_pre_3
+%type<arvore> op_pre_4
+%type<arvore> op_pre_5
+%type<arvore> op_pre_6
+%type<arvore> op_pre_7
 
 %%
 
@@ -170,9 +212,9 @@ literal: TK_LIT_INT                                         { $$ = ast_new($1); 
     | TK_LIT_FALSE                                          { $$ = ast_new($1); }
     | TK_LIT_TRUE                                           { $$ = ast_new($1); }
 
-tipo: TK_PR_INT                                             { $$ = ast_new($1); }
-    | TK_PR_FLOAT                                           { $$ = ast_new($1); }
-    | TK_PR_BOOL                                            { $$ = ast_new($1); }
+tipo: TK_PR_INT                                             
+    | TK_PR_FLOAT                                           
+    | TK_PR_BOOL                                            
 
 %%
 void yyerror (const char *s){
