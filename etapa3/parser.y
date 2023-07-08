@@ -8,10 +8,12 @@
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
-    
+
     //TODO: not sure about that
     extern void *arvore;
 %}
+
+%code requires { #include "ast.h" }
 
 %define parse.error verbose
 %define api.value.type { AST* }
