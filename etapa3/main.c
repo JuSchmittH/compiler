@@ -14,6 +14,8 @@ int main (int argc, char **argv)
 
 void exporta (void *arvore)
 {
+  //TODO: should we add file interaction?
+  //FILE *foutput = fopen(ARQUIVO_SAIDA, "w+");
   if(arvore == 0)
     return;
 

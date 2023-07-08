@@ -10,7 +10,7 @@
 %}
 
 %define parse.error verbose
-%define api.value.type { asd_tree_t* }
+%define api.value.type { AST* }
 
 %union
 {
