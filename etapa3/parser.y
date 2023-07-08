@@ -83,6 +83,7 @@
 %type<arvore> op_pre_5
 %type<arvore> op_pre_6
 %type<arvore> op_pre_7
+%type<arvore> literal
 
 %%
 
