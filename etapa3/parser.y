@@ -10,11 +10,11 @@
 %}
 
 %define parse.error verbose
+%define api.value.type { asd_tree_t* }
 
 %union
 {
     VL *valor_lexico;
-    AST *arvore;
 }
 
 %token TK_PR_INT
@@ -41,7 +41,7 @@
 %%
 
 programa: lista                                             { $$ = arvore; }
-    | ;                                                     { $$ = arvore; }
+    | ;
 
 lista: lista elemento                                       { ast_add_child($$, $1); }
     | elemento;                                             { ast_add_child($$, $1); }
