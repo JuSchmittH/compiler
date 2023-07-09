@@ -17,7 +17,7 @@ void exporta (void *arvore)
 {
   int i;
   if (arvore != NULL){
-    printf("%p [ label=\"%s\" ];\n", arvore, tree->label);
+    printf("%p [ label=\"%s\" ];\n", arvore, arvore->label);
     for (i = 0; i < arvore->number_of_children; i++){
       fprintf("%p, %p;\n", arvore, arvore->children[i]);
       exporta(arvore->children[i]);
