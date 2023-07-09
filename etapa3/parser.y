@@ -1,3 +1,8 @@
+%code requires { 
+    #include "vl.h"
+    #include "ast.h"
+ }
+
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     
@@ -6,19 +11,17 @@
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
-%}
 
-%code requires { 
-    #include "vl.h"
-    #include "ast.h"
- }
+    //TODO: not sure about that:
+     AST *arvore;
+%}
 
 %define parse.error verbose
 
 %union
 {
     VL *valor_lexico;
-    extern AST *arvore;
+    AST *arvore;
 }
 
 %token<valor_lexico> TK_PR_INT
