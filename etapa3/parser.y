@@ -185,27 +185,27 @@ ops_unario: operandos                                       { $$ = ast_new($1); 
     | op_pre_1 ops_unario                                   { $$ = ast_new($1); ast_add_child($$, $2); } // TODO nao entendi isso 
     |  '(' op_or ')'                                        { $$ = $2;}
 
-op_pre_1: '-'                                               { $$ = $2; } // TODO nao entendi isso 
-    | '!'                                                   { $$ = $2; }// TODO nao entendi isso 
+op_pre_1: '-'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+    | '!'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
 
-op_pre_2: '*'                                               { $$ = $2; }// TODO nao entendi isso 
-    | '/'                                                   { $$ = $2; }// TODO nao entendi isso 
-    | '%'                                                   { $$ = $2; }// TODO nao entendi isso 
+op_pre_2: '*'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+    | '/'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+    | '%'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
 
-op_pre_3: '+'                                               { $$ = $2; }// TODO nao entendi isso 
-    | '-'                                                   { $$ = $2; }// TODO nao entendi isso 
+op_pre_3: '+'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
+    | '-'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
 
-op_pre_4: '<'                                               { $$ = $1; }// TODO nao entendi isso 
-    | '>'                                                   { $$ = $1; }// TODO nao entendi isso 
-    | TK_OC_LE                                              { $$ = $1; }// TODO nao entendi isso 
-    | TK_OC_GE                                              { $$ = $1; }// TODO nao entendi isso 
+op_pre_4: '<'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
+    | '>'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+    | TK_OC_LE                                              { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+    | TK_OC_GE                                              { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
 
-op_pre_5: TK_OC_EQ                                          { $$ = $1; }// TODO nao entendi isso 
-    | TK_OC_NE                                              { $$ = $1; }// TODO nao entendi isso 
+op_pre_5: TK_OC_EQ                                          { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
+    | TK_OC_NE                                              { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
 
-op_pre_6: TK_OC_AND                                         { $$ = $1; }// TODO nao entendi isso 
+op_pre_6: TK_OC_AND                                         { $$ = ast_new($1); } //{ $$ = $1; }// TODO nao entendi isso 
 
-op_pre_7: TK_OC_OR                                          { $$ = $1; }// TODO nao entendi isso 
+op_pre_7: TK_OC_OR                                          { $$ = ast_new($1); } //{ $$ = $1; }// TODO nao entendi isso 
 
 literal: TK_LIT_INT                                         { $$ = ast_new($1); }
     | TK_LIT_FLOAT                                          { $$ = ast_new($1); }
