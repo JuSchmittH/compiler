@@ -1,5 +1,5 @@
 %{
-    //Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+    //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     #define SPECIAL_CHAR        1
     #define RESERVED_WORD       2
     #define COMPOSED_OPERATOR   3

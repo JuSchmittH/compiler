@@ -1,4 +1,4 @@
-#Trabalho de Compilados 2023/1 - Grupo G - Luma e Juliana
+#Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
 
 etapa3: parser.tab.o main.o ast.o lex.yy.o 
 	gcc -o etapa3 main.o ast.o lex.yy.o parser.tab.o
