@@ -95,35 +95,35 @@
 programa: lista                                             { arvore = $$; }
     | ;
 
-lista: lista elemento                                       { ast_add_child($$, $1); }//revisar
-    | elemento                                              { $$ = $1 }
+lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
+    | elemento                                              { $$ = $1; }
 
-elemento: funcao                                            { $$ = $1 }
-    | decl_var_global                                       { $$ = $1 }
+elemento: funcao                                            { $$ = $1; }
+    | decl_var_global                                       
 
-decl_var_global: tipo lista_var_global ';'                  { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: arvore precisa de vars globais ?
+decl_var_global: tipo lista_var_global ';'                  
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { ast_add_child($$, $1); $$ = ast_new($3->token_value); }//TODO: revisar
-    | TK_IDENTIFICADOR                                      { $$ = ast_new($1->token_value); }//TODO: revisar
+lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     
+    | TK_IDENTIFICADOR                                      
 
-funcao: cabecalho corpo                                     { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: revisar
+funcao: cabecalho corpo                                     { $$ = $1; ast_add_child($$, $2); }
 
-cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); $$ = ast_new($3->token_value); ast_add_child($$, $2); ast_add_child($$, $4); }//TODO: revisar
+cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); }
 
 parametros: '(' lista_param ')'                             { $$ = $2; }
     | '(' ')';
 
-lista_param: lista_param ',' param                          { ast_add_child($$, $1); ast_add_child($$, $3); }//TODO: revisar
+lista_param: lista_param ',' param                          
     | param                                                 { $$ = $1; ast_add_child($$, $1); }//TODO: revisar
 
-param: tipo TK_IDENTIFICADOR                                { $$ = ast_new($2->token_value); ast_add_child($$, $1); }
+param: tipo TK_IDENTIFICADOR                                
 
 corpo: bloco_cmd                                            { $$ = $1; }
 
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'
 
-lista_cmd_simples: lista_cmd_simples cmd ';'                { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: revisar
+lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; ast_add_child($$, $2);}
     | cmd ';'                                               { $$ = $1; }
 
 cmd: bloco_cmd                                              { $$ = $1; }
@@ -133,20 +133,20 @@ cmd: bloco_cmd                                              { $$ = $1; }
     | op_retorno                                            { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
-decl_var_local: tipo lista_var_local                        { ast_add_child($$, $1); ast_add_child($$, $2);}//TODO: revisar
+decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: lista_var_local ',' var_local              { ast_add_child($$, $1); ast_add_child($$, $3);}//TODO: REVISAR
+lista_var_local: lista_var_local ',' var_local              { $$ = $1; ast_add_child($$, $3);}
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 { $$ = ast_new($1->token_value); }
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($1->token_value); $$ = ast_new($2->token_value); ast_add_child($$, $3);}
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, $1); ast_add_child($$, $3);}
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, $1); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: argumentos ',' expressao                        { $$ = $1; $$ = $3; }//TODO: revisar
+argumentos: argumentos ',' expressao                        { $$ = $1; ast_add_child($$, $3);}
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
@@ -157,7 +157,7 @@ fluxo_ctrl: condicional                                     { $$ = $1; }
 condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); $$ = ast_new($6->token_value); ast_add_child($$, $7); }
     | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); }
 
-interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); }//TODO: bloco não deve ser incluido?
+interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); }
 
 expressao: operadores                                       { $$ = $1; }
 
