@@ -1,11 +1,3 @@
-%code requires { 
-    #include "vl.h"
-    #include "ast.h"
-
-    //TODO: not sure about that:
-    extern AST *arvore;
- }
-
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     
@@ -16,6 +8,14 @@
     void yyerror (const char *s);
 
 %}
+
+%code requires { 
+    #include "vl.h"
+    #include "ast.h"
+
+    //TODO: not sure about that:
+    extern AST *arvore;
+ }
 
 %define parse.error verbose
 
@@ -92,7 +92,7 @@
 
 %%
 
-programa: lista                                             { $$ = arvore; }
+programa: lista                                             { arvore = $$; }
     | ;
 
 lista: lista elemento                                       { ast_add_child($$, $1); }
