@@ -18,7 +18,7 @@
 %union
 {
     VL *valor_lexico;
-    AST *tree;
+    AST *arvore;
 }
 
 %token TK_PR_INT
@@ -42,49 +42,49 @@
 %token<valor_lexico> TK_LIT_TRUE
 %token TK_ERRO
 
-%type<tree> programa
-%type<tree> lista
-%type<tree> elemento
-%type<tree> decl_var_global
-%type<tree> lista_var_global
-%type<tree> funcao
-%type<tree> cabecalho
-%type<tree> parametros
-%type<tree> lista_param
-%type<tree> param
-%type<tree> corpo
-%type<tree> bloco_cmd
-%type<tree> lista_cmd_simples
-%type<tree> cmd
-%type<tree> decl_var_local
-%type<tree> lista_var_local
-%type<tree> var_local
-%type<tree> atribuicao
-%type<tree> chamada_funcao
-%type<tree> argumentos
-%type<tree> op_retorno
-%type<tree> fluxo_ctrl
-%type<tree> condicional
-%type<tree> interativa
-%type<tree> expressao
-%type<tree> operandos
-%type<tree> operadores
-%type<tree> op_or
-%type<tree> op_and
-%type<tree> ops_equal
-%type<tree> ops_comp
-%type<tree> ops_add_sub
-%type<tree> ops_mult_div
-%type<tree> ops_unario
-%type<tree> op_pre_1
-%type<tree> op_pre_2
-%type<tree> op_pre_3
-%type<tree> op_pre_4
-%type<tree> op_pre_5
-%type<tree> op_pre_6
-%type<tree> op_pre_7
-%type<tree> literal
-%type<tree> tipo
+%type<arvore> programa
+%type<arvore> lista
+%type<arvore> elemento
+%type<arvore> decl_var_global
+%type<arvore> lista_var_global
+%type<arvore> funcao
+%type<arvore> cabecalho
+%type<arvore> parametros
+%type<arvore> lista_param
+%type<arvore> param
+%type<arvore> corpo
+%type<arvore> bloco_cmd
+%type<arvore> lista_cmd_simples
+%type<arvore> cmd
+%type<arvore> decl_var_local
+%type<arvore> lista_var_local
+%type<arvore> var_local
+%type<arvore> atribuicao
+%type<arvore> chamada_funcao
+%type<arvore> argumentos
+%type<arvore> op_retorno
+%type<arvore> fluxo_ctrl
+%type<arvore> condicional
+%type<arvore> interativa
+%type<arvore> expressao
+%type<arvore> operandos
+%type<arvore> operadores
+%type<arvore> op_or
+%type<arvore> op_and
+%type<arvore> ops_equal
+%type<arvore> ops_comp
+%type<arvore> ops_add_sub
+%type<arvore> ops_mult_div
+%type<arvore> ops_unario
+%type<arvore> op_pre_1
+%type<arvore> op_pre_2
+%type<arvore> op_pre_3
+%type<arvore> op_pre_4
+%type<arvore> op_pre_5
+%type<arvore> op_pre_6
+%type<arvore> op_pre_7
+%type<arvore> literal
+%type<arvore> tipo
 
 %%
 
