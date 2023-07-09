@@ -1,6 +1,9 @@
 %code requires { 
     #include "vl.h"
     #include "ast.h"
+
+    //TODO: not sure about that:
+    extern AST *arvore;
  }
 
 %{
@@ -12,8 +15,6 @@
     extern int yylineno;
     void yyerror (const char *s);
 
-    //TODO: not sure about that:
-     AST *arvore;
 %}
 
 %define parse.error verbose
