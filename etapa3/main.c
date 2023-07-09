@@ -12,7 +12,6 @@ int main (int argc, char **argv)
   return ret;
 }
 
-//TODO: Check if this is suppose to be implemented here
 void exporta (void *arvore)
 {
   int i;
