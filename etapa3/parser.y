@@ -2,8 +2,6 @@
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     
     #include <stdio.h>
-    #include "vl.h"
-    #include "ast.h"
 
     int yylex(void);
     extern int yylineno;
@@ -12,6 +10,11 @@
     //TODO: not sure about that:
     extern AST *arvore;
 %}
+
+%code requires { 
+    #include "vl.h"
+    #include "ast.h"
+ }
 
 %define parse.error verbose
 
