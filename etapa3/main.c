@@ -1,7 +1,7 @@
 #include <stdio.h>
 extern int yyparse(void);
 extern int yylex_destroy(void);
-void *arvore = NULL;
+AST *arvore = NULL;
 void exporta (void *arvore);
 
 int main (int argc, char **argv)
@@ -18,7 +18,7 @@ void exporta (void *arvore)
   if (arvore != NULL){
     printf("%p [ label=\"%s\" ];\n", arvore, arvore->label);
     for (i = 0; i < arvore->number_of_children; i++){
-      fprintf("%p, %p;\n", arvore, arvore->children[i]);
+      printf("%p, %p;\n", arvore, arvore->children[i]);
       exporta(arvore->children[i]);
     }
   }else{
