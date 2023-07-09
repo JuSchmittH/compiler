@@ -5,7 +5,7 @@
 //TODO: Ver onde colocar essa struct de valor lexico da parte 2.1 da definição do trabalho
 typedef struct valor_lexico {
   int line_number;
-  char *token_type;
+  int token_type;
   char *token_value;
 } VL;
 
