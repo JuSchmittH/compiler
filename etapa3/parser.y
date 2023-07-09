@@ -21,9 +21,9 @@
     AST *arvore;
 }
 
-%token TK_PR_INT
-%token TK_PR_FLOAT
-%token TK_PR_BOOL
+%token<valor_lexico> TK_PR_INT
+%token<valor_lexico> TK_PR_FLOAT
+%token<valor_lexico> TK_PR_BOOL
 %token<valor_lexico> TK_PR_IF
 %token<valor_lexico> TK_PR_ELSE
 %token<valor_lexico> TK_PR_WHILE
@@ -212,9 +212,9 @@ literal: TK_LIT_INT                                         { $$ = ast_new($1); 
     | TK_LIT_FALSE                                          { $$ = ast_new($1); }
     | TK_LIT_TRUE                                           { $$ = ast_new($1); }
 
-tipo: TK_PR_INT                                                                                       
-    | TK_PR_FLOAT                                                                                    
-    | TK_PR_BOOL                                                                                      
+tipo: TK_PR_INT                                             { $$ = ast_new($1); }                                           
+    | TK_PR_FLOAT                                           { $$ = ast_new($1); }                                          
+    | TK_PR_BOOL                                            { $$ = ast_new($1); }                                          
 
 %%
 void yyerror (const char *s){
