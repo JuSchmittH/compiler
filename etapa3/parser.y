@@ -185,7 +185,7 @@ ops_unario: operandos                                       { $$ = ast_new($1); 
     | op_pre_1 ops_unario                                   { $$ = ast_new($1); ast_add_child($$, $2); } // TODO nao entendi isso 
     |  '(' op_or ')'                                        { $$ = $2;}
 
-op_pre_1: '-'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
+op_pre_1: '-'                                               { $$ = ast_new("-"); } //{ $$ = $1; } TODO nao entendi isso  
     | '!'                                                   { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso 
 
 op_pre_2: '*'                                               { $$ = ast_new($1); } //{ $$ = $1; } TODO nao entendi isso  
