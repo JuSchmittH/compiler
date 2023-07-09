@@ -139,9 +139,9 @@ lista_var_local: lista_var_local ',' var_local              { $$ = $1; ast_add_c
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 { $$ = ast_new($1->token_value); }
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, $1); ast_add_child($$, $3);}
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3);}
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, $1); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
