@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "vl.h"
 
-VL *vl_new(int line_number, char *token_type, char *token_value){
+VL *vl_new(int line_number, int token_type, char *token_value){
   VL *valor_lexico = NULL;
   valor_lexico = calloc(1, sizeof(VL));
   if (valor_lexico != NULL){
