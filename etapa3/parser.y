@@ -10,7 +10,7 @@
     void yyerror (const char *s);
 
     //TODO: not sure about that:
-    //extern void *arvore;
+    extern AST *arvore;
 %}
 
 %define parse.error verbose
@@ -34,7 +34,7 @@
 %token<valor_lexico> TK_OC_NE
 %token<valor_lexico> TK_OC_AND
 %token<valor_lexico> TK_OC_OR
-%token<valor_lexico> TK_OC_MAP //TODO nao sei se isso tem que ter 
+%token<valor_lexico> TK_OC_MAP //TODO remove this and set directly on the node
 %token<valor_lexico> TK_IDENTIFICADOR
 %token<valor_lexico> TK_LIT_INT
 %token<valor_lexico> TK_LIT_FLOAT
@@ -99,7 +99,7 @@ elemento: funcao                                            { ast_add_child($$, 
 
 decl_var_global: tipo lista_var_global ';'                  { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: arvore precisa de vars globais ?
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { ast_add_child($$, $1); $$ = ast_new($3); }//TODO: revisar
+lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { ast_add_child($$, $1); $$ = ast_new($3->label); }//TODO: revisar
     | TK_IDENTIFICADOR                                      { $$ = ast_new($1); }//TODO: revisar
 
 funcao: cabecalho corpo                                     { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: revisar
