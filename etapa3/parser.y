@@ -164,25 +164,25 @@ operandos: TK_IDENTIFICADOR                                 { $$ = ast_new($1->t
 operadores: op_or                                           { $$ = $1; } //TODO: ver se é isso memo
 
 op_or: op_and                                               { $$ = $1; } //TODO: ver se é isso memo
-    |  op_or op_pre_7 op_and                                { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); } // TODO nao entendi isso 
+    |  op_or op_pre_7 op_and                                { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
 op_and: ops_equal                                           { $$ = $1; } //TODO: ver se é isso memo
-    | op_and op_pre_6 ops_equal                             { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); }// TODO nao entendi isso 
+    | op_and op_pre_6 ops_equal                             { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
 ops_equal: ops_comp                                         { $$ = $1; } //TODO: ver se é isso memo
-    | ops_equal op_pre_5 ops_comp                           { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); }// TODO nao entendi isso 
+    | ops_equal op_pre_5 ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
 ops_comp: ops_add_sub                                       { $$ = $1; } //TODO: ver se é isso memo
-    | ops_comp op_pre_4 ops_add_sub                         { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); }// TODO nao entendi isso 
+    | ops_comp op_pre_4 ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
 ops_add_sub: ops_mult_div                                   { $$ = $1; } //TODO: ver se é isso memo
-    | ops_add_sub op_pre_3 ops_mult_div                     { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); }// TODO nao entendi isso 
+    | ops_add_sub op_pre_3 ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
 ops_mult_div: ops_unario                                    { $$ = $1; } //TODO: ver se é isso memo
-    | ops_mult_div op_pre_2 ops_unario                      { $$ = ast_new($2); ast_add_child($$, $1); ast_add_child($$, $3); }// TODO nao entendi isso 
+    | ops_mult_div op_pre_2 ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
 
-ops_unario: operandos                                       { $$ = ast_new($1); } //TODO: ver se é para criar um node mesmo
-    | op_pre_1 ops_unario                                   { $$ = ast_new($1); ast_add_child($$, $2); } // TODO nao entendi isso 
+ops_unario: operandos                                       { $$ = $1; }
+    | op_pre_1 ops_unario                                   { $$ = $1; ast_add_child($$, $2); }
     |  '(' op_or ')'                                        { $$ = $2;}
 
 op_pre_1: '-'                                               { $$ = ast_new("-"); }  
