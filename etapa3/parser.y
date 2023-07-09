@@ -99,7 +99,7 @@ elemento: funcao                                            { ast_add_child($$, 
 
 decl_var_global: tipo lista_var_global ';'                  { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: arvore precisa de vars globais ?
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { ast_add_child($$, $1); $$ = ast_new($3->label); }//TODO: revisar
+lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { ast_add_child($$, $1); $$ = ast_new($3->token_value); }//TODO: revisar
     | TK_IDENTIFICADOR                                      { $$ = ast_new($1); }//TODO: revisar
 
 funcao: cabecalho corpo                                     { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: revisar
