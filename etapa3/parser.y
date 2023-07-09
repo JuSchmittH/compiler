@@ -9,8 +9,8 @@
     extern int yylineno;
     void yyerror (const char *s);
 
-    //TODO: not sure about that
-    extern void *arvore;
+    //TODO: not sure about that:
+    //extern void *arvore;
 %}
 
 %define parse.error verbose
@@ -24,17 +24,17 @@
 %token TK_PR_INT
 %token TK_PR_FLOAT
 %token TK_PR_BOOL
-%token TK_PR_IF
-%token TK_PR_ELSE
-%token TK_PR_WHILE
-%token TK_PR_RETURN
-%token TK_OC_LE
-%token TK_OC_GE
-%token TK_OC_EQ
-%token TK_OC_NE
-%token TK_OC_AND
-%token TK_OC_OR
-%token TK_OC_MAP
+%token<valor_lexico> TK_PR_IF
+%token<valor_lexico> TK_PR_ELSE
+%token<valor_lexico> TK_PR_WHILE
+%token<valor_lexico> TK_PR_RETURN
+%token<valor_lexico> TK_OC_LE
+%token<valor_lexico> TK_OC_GE
+%token<valor_lexico> TK_OC_EQ
+%token<valor_lexico> TK_OC_NE
+%token<valor_lexico> TK_OC_AND
+%token<valor_lexico> TK_OC_OR
+%token<valor_lexico> TK_OC_MAP //TODO nao sei se isso tem que ter 
 %token<valor_lexico> TK_IDENTIFICADOR
 %token<valor_lexico> TK_LIT_INT
 %token<valor_lexico> TK_LIT_FLOAT
@@ -212,9 +212,9 @@ literal: TK_LIT_INT                                         { $$ = ast_new($1); 
     | TK_LIT_FALSE                                          { $$ = ast_new($1); }
     | TK_LIT_TRUE                                           { $$ = ast_new($1); }
 
-tipo: TK_PR_INT                                             { $$ = ast_new($1); }                                           
-    | TK_PR_FLOAT                                           { $$ = ast_new($1); }                                          
-    | TK_PR_BOOL                                            { $$ = ast_new($1); }                                          
+tipo: TK_PR_INT                                                                                       
+    | TK_PR_FLOAT                                                                                    
+    | TK_PR_BOOL                                                                                      
 
 %%
 void yyerror (const char *s){
