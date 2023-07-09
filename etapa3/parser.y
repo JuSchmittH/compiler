@@ -116,7 +116,7 @@ param: tipo TK_IDENTIFICADOR                                { $$ = ast_new($2); 
 
 corpo: bloco_cmd                                            { $$ = $1; }
 
-bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $1; }
+bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'
 
 lista_cmd_simples: lista_cmd_simples cmd ';'                { ast_add_child($$, $1); ast_add_child($$, $2); }//TODO: revisar
@@ -137,7 +137,7 @@ lista_var_local: lista_var_local ',' var_local              { ast_add_child($$, 
 var_local: TK_IDENTIFICADOR                                 { $$ = ast_new($1); }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($1); $$ = ast_new($2); ast_add_child($$, $3);}
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new($1); ast_add_child($$, $2); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new($1); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1); }
@@ -183,29 +183,29 @@ ops_mult_div: ops_unario                                    { $$ = $1; } //TODO:
 
 ops_unario: operandos                                       { $$ = ast_new($1); } //TODO: ver se é para criar um node mesmo
     | op_pre_1 ops_unario                                   { $$ = ast_new($1); ast_add_child($$, $2); } // TODO nao entendi isso 
-    |  '(' op_or ')'                                        { $$ = ast_new($1); ast_add_child($$, $2); }// TODO nao entendi isso 
+    |  '(' op_or ')'                                        { $$ = $2;}
 
-op_pre_1: '-'                                               { $$ = $1; }
-    | '!'                                                   { $$ = $1; }
+op_pre_1: '-'                                               { $$ = $2; } // TODO nao entendi isso 
+    | '!'                                                   { $$ = $2; }// TODO nao entendi isso 
 
-op_pre_2: '*'                                               { $$ = $1; }
-    | '/'                                                   { $$ = $1; }
-    | '%'                                                   { $$ = $1; }
+op_pre_2: '*'                                               { $$ = $2; }// TODO nao entendi isso 
+    | '/'                                                   { $$ = $2; }// TODO nao entendi isso 
+    | '%'                                                   { $$ = $2; }// TODO nao entendi isso 
 
-op_pre_3: '+'                                               { $$ = $1; }
-    | '-'                                                   { $$ = $1; }
+op_pre_3: '+'                                               { $$ = $2; }// TODO nao entendi isso 
+    | '-'                                                   { $$ = $2; }// TODO nao entendi isso 
 
-op_pre_4: '<'                                               { $$ = $1; }
-    | '>'                                                   { $$ = $1; }
-    | TK_OC_LE                                              { $$ = $1; }
-    | TK_OC_GE                                              { $$ = $1; }
+op_pre_4: '<'                                               { $$ = $1; }// TODO nao entendi isso 
+    | '>'                                                   { $$ = $1; }// TODO nao entendi isso 
+    | TK_OC_LE                                              { $$ = $1; }// TODO nao entendi isso 
+    | TK_OC_GE                                              { $$ = $1; }// TODO nao entendi isso 
 
-op_pre_5: TK_OC_EQ                                          { $$ = $1; }
-    | TK_OC_NE                                              { $$ = $1; }
+op_pre_5: TK_OC_EQ                                          { $$ = $1; }// TODO nao entendi isso 
+    | TK_OC_NE                                              { $$ = $1; }// TODO nao entendi isso 
 
-op_pre_6: TK_OC_AND                                         { $$ = $1; }
+op_pre_6: TK_OC_AND                                         { $$ = $1; }// TODO nao entendi isso 
 
-op_pre_7: TK_OC_OR                                          { $$ = $1; }
+op_pre_7: TK_OC_OR                                          { $$ = $1; }// TODO nao entendi isso 
 
 literal: TK_LIT_INT                                         { $$ = ast_new($1); }
     | TK_LIT_FLOAT                                          { $$ = ast_new($1); }
