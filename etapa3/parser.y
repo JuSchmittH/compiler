@@ -6,9 +6,6 @@
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
-
-    //TODO: not sure about that:
-    extern AST *arvore;
 %}
 
 %code requires { 
@@ -21,7 +18,7 @@
 %union
 {
     VL *valor_lexico;
-    AST *arvore;
+    extern AST *arvore;
 }
 
 %token<valor_lexico> TK_PR_INT
