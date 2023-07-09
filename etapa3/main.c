@@ -3,7 +3,7 @@
 extern int yyparse(void);
 extern int yylex_destroy(void);
 AST *arvore = NULL;
-void exporta (void *arvore);
+void exporta (AST *arvore);
 
 int main (int argc, char **argv)
 {
@@ -13,7 +13,7 @@ int main (int argc, char **argv)
   return ret;
 }
 
-void exporta (void *arvore)
+void exporta (AST *arvore)
 {
   int i;
   if (arvore != NULL){
