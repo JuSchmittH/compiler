@@ -135,10 +135,10 @@ cmd: bloco_cmd                                              { $$ = $1; }
 
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: lista_var_local ',' var_local              
-    | var_local                                             
+lista_var_local: lista_var_local ',' var_local              { $$ = $3; ast_add_child($$, $1);}
+    | var_local                                             { $$ = $1; }
 
-var_local: TK_IDENTIFICADOR                                 
+var_local: TK_IDENTIFICADOR                                 { $$ = ast_new($1->token_value); }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3); }
