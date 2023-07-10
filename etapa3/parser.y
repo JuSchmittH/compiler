@@ -95,7 +95,7 @@
 programa: lista                                             { arvore = $$; }
     | ;
 
-lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
+lista: lista elemento                                       { $$ = $2; ast_add_child($$, $1);}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
@@ -114,7 +114,7 @@ parametros: '(' lista_param ')'                             { $$ = $2; }
     | '(' ')';
 
 lista_param: lista_param ',' param                          
-    | param                                                 { $$ = $1; ast_add_child($$, $1); }//TODO: revisar
+    | param                                                 
 
 param: tipo TK_IDENTIFICADOR                                
 
@@ -135,7 +135,7 @@ cmd: bloco_cmd                                              { $$ = $1; }
 
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: lista_var_local ',' var_local              { $$ = $1; ast_add_child($$, $3);}
+lista_var_local: lista_var_local ',' var_local              { $$ = $3; ast_add_child($$, $1);}
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 
@@ -146,7 +146,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("=");
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: argumentos ',' expressao                        { $$ = $1; ast_add_child($$, $3);}
+argumentos: argumentos ',' expressao                        { $$ = $3; ast_add_child($$, $1);}
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
