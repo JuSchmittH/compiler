@@ -13,7 +13,6 @@
     #include "vl.h"
     #include "ast.h"
 
-    //TODO: not sure about that:
     extern AST *arvore;
  }
 
