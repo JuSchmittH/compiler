@@ -94,7 +94,7 @@
 programa: lista                                             { arvore = $$; }
     | ;
 
-lista: lista elemento                                       { $$ = $2; ast_add_child($$, $1);}
+lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
@@ -105,7 +105,7 @@ decl_var_global: tipo lista_var_global ';'
 lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     
     | TK_IDENTIFICADOR                                      
 
-funcao: cabecalho corpo                                     { $$ = $1; if($2) { ast_add_child($$, $2); } }
+funcao: cabecalho corpo                                     { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
 
 cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); }
 
@@ -122,7 +122,7 @@ corpo: bloco_cmd                                            { $$ = $1; }
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'
 
-lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; if($2) { ast_add_child($$, $2); }}
+lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); }}
     | cmd ';'                                               { $$ = $1; }
 
 cmd: bloco_cmd                                              { $$ = $1; }
@@ -134,7 +134,7 @@ cmd: bloco_cmd                                              { $$ = $1; }
 
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: lista_var_local ',' var_local              { $$ = $1; if($3) { ast_add_child($$, $3); } }
+lista_var_local: lista_var_local ',' var_local              { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
@@ -215,9 +215,9 @@ literal: TK_LIT_INT                                         { $$ = ast_new($1->t
     | TK_LIT_FALSE                                          { $$ = ast_new($1->token_value); }
     | TK_LIT_TRUE                                           { $$ = ast_new($1->token_value); }
 
-tipo: TK_PR_INT                                             { $$ = ast_new($1->token_value); }                                           
-    | TK_PR_FLOAT                                           { $$ = ast_new($1->token_value); }                                          
-    | TK_PR_BOOL                                            { $$ = ast_new($1->token_value); }                                          
+tipo: TK_PR_INT                                             { $$ = $1; }                                           
+    | TK_PR_FLOAT                                           { $$ = $1; }                                       
+    | TK_PR_BOOL                                            { $$ = $1; }                                          
 
 %%
 void yyerror (const char *s){
