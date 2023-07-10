@@ -136,15 +136,7 @@ cmd: bloco_cmd                                              { $$ = $1; }
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
 lista_var_local: lista_var_local ',' var_local              
-    { 
-        if ($3 != NULL){
-            $$ = $3;
-        }
-        if ($1 != NULL){
-            ast_add_child($$, $1);
-        }
-    }
-    | var_local                                             { if ($1 != NULL){ $$ = $1; }}
+    | var_local                                             
 
 var_local: TK_IDENTIFICADOR                                 
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3);}
