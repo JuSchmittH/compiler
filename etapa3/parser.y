@@ -105,7 +105,7 @@ decl_var_global: tipo lista_var_global ';'
 lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     
     | TK_IDENTIFICADOR                                      
 
-funcao: cabecalho corpo                                     { $$ = $1; ast_add_child($$, $2); }
+funcao: cabecalho corpo                                     { $$ = $1; if($2) { ast_add_child($$, $2); } }
 
 cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); }
 
@@ -122,7 +122,7 @@ corpo: bloco_cmd                                            { $$ = $1; }
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'
 
-lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; ast_add_child($$, $2);}
+lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; if($2) { ast_add_child($$, $2); }}
     | cmd ';'                                               { $$ = $1; }
 
 cmd: bloco_cmd                                              { $$ = $1; }
