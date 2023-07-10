@@ -88,7 +88,7 @@
 %%
 
 programa: lista                                             { $$ = $1; arvore = $$; }
-    | ;                                                     { $$ = NULL; }
+    |                                                       { $$ = NULL; }
 
 lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
     | elemento                                              { $$ = $1; }
@@ -106,7 +106,7 @@ funcao: cabecalho corpo                                     { $$ = $1; if($2 != 
 cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); }
 
 parametros: '(' lista_param ')'                             { $$ = NULL; }
-    | '(' ')';                                              { $$ = NULL; }
+    | '(' ')'                                               { $$ = NULL; }
 
 lista_param: lista_param ',' param                          { $$ = NULL; }
     | param                                                 { $$ = NULL; }
