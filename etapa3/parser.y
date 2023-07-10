@@ -88,35 +88,35 @@
 %%
 
 programa: lista                                             { $$ = $1; arvore = $$; }
-    | ;
+    | ;                                                     { $$ = NULL; }
 
 lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
-    | decl_var_global                                       
+    | decl_var_global                                       { $$ = NULL; }
 
-decl_var_global: tipo lista_var_global ';'                  
+decl_var_global: tipo lista_var_global ';'                  { $$ = NULL; }
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     
-    | TK_IDENTIFICADOR                                      
+lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; }
+    | TK_IDENTIFICADOR                                      { $$ = NULL; }
 
 funcao: cabecalho corpo                                     { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
 
 cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1->token_value); }
 
-parametros: '(' lista_param ')'                             { $$ = $2; }
-    | '(' ')';
+parametros: '(' lista_param ')'                             { $$ = NULL; }
+    | '(' ')';                                              { $$ = NULL; }
 
-lista_param: lista_param ',' param                          
-    | param                                                 
+lista_param: lista_param ',' param                          { $$ = NULL; }
+    | param                                                 { $$ = NULL; }
 
-param: tipo TK_IDENTIFICADOR                                
+param: tipo TK_IDENTIFICADOR                                { $$ = NULL; }
 
 corpo: bloco_cmd                                            { $$ = $1; }
 
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
-    | '{' '}'
+    | '{' '}'                                               { $$ = NULL; }
 
 lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); }}
     | cmd ';'                                               { $$ = $1; }
@@ -211,9 +211,9 @@ literal: TK_LIT_INT                                         { $$ = ast_new($1->t
     | TK_LIT_FALSE                                          { $$ = ast_new($1->token_value); }
     | TK_LIT_TRUE                                           { $$ = ast_new($1->token_value); }
 
-tipo: TK_PR_INT                                             { $$ = $1; }                                           
-    | TK_PR_FLOAT                                           { $$ = $1; }                                       
-    | TK_PR_BOOL                                            { $$ = $1; }                                          
+tipo: TK_PR_INT                                             { $$ = NULL; }                                           
+    | TK_PR_FLOAT                                           { $$ = NULL; }                                       
+    | TK_PR_BOOL                                            { $$ = NULL; }                                          
 
 %%
 void yyerror (const char *s){
