@@ -146,7 +146,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("=");
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: argumentos ',' expressao                        { $$ = $; ast_add_child($$, $3);}
+argumentos: argumentos ',' expressao                        { $$ = $1; ast_add_child($$, $3);}
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
