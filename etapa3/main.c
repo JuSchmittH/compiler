@@ -2,9 +2,8 @@
 #include "ast.h"
 extern int yyparse(void);
 extern int yylex_destroy(void);
-AST *arvore = NULL;
-void exporta (AST *arvore);
-
+void *arvore = NULL;
+void exporta (void *arvore);
 int main (int argc, char **argv)
 {
   int ret = yyparse(); 
@@ -13,16 +12,17 @@ int main (int argc, char **argv)
   return ret;
 }
 
-void exporta (AST *arvore)
+void exporta (void *arvore)
 {
-  int i;
+  AST *arvore_ast = (AST*) arvore;
+  
   if (arvore != NULL){
-    printf("%p [ label=\"%s\" ];\n", arvore, arvore->label);
-    for (i = 0; i < arvore->number_of_children; i++){
-      printf("%p, %p;\n", arvore, arvore->children[i]);
-      exporta(arvore->children[i]);
+    printf("%p [ label=\"%s\" ];\n", arvore_ast, arvore_ast->label);
+    for (int i = 0; i < arvore_ast->number_of_children; i++){
+      printf("%p, %p;\n", arvore_ast, arvore_ast->children[i]);
+      exporta(arvore_ast->children[i]);
     }
   }else{
-    printf("Erro: %s recebeu parâmetro arvore = %p.\n", __FUNCTION__, arvore);
+    printf("Erro: %s recebeu parâmetro arvore = %p.\n", __FUNCTION__, arvore_ast);
   }
 }

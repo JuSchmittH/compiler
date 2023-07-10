@@ -1,27 +1,21 @@
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
-    
     #include <stdio.h>
+    #include "vl.h"
+    #include "ast.h"
 
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
-
+    extern void *arvore;
 %}
-
-%code requires { 
-    #include "vl.h"
-    #include "ast.h"
-
-    extern AST *arvore;
- }
 
 %define parse.error verbose
 
 %union
 {
     VL *valor_lexico;
-    AST *arvore;
+    AST *ast;
 }
 
 %token<valor_lexico> TK_PR_INT
@@ -45,53 +39,53 @@
 %token<valor_lexico> TK_LIT_TRUE
 %token TK_ERRO
 
-%type<arvore> programa
-%type<arvore> lista
-%type<arvore> elemento
-%type<arvore> decl_var_global
-%type<arvore> lista_var_global
-%type<arvore> funcao
-%type<arvore> cabecalho
-%type<arvore> parametros
-%type<arvore> lista_param
-%type<arvore> param
-%type<arvore> corpo
-%type<arvore> bloco_cmd
-%type<arvore> lista_cmd_simples
-%type<arvore> cmd
-%type<arvore> decl_var_local
-%type<arvore> lista_var_local
-%type<arvore> var_local
-%type<arvore> atribuicao
-%type<arvore> chamada_funcao
-%type<arvore> argumentos
-%type<arvore> op_retorno
-%type<arvore> fluxo_ctrl
-%type<arvore> condicional
-%type<arvore> interativa
-%type<arvore> expressao
-%type<arvore> operandos
-%type<arvore> operadores
-%type<arvore> op_or
-%type<arvore> op_and
-%type<arvore> ops_equal
-%type<arvore> ops_comp
-%type<arvore> ops_add_sub
-%type<arvore> ops_mult_div
-%type<arvore> ops_unario
-%type<arvore> op_pre_1
-%type<arvore> op_pre_2
-%type<arvore> op_pre_3
-%type<arvore> op_pre_4
-%type<arvore> op_pre_5
-%type<arvore> op_pre_6
-%type<arvore> op_pre_7
-%type<arvore> literal
-%type<arvore> tipo
+%type<ast> programa
+%type<ast> lista
+%type<ast> elemento
+%type<ast> decl_var_global
+%type<ast> lista_var_global
+%type<ast> funcao
+%type<ast> cabecalho
+%type<ast> parametros
+%type<ast> lista_param
+%type<ast> param
+%type<ast> corpo
+%type<ast> bloco_cmd
+%type<ast> lista_cmd_simples
+%type<ast> cmd
+%type<ast> decl_var_local
+%type<ast> lista_var_local
+%type<ast> var_local
+%type<ast> atribuicao
+%type<ast> chamada_funcao
+%type<ast> argumentos
+%type<ast> op_retorno
+%type<ast> fluxo_ctrl
+%type<ast> condicional
+%type<ast> interativa
+%type<ast> expressao
+%type<ast> operandos
+%type<ast> operadores
+%type<ast> op_or
+%type<ast> op_and
+%type<ast> ops_equal
+%type<ast> ops_comp
+%type<ast> ops_add_sub
+%type<ast> ops_mult_div
+%type<ast> ops_unario
+%type<ast> op_pre_1
+%type<ast> op_pre_2
+%type<ast> op_pre_3
+%type<ast> op_pre_4
+%type<ast> op_pre_5
+%type<ast> op_pre_6
+%type<ast> op_pre_7
+%type<ast> literal
+%type<ast> tipo
 
 %%
 
-programa: lista                                             { arvore = $$; }
+programa: lista                                             { $$ = $1; arvore = $$; }
     | ;
 
 lista: lista elemento                                       { $$ = $1; ast_add_child($$, $2);}
