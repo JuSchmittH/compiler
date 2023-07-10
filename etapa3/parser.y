@@ -1,14 +1,16 @@
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
-    #include "vl.h"
-    #include "ast.h"
-
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
     extern void *arvore;
 %}
+
+%code requires { 
+    #include "vl.h"
+    #include "ast.h"
+ }
 
 %define parse.error verbose
 
