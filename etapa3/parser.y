@@ -123,7 +123,7 @@ corpo: bloco_cmd                                            { $$ = $1; }
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'
 
-lista_cmd_simples: lista_cmd_simples cmd ';'                { ast_add_child($$, $2); $$ = $1;}
+lista_cmd_simples: lista_cmd_simples cmd ';'                { $$ = $2; ast_add_child($$, $1);}
     | cmd ';'                                               { $$ = $1; }
 
 cmd: bloco_cmd                                              { $$ = $1; }
@@ -146,7 +146,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("=");
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: argumentos ',' expressao                        { $$ = $3; ast_add_child($$, $3);}
+argumentos: argumentos ',' expressao                        { $$ = $; ast_add_child($$, $3);}
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
