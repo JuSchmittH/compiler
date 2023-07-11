@@ -90,7 +90,7 @@
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
 
-lista: elemento  lista                                      { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL){$$ = $2;} }
+lista: elemento lista                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL) {$$ = $2;} else {$$ = $1;}}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
@@ -118,7 +118,21 @@ corpo: bloco_cmd                                            { $$ = $1; }
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'                                               { $$ = NULL; }
 
-lista_cmd_simples: cmd lista_cmd_simples ';'                { if($1 == NULL ) { $$ = $2; } else {$$ = $1; ast_add_child($$, $2);}}
+lista_cmd_simples: cmd ';' lista_cmd_simples                { 
+                                                                if($1 != NULL) 
+                                                                { $$ = $1;
+                                                                    if($3 != NULL)
+                                                                    {
+                                                                        AST *last_node = $1;
+                                                                        while(last_node->number_of_children == 3) {
+                                                                            last_node = last_node->children[2];
+                                                                        }
+                                                                        ast_add_child(last_node, $3);
+                                                                    }
+                                                                } 
+                                                                else if($3 != NULL) {$$ = $3;}
+                                                                else { $$ = $1; }
+                                                            }
     | cmd ';'                                               { $$ = $1; }
 
 cmd: bloco_cmd                                              { $$ = $1; }
