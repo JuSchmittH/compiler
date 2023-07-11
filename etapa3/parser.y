@@ -90,7 +90,7 @@
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
 
-lista: elemento lista                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL) {$$ = $2;} else {$$ = $1;}}
+lista: elemento lista                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL) {$$ = $2;} }
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
@@ -131,7 +131,6 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
-                                                                else { $$ = $1; }
                                                             }
     | cmd ';'                                               { $$ = $1; }
 
@@ -144,18 +143,18 @@ cmd: bloco_cmd                                              { $$ = $1; }
 
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} else {$$ = $1;} }
+lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3);}
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2->token_value); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3); }
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: argumentos ',' expressao                        { $$ = $1; ast_add_child($$, $3);}
+argumentos: expressao ',' argumentos                        { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
