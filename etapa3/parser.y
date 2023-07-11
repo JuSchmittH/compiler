@@ -154,20 +154,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("=");
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
-argumentos: expressao ',' argumentos                        { 
-                                                                if($1 != NULL) 
-                                                                { $$ = $1;
-                                                                    if($3 != NULL)
-                                                                    {
-                                                                        AST *last_node = $1;
-                                                                        while(last_node->number_of_children == 3) {
-                                                                            last_node = last_node->children[2];
-                                                                        }
-                                                                        ast_add_child(last_node, $3);
-                                                                    }
-                                                                } 
-                                                                else if($3 != NULL) {$$ = $3;}
-                                                            }
+argumentos: expressao ',' argumentos                        { $$ = $1; ast_add_child($$, $3); }
     | expressao                                             { $$ = $1; }
 
 op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->token_value); ast_add_child($$, $2); }
