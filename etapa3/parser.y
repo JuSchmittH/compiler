@@ -90,7 +90,7 @@
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
 
-lista: lista elemento                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL){$$ = $2;} else {$$ = $1;}}
+lista: elemento lista                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL){$$ = $2;} else {$$ = $1;}}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
