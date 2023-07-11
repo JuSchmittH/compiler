@@ -90,11 +90,11 @@
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
 
-lista: lista elemento                                       { $$ = $1; if($2 != NULL && $1 != NULL ) { ast_add_child($$, $2); }}
+lista: lista elemento                                       { if($2 != NULL && $1 != NULL ) { $$ = $1; ast_add_child($$, $2); } else if($2 != NULL){$$ = $2;} else {$$ = $1;}}
     | elemento                                              { $$ = $1; }
 
 elemento: funcao                                            { $$ = $1; }
-    | decl_var_global                                       { $$ = NULL; }
+    | decl_var_global                                       { $$ = $1; }
 
 decl_var_global: tipo lista_var_global ';'                  { $$ = NULL; }
 
@@ -130,7 +130,7 @@ cmd: bloco_cmd                                              { $$ = $1; }
 
 decl_var_local: tipo lista_var_local                        { $$ = $2; }
 
-lista_var_local: lista_var_local ',' var_local              { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
+lista_var_local: lista_var_local ',' var_local              { $$ = $1; if($1 != NULL && $3 != NULL) { ast_add_child($$, $3); } }
     | var_local                                             { $$ = $1; }
 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
