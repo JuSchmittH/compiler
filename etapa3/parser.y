@@ -162,8 +162,8 @@ op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1->t
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); $$ = ast_new($6->token_value); ast_add_child($$, $7); }
-    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); }
+condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new($1->token_value); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
+    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new($1->token_value); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
 
 interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new($1->token_value); ast_add_child($$, $3); ast_add_child($$, $5); }
 
