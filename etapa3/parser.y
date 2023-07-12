@@ -1,6 +1,7 @@
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
+    #include <string.h>
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
@@ -151,7 +152,11 @@ var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, ast_new($1->token_value)); ast_add_child($$, $3); }
 
-chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         { $$ = ast_new($1->token_value); ast_add_child($$, $3); }
+chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
+                                                                char call[] = "call ";
+                                                                $$ = ast_new(strcat(call,$1->token_value));
+                                                                ast_add_child($$, $3);
+                                                            }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1->token_value); }
 
 argumentos: expressao ',' argumentos                        { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
