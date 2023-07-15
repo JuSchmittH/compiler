@@ -129,7 +129,9 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             last_node = last_node->children[2];
                                                                         }
                                                                         ast_add_child(last_node, $3);
-                                                                        if (strcmp($1->label, "if")){
+                                                                        printf("ENTRA ANTESA\n");
+                                                                        if (strcmp($1->label == "if")){
+                                                                            printf("ENTRA NO IF DO COMP STR\n");
                                                                             ast_add_child($1, $3);
                                                                         }
                                                                     }
