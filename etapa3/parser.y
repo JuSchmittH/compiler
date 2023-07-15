@@ -129,6 +129,9 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             last_node = last_node->children[2];
                                                                         }
                                                                         ast_add_child(last_node, $3);
+                                                                        if (strcmp($1->label, "if")){
+                                                                            ast_add_child($1, $3);
+                                                                        }
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
