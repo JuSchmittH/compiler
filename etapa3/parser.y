@@ -124,16 +124,15 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                 { $$ = $1;
                                                                     if($3 != NULL)
                                                                     {
+                                                                        if (strcmp($1->label, "if")){
+                                                                            ast_add_child($1, $3);
+                                                                        }
                                                                         AST *last_node = $1;
                                                                         while(last_node->number_of_children == 3) {
                                                                             last_node = last_node->children[2];
                                                                         }
                                                                         ast_add_child(last_node, $3);
-                                                                        printf("ENTRA ANTESA\n");
-                                                                        if (strcmp($1->label, "if")){
-                                                                            printf("ENTRA NO IF DO COMP STR\n");
-                                                                            ast_add_child($1, $3);
-                                                                        }
+                                                                        
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
