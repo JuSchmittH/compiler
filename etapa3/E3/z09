@@ -1,8 +1,0 @@
-int v;
-g()->int {
-}
-int b;
-int z;
-f() -> int {
-}
-int k;

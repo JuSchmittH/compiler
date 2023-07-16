@@ -1,5 +1,0 @@
-f(int a)->int
-{
-  int a;
-  c = 3 * f(a) + a;
-}
