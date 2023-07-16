@@ -124,7 +124,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                 { $$ = $1;
                                                                     if($3 != NULL)
                                                                     {
-                                                                        if (strcmp($1->label, "if")){
+                                                                        if (!strcmp($1->label, "if")){
                                                                             ast_add_child($1, $3);
                                                                         }
                                                                         else {
