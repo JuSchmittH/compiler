@@ -1,10 +1,16 @@
 #Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
 
-etapa4: parser.tab.o main.o ast.o vl.o lex.yy.o 
-	gcc -o etapa4 main.o ast.o vl.o lex.yy.o parser.tab.o
+etapa4: parser.tab.o main.o table.o stack.o ast.o vl.o lex.yy.o 
+	gcc -o etapa4 main.o table.o stack.o ast.o vl.o lex.yy.o parser.tab.o
 
 main.o: main.c
 	gcc -c main.c
+
+stack.o: stack.c
+	gcc -c stack.c
+
+table.o: table.c
+	gcc -c table.c
 
 ast.o: ast.c
 	gcc -c ast.c
