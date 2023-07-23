@@ -1,9 +1,9 @@
-#ifndef TABLE_HEADER
-#define TABLE_HEADER
+#ifndef STACK_HEADER
+#define STACK_HEADER
 #include "table.h"
 
 typedef struct stack_node {
-    TABLE table;
+    TABLE *table;
     struct stack_node* next;
 }STACK;
 

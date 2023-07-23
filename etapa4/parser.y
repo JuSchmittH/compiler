@@ -6,11 +6,15 @@
     extern int yylineno;
     void yyerror (const char *s);
     extern void *arvore;
+
+    STACK *pilha;
 %}
 
 %code requires { 
     #include "vl.h"
     #include "ast.h"
+    #include "stack.h"
+    #include "table.h"
  }
 
 %define parse.error verbose
@@ -87,6 +91,12 @@
 %type<ast> tipo
 
 %%
+
+inicio: cria_escopo programa fecha_escopo
+
+cria_escopo:                                                {pilha = stack_new(table_new())}  
+
+fecha_escopo:                                               {// TODO: close global scope}
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }

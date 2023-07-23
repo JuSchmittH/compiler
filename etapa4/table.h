@@ -1,8 +1,10 @@
 #ifndef TABLE_HEADER
 #define TABLE_HEADER
+#define TABLE_SIZE 100 //TODO remove this once we discover how to do it without setting size
 
 typedef struct table_content
 {
+    int key;
     int nature;    
     int type;
     int value;
@@ -10,11 +12,13 @@ typedef struct table_content
 
 typedef struct table_node
 {
-    int key;
-    CONTENT content;
-    struct table_node *next;
+    CONTENT** rows;
 } TABLE;
 
-hashInsert();
+TABLE *table_new();
+
+void table_insert(TABLE* table);
+
+int table_find(CONTENT* content);
 
 #endif
