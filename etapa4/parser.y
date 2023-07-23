@@ -124,7 +124,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                 { $$ = $1;
                                                                     if($3 != NULL)
                                                                     {
-                                                                        if (!strcmp($1->token_value, "if")){
+                                                                        if (!strcmp($1->label->token_value, "if")){
                                                                             ast_add_child($1, $3);
                                                                         }
                                                                         else {
@@ -155,7 +155,7 @@ lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(vl_new(yylineno, SPECIAL_CHAR, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";
@@ -207,18 +207,18 @@ ops_unario: operandos                                       { $$ = $1; }
     | op_pre_1 ops_unario                                   { $$ = $1; ast_add_child($$, $2); }
     |  '(' op_or ')'                                        { $$ = $2;}
 
-op_pre_1: '-'                                               { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "-")); }  
-    | '!'                                                   { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "!")); } 
+op_pre_1: '-'                                               { $$ = ast_new(vl_new(yylineno, 3, "-")); }  
+    | '!'                                                   { $$ = ast_new(vl_new(yylineno, 3, "!")); } 
 
-op_pre_2: '*'                                               { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "*")); }   
-    | '/'                                                   { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "/")); }   
-    | '%'                                                   { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "%")); }   
+op_pre_2: '*'                                               { $$ = ast_new(vl_new(yylineno, 3, "*")); }   
+    | '/'                                                   { $$ = ast_new(vl_new(yylineno, 3, "/")); }   
+    | '%'                                                   { $$ = ast_new(vl_new(yylineno, 3, "%")); }   
 
-op_pre_3: '+'                                               { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "+")); } 
-    | '-'                                                   { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "-")); } 
+op_pre_3: '+'                                               { $$ = ast_new(vl_new(yylineno, 3, "+")); } 
+    | '-'                                                   { $$ = ast_new(vl_new(yylineno, 3, "-")); } 
 
-op_pre_4: '<'                                               { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, "<")); } 
-    | '>'                                                   { $$ = ast_new(vl_new(yylineno, COMPOSED_OPERATOR, ">")); }   
+op_pre_4: '<'                                               { $$ = ast_new(vl_new(yylineno, 3, "<")); } 
+    | '>'                                                   { $$ = ast_new(vl_new(yylineno, 3, ">")); }   
     | TK_OC_LE                                              { $$ = ast_new($1); }
     | TK_OC_GE                                              { $$ = ast_new($1); }   
 
