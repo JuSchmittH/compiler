@@ -124,7 +124,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                 { $$ = $1;
                                                                     if($3 != NULL)
                                                                     {
-                                                                        if (!strcmp($1->label, "if")){
+                                                                        if (!strcmp($1->token_value, "if")){
                                                                             ast_add_child($1, $3);
                                                                         }
                                                                         else {
@@ -155,11 +155,11 @@ lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new("="); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(vl_new(yylineno, SPECIAL_CHAR, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";
-                                                                $$ = ast_new(strcat(call,$1));
+                                                                $$ = ast_new(vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
                                                                 ast_add_child($$, $3);
                                                             }
     | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1); }
