@@ -6,12 +6,12 @@
 #include "vl.h"
 #define ARQUIVO_SAIDA "saida.dot"
 
-AST *ast_new(VL *label)
+AST *ast_new(VL *item)
 {
   AST *ret = NULL;
   ret = calloc(1, sizeof(AST));
   if (ret != NULL){
-    ret->label = label;
+    ret->item = item;
     ret->number_of_children = 0;
     ret->children = NULL;
   }

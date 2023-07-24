@@ -13,12 +13,15 @@ typedef struct table_content
 typedef struct table_node
 {
     CONTENT** rows;
+    int count;
 } TABLE;
 
 TABLE *table_new();
 
-void table_insert(TABLE* table);
+CONTENT *content_new(VL *item, int type);
 
-int table_find(CONTENT* content);
+void table_insert(TABLE* table, VL* item, int type);
+
+int table_find(TABLE* table, CONTENT* content);
 
 #endif

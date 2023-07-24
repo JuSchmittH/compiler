@@ -1,7 +1,7 @@
 #include "stack.h"
 #include "table.h"
 
-STACK *stack_new(TABLE table) //TODO check where do I store this stack
+STACK *stack_new(TABLE table)
 {
     STACK* newStack = calloc(1, sizeof(STACK));;
     newStack->table = table;

@@ -7,13 +7,13 @@
 enum type{notdefined, inteiro, pontoflutuante, booleano};
 
 typedef struct ast_node {
-  VL *label;
+  VL *item;
   //enum type node_type;
   int number_of_children;
   struct ast_node **children;
 } AST;
 
-AST *ast_new(VL *label);
+AST *ast_new(VL *item);
 
 void ast_add_child(AST *tree, AST *child);
 
