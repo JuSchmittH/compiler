@@ -22,7 +22,7 @@ void push(STACK** stack, TABLE table)
     *stack = newStack;
 }
   
-void pop(STACK** stack) //Did not put the free because I remember something about we needing thar data on the next steps
+void pop(STACK** stack)
 {
     if (isEmpty(*stack))
         return INT_MIN;
@@ -36,9 +36,16 @@ TABLE peek(STACK* stack)
 }
 
 //TODO: maybe move this to another file
-int validate_undeclared_vars(TABLE* table, CONTENT* content){
-    if (table_find(table, newItem)) {
-        //TODO: add exit
-        printf("ERR_UNDECLARED: %s already declarred.\n", item->token_value);
+void validate_undeclared_vars(STACK* stack, CONTENT* content){
+    int variableFound = 0;
+    TABLE *table = peek(stack);
+
+    while (variableFound) {
+        if (table_find(table, newItem)) {
+            variableFound = 1;
+            //TODO: add exit
+            printf("ERR_UNDECLARED: %s already declarred.\n", item->token_value);
+        }
+        table = peek(stack->next);
     }
 }
