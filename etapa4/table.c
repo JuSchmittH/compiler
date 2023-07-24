@@ -47,7 +47,7 @@ void table_insert(TABLE* table, VL* item, int type)
         }
     }
     else {
-        //TODO: check if this is how it suppose to throw the error
+        //TODO: add exit
         printf("ERR_DECLARED: %s already declarred.\n", item->token_value);
     }
 }
