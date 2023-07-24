@@ -20,9 +20,9 @@ CONTENT *content_new(VL *item, int key, int type){
     ret = calloc(1, sizeof(CONTENT));
     if (ret != NULL){
         ret->key = key;
-        ret->nature = item->token_value; 
+        ret->nature = item->token_value; //TODO check how to set that properly
         ret->type = type;
-        ret->value = strdup(item->token_value);;
+        ret->value = item;
     }
     return ret;
 }
