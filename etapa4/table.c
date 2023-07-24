@@ -31,17 +31,18 @@ CONTENT *content_new(VL *item, int key, int type){
 void table_insert(TABLE* table, VL* item, int type)
 {
     int key = table->count + 1;
+    int index = table_hash(key);
 
-    CONTENT* newItem = content_new(item, key, type);
+    CONTENT* newContent = content_new(item, index, type);
 
     if (!table_find(table, newItem)) {
-        CONTENT* current_item = table->content[key];
+        CONTENT* content = table->content[index];
 
-        if (current_item == NULL)
+        if (content == NULL)
         {
             //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
 
-            table->items[key] = newItem;
+            table->items[index] = newItem;
             table->count++;
         }
     }
@@ -51,8 +52,21 @@ void table_insert(TABLE* table, VL* item, int type)
     }
 }
 
-int table_find(TABLE* table, CONTENT* content)
+int table_hash(int key)
 {
     //TODO finish implemtation here
-    return 0;
+    return key;
+}
+
+int table_find(TABLE* table, CONTENT* content)
+{
+    for (int i = 0; i <= table->count; i++) {
+        CONTENT* tableContent = table->content[index];
+        //TODO: if we add a hash we can compare by key
+        if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && tableContent->type == content->type)
+        {
+            return 0;
+        }
+    }
+    return 1;
 }
