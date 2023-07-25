@@ -2,6 +2,7 @@
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
     #include <string.h>
+    #include "stack.h"
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
@@ -13,7 +14,6 @@
 %code requires { 
     #include "vl.h"
     #include "ast.h"
-    #include "stack.h"
     #include "semantic.h"
  }
 
