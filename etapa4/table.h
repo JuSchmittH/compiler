@@ -21,7 +21,7 @@ typedef struct table_node
 
 TABLE *table_new();
 
-CONTENT *content_new(VL *item, int type);
+CONTENT *content_new(VL *item, int key, int type);
 
 void table_insert(TABLE* table, VL* item, int type);
 
