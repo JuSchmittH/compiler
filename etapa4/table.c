@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "table.h"
 #include "vl.h"
 
@@ -7,7 +8,7 @@ TABLE *table_new()
 {
     TABLE* table = (TABLE*) malloc(sizeof(TABLE));
     //TODO remove TABLE_SIZE once we discover how to do it without setting size
-    table->items = (CONTENT**) calloc(TABLE_SIZE, sizeof(CONTENT*));
+    table->rows = (CONTENT**) calloc(TABLE_SIZE, sizeof(CONTENT*));
     table->count = 0;
 
     for (int i = 0; i < TABLE_SIZE; i++)
@@ -22,7 +23,7 @@ CONTENT *content_new(VL *item, int key, int type){
     ret = calloc(1, sizeof(CONTENT));
     if (ret != NULL){
         ret->key = key;
-        ret->nature = item->token_value; //TODO check how to set that properly
+        ret->nature = item->token_type; //TODO check how to set that properly
         ret->type = type;
         ret->value = item;
     }
@@ -43,7 +44,7 @@ void table_insert(TABLE* table, VL* item, int type)
         {
             //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
 
-            table->items[index] = newItem;
+            table->rows[index] = newItem;
             table->count++;
         }
 }

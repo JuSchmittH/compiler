@@ -25,6 +25,8 @@ CONTENT *content_new(VL *item, int type);
 
 void table_insert(TABLE* table, VL* item, int type);
 
+int table_hash(int key);
+
 int table_find(TABLE* table, CONTENT* content);
 
 #endif
