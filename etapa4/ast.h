@@ -1,4 +1,5 @@
 //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
+#include<stdio.h>
 #include "vl.h"
 #ifndef AST_HEADER
 #define AST_HEADER
