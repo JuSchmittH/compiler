@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "stack.h"
 #include "table.h"
 
 STACK *stack_new(TABLE *table)

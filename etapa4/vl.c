@@ -1,7 +1,4 @@
 //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "vl.h"
 
 VL *vl_new(int line_number, int token_type, char *token_value){

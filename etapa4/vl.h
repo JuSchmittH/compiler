@@ -1,4 +1,8 @@
 //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #ifndef VL_HEADER
 #define VL_HEADER
 

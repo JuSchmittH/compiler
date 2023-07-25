@@ -1,6 +1,9 @@
 #ifndef STACK_HEADER
 #define STACK_HEADER
+#include <stdio.h>
+#include <stdlib.h>
 #include "table.h"
+#include "stack.h"
 
 typedef struct stack_node {
     TABLE *table;
