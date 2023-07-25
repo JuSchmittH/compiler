@@ -1,4 +1,4 @@
-#include "table.h"
+#include "stack.h"
 
 STACK *stack_new(TABLE *table)
 {
