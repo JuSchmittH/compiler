@@ -11,7 +11,7 @@ STACK *stack_new(TABLE *table);
 
 int isEmpty(STACK* root);
 
-void push(STACK** stack, TABLE table);
+void push(STACK** stack, TABLE *table);
   
 void pop(STACK** stack);
   
