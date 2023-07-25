@@ -1,6 +1,20 @@
 #include "semantic.h"
 
-//TODO: move the ERR_DECLARED to here
+STACK* global_scope_new()
+{
+    return stack_new(table_new());
+}
+
+void validate_declared_vars(TABLE* table, VL* item, int type)
+{
+    if (!table_find(table, newItem)) {
+        table_insert(table, item, type);
+    }
+    else {
+        exit(ERR_DECLARED);
+        printf("ERR_DECLARED: %s already declarred.\n", item->token_value);
+    }
+}
 
 void validate_undeclared_vars(STACK* stack, CONTENT* content){
     int variableFound = 0;
@@ -9,7 +23,7 @@ void validate_undeclared_vars(STACK* stack, CONTENT* content){
     while (variableFound) {
         if (table_find(table, newItem)) {
             variableFound = 1;
-            //TODO: add exit
+            exit(ERR_UNDECLARED);
             printf("ERR_UNDECLARED: %s already declarred.\n", item->token_value);
         }
         table = peek(stack->next);

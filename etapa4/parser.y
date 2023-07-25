@@ -13,6 +13,7 @@
 %code requires { 
     #include "vl.h"
     #include "ast.h"
+    #include "stack.h"
     #include "semantic.h"
  }
 

@@ -34,9 +34,8 @@ void table_insert(TABLE* table, VL* item, int type)
     int index = table_hash(key);
 
     CONTENT* newContent = content_new(item, index, type);
-
-    if (!table_find(table, newItem)) {
-        CONTENT* content = table->content[index];
+    
+    CONTENT* content = table->content[index];
 
         if (content == NULL)
         {
@@ -45,11 +44,6 @@ void table_insert(TABLE* table, VL* item, int type)
             table->items[index] = newItem;
             table->count++;
         }
-    }
-    else {
-        //TODO: add exit
-        printf("ERR_DECLARED: %s already declarred.\n", item->token_value);
-    }
 }
 
 int table_hash(int key)
