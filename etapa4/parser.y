@@ -13,8 +13,7 @@
 %code requires { 
     #include "vl.h"
     #include "ast.h"
-    #include "stack.h"
-    #include "table.h"
+    #include "semantic.h"
  }
 
 %define parse.error verbose
@@ -92,11 +91,9 @@
 
 %%
 
-inicio: cria_escopo programa fecha_escopo
+inicio: cria_escopo programa
 
-cria_escopo:                                                {pilha = stack_new(table_new())}  
-
-fecha_escopo:                                               {// TODO: close global scope}
+cria_escopo:                                                {pilha = global_scope_new()}
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }

@@ -15,6 +15,4 @@ void pop(STACK** stack);
   
 TABLE peek(STACK* stack);
 
-void validate_undeclared_vars(STACK* stack, CONTENT* content)
-
 #endif
