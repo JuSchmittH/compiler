@@ -3,7 +3,7 @@
 #include "stack.h"
 #include "table.h"
 
-STACK *stack_new(TABLE table)
+STACK *stack_new(TABLE *table)
 {
     STACK* newStack = calloc(1, sizeof(STACK));
     newStack->table = (TABLE*) malloc(sizeof(TABLE));
@@ -30,7 +30,7 @@ void pop(STACK** stack)
         *stack = (*stack)->next; 
 }
   
-TABLE peek(STACK* stack)
+TABLE *peek(STACK* stack)
 {
     //TODO add validation for whe stack is empty
     return stack->table;
