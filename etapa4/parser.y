@@ -2,19 +2,16 @@
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
     #include <stdio.h>
     #include <string.h>
-    #include "stack.h"
+
     int yylex(void);
     extern int yylineno;
     void yyerror (const char *s);
     extern void *arvore;
-
-    STACK *pilha;
 %}
 
 %code requires { 
     #include "vl.h"
     #include "ast.h"
-    #include "semantic.h"
  }
 
 %define parse.error verbose
@@ -92,9 +89,7 @@
 
 %%
 
-inicio: cria_escopo programa
-
-cria_escopo:                                                {pilha = global_scope_new()}
+inicio: programa
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
