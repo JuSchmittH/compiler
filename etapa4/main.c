@@ -17,7 +17,7 @@ void exporta (void *arvore)
   AST *arvore_ast = (AST*) arvore;
   
   if (arvore != NULL){
-    printf("%p [ label=\"%s\" ];\n", arvore_ast, arvore_ast->label->token_value);
+    printf("%p [ label=\"%s\" ];\n", arvore_ast, arvore_ast->item->token_value);
     for (int i = 0; i < arvore_ast->number_of_children; i++){
       printf("%p, %p;\n", arvore_ast, arvore_ast->children[i]);
       exporta(arvore_ast->children[i]);

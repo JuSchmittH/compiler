@@ -6,12 +6,12 @@
 #include "vl.h"
 
 //TODO: define types for ast nodes, check how to initiate this
-// enum type {
-//   notdefined, 
-//   inteiro, 
-//   pontoflutuante, 
-//   booleano
-// };
+enum type {
+  notdefined, 
+  inteiro, 
+  pontoflutuante, 
+  booleano
+};
 
 typedef struct ast_node {
   VL *item;
