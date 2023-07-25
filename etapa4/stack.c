@@ -5,10 +5,16 @@
 
 STACK *stack_new(TABLE table)
 {
-    STACK* newStack = calloc(1, sizeof(STACK));;
+    STACK* newStack = calloc(1, sizeof(STACK));
+    newStack->table = (TABLE*) malloc(sizeof(TABLE));
     newStack->table = table;
     newStack->next = NULL;
     return newStack;
+}
+
+int isEmpty(STACK* root)
+{
+    return !root;
 }
 
 void push(STACK** stack, TABLE table)
@@ -20,9 +26,8 @@ void push(STACK** stack, TABLE table)
   
 void pop(STACK** stack)
 {
-    if (isEmpty(*stack))
-        return INT_MIN;
-    *stack = (*stack)->next; 
+    if (!isEmpty(*stack))
+        *stack = (*stack)->next; 
 }
   
 TABLE peek(STACK* stack)
