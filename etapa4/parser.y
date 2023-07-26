@@ -94,7 +94,7 @@
 
 inicio: cria_escopo programa
 
-cria_escopo:                                                {pilha = global_scope_new()}
+cria_escopo:                                                {pilha = global_scope_new();}
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
