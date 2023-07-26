@@ -48,14 +48,18 @@ int table_hash(int key)
 
 int table_find(TABLE* table, CONTENT* content)
 {
-    for (int i = 0; i <= table->count; i++) {
-        CONTENT* tableContent = table->rows[i];
-        //TODO: if we add a hash we can compare by key
-        if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
-            tableContent->type == content->type && tableContent->nature == content->nature)
-        {
-            return 0;
+    printf("criou content\n");
+    if (table->count > 0) {
+        for (int i = 0; i <= table->count; i++) {
+            CONTENT* tableContent = table->rows[i];
+            //TODO: if we add a hash we can compare by key
+            if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
+                tableContent->type == content->type && tableContent->nature == content->nature)
+            {
+                return 0;
+            }
         }
     }
+    printf("retornou 1\n");
     return 1;
 }
