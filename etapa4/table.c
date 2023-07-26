@@ -37,7 +37,6 @@ void table_insert(TABLE* table, CONTENT* content, int index)
         table->rows[index] = content;
         table->count++;
     }
-        printf("inseriu\n\n");
 }
 
 int table_hash(int key)

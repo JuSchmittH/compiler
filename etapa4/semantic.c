@@ -17,11 +17,13 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
 
     if (!table_find(table, newContent)) {
         table_insert(table, newContent, index);
+        printf("inseriu\n\n");
     }
     else {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
     }
+        printf("chegou no final\n\n");
 }
 
 void validate_undeclared_vars(STACK* stack, CONTENT* content)
