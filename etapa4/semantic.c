@@ -5,7 +5,7 @@ STACK *global_scope_new()
     return stack_new(table_new());
 }
 
-void validate_declaration(STACK *stack, VL* item, int type, enum nature nature)
+void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
     TABLE* table = peek(stack);
 
