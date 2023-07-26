@@ -57,10 +57,10 @@ int table_find(TABLE* table, CONTENT* content)
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
                 tableContent->type == content->type && tableContent->nature == content->nature)
             {
-                return 0;
+                return 1;
             }
         }
     }
 
-    return 1;
+    return 0;
 }
