@@ -34,7 +34,7 @@ void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nat
     CONTENT* content = content_new(item, nature, index, type);
 
     while (!isEmpty(stack)) {
-        swtch(table_find(table, content)) {
+        switch(table_find(table, content)) {
             case 0: printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_UNDECLARED);
                     break;
