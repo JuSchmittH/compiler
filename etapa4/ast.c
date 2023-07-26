@@ -12,7 +12,7 @@ AST *ast_new(enum type type, VL *item)
   ret = calloc(1, sizeof(AST));
   if (ret != NULL){
     ret->item = item;
-    ret->type = type;
+    ret->node_type = type;
     ret->number_of_children = 0;
     ret->children = NULL;
   }
