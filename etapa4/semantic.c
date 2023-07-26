@@ -16,13 +16,14 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     CONTENT* newContent = content_new(item, nature, index, type);
 
     if (table_find(table, newContent) != 1) {
-        table_insert(table, newContent, index);
+        //table_insert(table, newContent, index);
+        printf("é o insert\n\n");//TODO ta dando segmentation fault depois disso e eu nao sei o pq
     }
     else {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
     }
-    printf("chegou no final\n\n");//TODO ta dando segmentation fault depois disso e eu nao sei o pq
+    
 }
 
 void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nature)
