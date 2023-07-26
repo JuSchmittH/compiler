@@ -19,8 +19,8 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
         table_insert(table, newContent, index);
     }
     else {
-        exit(ERR_DECLARED);
         printf("ERR_DECLARED: %s already declarred.\n", item->token_value);
+        exit(ERR_DECLARED);
     }
 }
 
@@ -32,8 +32,8 @@ void validate_undeclared_vars(STACK* stack, CONTENT* content)
     while (variableFound) {
         if (table_find(table, content)) {
             variableFound = 1;
-            exit(ERR_UNDECLARED);
             printf("ERR_UNDECLARED: %s already declarred.\n", content->value->token_value);
+            exit(ERR_UNDECLARED);
         }
         table = peek(stack->next);
     }
