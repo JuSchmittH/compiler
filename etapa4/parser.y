@@ -112,7 +112,15 @@ lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; }
 
 funcao: cabecalho corpo                                     { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
 
-cabecalho: TK_IDENTIFICADOR parametros TK_OC_MAP tipo       { $$ = ast_new($1); }
+cabecalho: cabecalho_int                                    { $$ = $1; }
+    | cabecalho_float                                       { $$ = $1; }
+    | cabecalho_bool                                        { $$ = $1; }
+
+cabecalho_int: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); }
+
+cabecalho_float: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); }
+
+cabecalho_bool: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); }
 
 parametros: '(' lista_param ')'                             { $$ = NULL; }
     | '(' ')'                                               { $$ = NULL; }
@@ -163,7 +171,7 @@ lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { 
 var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(notdefined, vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";
@@ -175,15 +183,15 @@ chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
 argumentos: expressao ',' argumentos                        { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
     | expressao                                             { $$ = $1; }
 
-op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new($1); ast_add_child($$, $2); }
+op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new(notdefined, $1); ast_add_child($$, $2); }
 
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new($1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
-    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new($1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
+condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
+    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
 
-interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new($1); ast_add_child($$, $3); ast_add_child($$, $5); }
+interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $5); }
 
 expressao: operadores                                       { $$ = $1; }
 
@@ -215,32 +223,32 @@ ops_unario: operandos                                       { $$ = $1; }
     | op_pre_1 ops_unario                                   { $$ = $1; ast_add_child($$, $2); }
     |  '(' op_or ')'                                        { $$ = $2;}
 
-op_pre_1: '-'                                               { $$ = ast_new(vl_new(yylineno, 3, "-")); }  
-    | '!'                                                   { $$ = ast_new(vl_new(yylineno, 3, "!")); } 
+op_pre_1: '-'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "-")); }  
+    | '!'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "!")); } 
 
-op_pre_2: '*'                                               { $$ = ast_new(vl_new(yylineno, 3, "*")); }   
-    | '/'                                                   { $$ = ast_new(vl_new(yylineno, 3, "/")); }   
-    | '%'                                                   { $$ = ast_new(vl_new(yylineno, 3, "%")); }   
+op_pre_2: '*'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "*")); }   
+    | '/'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "/")); }   
+    | '%'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "%")); }   
 
-op_pre_3: '+'                                               { $$ = ast_new(vl_new(yylineno, 3, "+")); } 
-    | '-'                                                   { $$ = ast_new(vl_new(yylineno, 3, "-")); } 
+op_pre_3: '+'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "+")); } 
+    | '-'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "-")); } 
 
-op_pre_4: '<'                                               { $$ = ast_new(vl_new(yylineno, 3, "<")); } 
-    | '>'                                                   { $$ = ast_new(vl_new(yylineno, 3, ">")); }   
-    | TK_OC_LE                                              { $$ = ast_new($1); }
-    | TK_OC_GE                                              { $$ = ast_new($1); }   
+op_pre_4: '<'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "<")); } 
+    | '>'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, ">")); }   
+    | TK_OC_LE                                              { $$ = ast_new(notdefined,$1); }
+    | TK_OC_GE                                              { $$ = ast_new(notdefined,$1); }   
 
-op_pre_5: TK_OC_EQ                                          { $$ = ast_new($1); }
-    | TK_OC_NE                                              { $$ = ast_new($1); } 
+op_pre_5: TK_OC_EQ                                          { $$ = ast_new(notdefined,$1); }
+    | TK_OC_NE                                              { $$ = ast_new(notdefined,$1); } 
 
-op_pre_6: TK_OC_AND                                         { $$ = ast_new($1); }  
+op_pre_6: TK_OC_AND                                         { $$ = ast_new(notdefined,$1); }  
 
-op_pre_7: TK_OC_OR                                          { $$ = ast_new($1); } 
+op_pre_7: TK_OC_OR                                          { $$ = ast_new(notdefined,$1); } 
 
-literal: TK_LIT_INT                                         { $$ = ast_new($1); }
-    | TK_LIT_FLOAT                                          { $$ = ast_new($1); }
-    | TK_LIT_FALSE                                          { $$ = ast_new($1); }
-    | TK_LIT_TRUE                                           { $$ = ast_new($1); }
+literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); }
+    | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); }
+    | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); }
+    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }
 
 tipo: TK_PR_INT                                             { $$ = NULL; }                                           
     | TK_PR_FLOAT                                           { $$ = NULL; }                                       

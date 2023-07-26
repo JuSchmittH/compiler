@@ -15,12 +15,12 @@ enum type {
 
 typedef struct ast_node {
   VL *item;
-  //enum type node_type;
+  enum type node_type;
   int number_of_children;
   struct ast_node **children;
 } AST;
 
-AST *ast_new(VL *item);
+AST *ast_new(enum type type, VL *item);
 
 void ast_add_child(AST *tree, AST *child);
 
