@@ -9,9 +9,9 @@
 #define TABLE_SIZE 100 //TODO remove this once we discover how to do it without setting size
 
 enum nature {
-  literal, 
-  identificador,
-  funcao
+  literal = 1, 
+  identificador = 2,
+  funcao = 3
 };
 
 typedef struct table_content

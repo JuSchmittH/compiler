@@ -15,28 +15,37 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
 
     CONTENT* newContent = content_new(item, nature, index, type);
 
-    if (!table_find(table, newContent)) {
+    if (table_find(table, newContent) != 1) {
         table_insert(table, newContent, index);
-        printf("inseriu\n\n");
     }
     else {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
     }
-        printf("chegou no final\n\n");
+    printf("chegou no final\n\n");//TODO ta dando segmentation fault depois disso e eu nao sei o pq
 }
 
-void validate_undeclared_vars(STACK* stack, CONTENT* content)
+void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nature)
 {
-    int variableFound = 0;
     TABLE *table = peek(stack);
+    int key = table->count + 1;
+    int index = table_hash(key);
 
-    while (variableFound) {
-        if (table_find(table, content)) {
-            variableFound = 1;
-            printf("ERR_UNDECLARED: %s on line %d already declarred.\n", content->value->token_value, content->value->line_number);
-            exit(ERR_UNDECLARED);
+    CONTENT* content = content_new(item, nature, index, type);
+
+    while (!isEmpty(stack)) {
+        swtch(table_find(table, content)) {
+            case 0: printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
+                    exit(ERR_UNDECLARED);
+                    break;
+            case 2: printf("ERR_VARIABLE: %s on line %d already declarred but only as a variable.\n", content->value->token_value, content->value->line_number);
+                    exit(ERR_VARIABLE);
+                    break;
+            case 3: printf("ERR_FUNCTION: %s on line %d already declarred but only as a function.\n", content->value->token_value, content->value->line_number);
+                    exit(ERR_FUNCTION);
+                    break;
+            default: table = peek(stack->next);
+                     break;
         }
-        table = peek(stack->next);
     }
 }
