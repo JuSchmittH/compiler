@@ -10,7 +10,8 @@ enum type {
   notdefined, 
   inteiro, 
   pontoflutuante, 
-  booleano
+  booleano,
+  unknown //TODO added this in the places where I dont know what o put it
 };
 
 typedef struct ast_node {

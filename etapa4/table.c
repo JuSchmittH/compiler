@@ -14,12 +14,12 @@ TABLE *table_new()
 }
 
 //TODO check if VL has everything we need maybe use AST
-CONTENT *content_new(VL *item, int key, int type){
+CONTENT *content_new(VL *item, enum nature nature, int key, int type){
     CONTENT *ret = NULL;
     ret = calloc(1, sizeof(CONTENT));
     if (ret != NULL){
         ret->key = key;
-        ret->nature = item->token_type; //TODO check how to set that properly
+        ret->nature = nature;
         ret->type = type;
         ret->value = item;
     }

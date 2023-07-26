@@ -8,10 +8,17 @@
 #define TABLE_HEADER
 #define TABLE_SIZE 100 //TODO remove this once we discover how to do it without setting size
 
+enum nature {
+  literal, 
+  identificador,
+  funcao
+};
+
 typedef struct table_content
 {
     int key;
-    int nature;    
+    int location;
+    enum nature nature;    
     int type;
     VL* value;
 } CONTENT;
@@ -24,7 +31,7 @@ typedef struct table_node
 
 TABLE *table_new();
 
-CONTENT *content_new(VL *item, int key, int type);
+CONTENT *content_new(VL *item, enum nature nature, int key, int type);
 
 void table_insert(TABLE* table, CONTENT* content, int index);
 

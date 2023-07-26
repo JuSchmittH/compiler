@@ -163,22 +163,36 @@ cmd: bloco_cmd                                              { $$ = $1; }
     | op_retorno                                            { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
-decl_var_local: tipo lista_var_local                        { $$ = $2; }
+decl_int_var_local: TK_PR_INT lista_var_int_local           { $$ = $2; }
+    |TK_PR_FLOAT lista_var_float_local                      { $$ = $2; }
+    |TK_PR_BOOL lista_var_bool_local                        { $$ = $2; }
 
-lista_var_local: var_local ',' lista_var_local              { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
-    | var_local                                             { $$ = $1; }
+lista_var_int_local: int_var_local ',' lista_var_int_local          { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
+    | int_var_local                                                 { $$ = $1; }
 
-var_local: TK_IDENTIFICADOR                                 { $$ = NULL; }
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new($2); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
+lista_var_float_local: float_var_local ',' lista_var_float_local    { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
+    | float_var_local                                               { $$ = $1; }
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(notdefined, vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new($1)); ast_add_child($$, $3); }
+lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
+    | bool_var_local                                                { $$ = $1; }
+
+int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; }
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); }
+
+float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; }
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); }
+
+bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; }
+    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); }
+
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(notdefined, vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new(unknown,$1)); ast_add_child($$, $3); }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";
-                                                                $$ = ast_new(vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
+                                                                $$ = ast_new(unknown,vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
                                                                 ast_add_child($$, $3);
                                                             }
-    | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new($1); }
+    | TK_IDENTIFICADOR '(' ')'                              { $$ = ast_new(unknown,$1); }
 
 argumentos: expressao ',' argumentos                        { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
     | expressao                                             { $$ = $1; }
@@ -195,7 +209,7 @@ interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new(notde
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { $$ = ast_new($1); }
+operandos: TK_IDENTIFICADOR                                 { $$ = ast_new(unknown,$1); }
     | literal                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 

@@ -5,12 +5,14 @@ STACK *global_scope_new()
     return stack_new(table_new());
 }
 
-void validate_declared_vars(TABLE* table, VL* item, int type)
+void validate_declaration(STACK *stack, VL* item, int type, enum nature nature)
 {
+    TABLE* table = peek(stack);
+
     int key = table->count + 1;
     int index = table_hash(key);
 
-    CONTENT* newContent = content_new(item, index, type);
+    CONTENT* newContent = content_new(item, nature, index, type);
 
     if (!table_find(table, newContent)) {
         table_insert(table, newContent, index);
