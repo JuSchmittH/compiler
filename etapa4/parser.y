@@ -53,6 +53,9 @@
 %type<ast> lista_var_global
 %type<ast> funcao
 %type<ast> cabecalho
+%type<ast> cabecalho_int
+%type<ast> cabecalho_float
+%type<ast> cabecalho_bool
 %type<ast> parametros
 %type<ast> lista_param
 %type<ast> param
@@ -61,8 +64,12 @@
 %type<ast> lista_cmd_simples
 %type<ast> cmd
 %type<ast> decl_var_local
-%type<ast> lista_var_local
-%type<ast> var_local
+%type<ast> lista_var_int_local
+%type<ast> lista_var_float_local
+%type<ast> lista_var_bool_local
+%type<ast> int_var_local
+%type<ast> float_var_local
+%type<ast> bool_var_local
 %type<ast> atribuicao
 %type<ast> chamada_funcao
 %type<ast> argumentos
@@ -163,7 +170,7 @@ cmd: bloco_cmd                                              { $$ = $1; }
     | op_retorno                                            { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
-decl_int_var_local: TK_PR_INT lista_var_int_local           { $$ = $2; }
+decl_var_local: TK_PR_INT lista_var_int_local               { $$ = $2; }
     |TK_PR_FLOAT lista_var_float_local                      { $$ = $2; }
     |TK_PR_BOOL lista_var_bool_local                        { $$ = $2; }
 
