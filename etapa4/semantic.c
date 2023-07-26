@@ -7,13 +7,14 @@ STACK *global_scope_new()
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
+    printf("entrou\n");
     TABLE* table = peek(stack);
-
+    printf("peekou\n");
     int key = table->count + 1;
     int index = table_hash(key);
-
+    printf("hashou\n");
     CONTENT* newContent = content_new(item, nature, index, type);
-
+    printf("criou content\n");
     if (!table_find(table, newContent)) {
         table_insert(table, newContent, index);
     }
