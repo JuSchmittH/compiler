@@ -29,15 +29,17 @@ CONTENT *content_new(VL *item, enum nature nature, int key, int type){
 //TODO check if VL has everything we need maybe use AST
 void table_insert(TABLE* table, CONTENT* content, int index)
 {
+    printf("no insert\n");
     CONTENT* newContent = table->rows[index];
+    printf("criou content\n\n");
 
-        if (newContent == NULL)
-        {
-            //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
-
-            table->rows[index] = content;
-            table->count++;
-        }
+    if (newContent == NULL)
+    {
+        //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
+        printf("inseriu\n\n");
+        table->rows[index] = content;
+        table->count++;
+    }
 }
 
 int table_hash(int key)
@@ -48,7 +50,6 @@ int table_hash(int key)
 
 int table_find(TABLE* table, CONTENT* content)
 {
-    printf("criou content\n");
     if (table->count > 0) {
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
@@ -60,6 +61,6 @@ int table_find(TABLE* table, CONTENT* content)
             }
         }
     }
-    printf("retornou 1\n");
+
     return 1;
 }
