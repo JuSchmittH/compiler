@@ -27,20 +27,15 @@ CONTENT *content_new(VL *item, int key, int type){
 }
 
 //TODO check if VL has everything we need maybe use AST
-void table_insert(TABLE* table, VL* item, int type)
+void table_insert(TABLE* table, CONTENT* content, int index)
 {
-    int key = table->count + 1;
-    int index = table_hash(key);
+    CONTENT* newContent = table->rows[index];
 
-    CONTENT* newContent = content_new(item, index, type);
-    
-    CONTENT* content = table->rows[index];
-
-        if (content == NULL)
+        if (newContent == NULL)
         {
             //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
 
-            table->rows[index] = newContent;
+            table->rows[index] = content;
             table->count++;
         }
 }

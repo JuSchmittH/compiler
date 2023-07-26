@@ -7,8 +7,13 @@ STACK *global_scope_new()
 
 void validate_declared_vars(TABLE* table, VL* item, int type)
 {
-    if (!table_find(table, newItem)) {
-        table_insert(table, item, type);
+    int key = table->count + 1;
+    int index = table_hash(key);
+
+    CONTENT* newContent = content_new(item, index, type);
+
+    if (!table_find(table, newContent)) {
+        table_insert(table, newContent);
     }
     else {
         exit(ERR_DECLARED);
@@ -22,10 +27,10 @@ void validate_undeclared_vars(STACK* stack, CONTENT* content)
     TABLE *table = peek(stack);
 
     while (variableFound) {
-        if (table_find(table, newItem)) {
+        if (table_find(table, content)) {
             variableFound = 1;
             exit(ERR_UNDECLARED);
-            printf("ERR_UNDECLARED: %s already declarred.\n", item->token_value);
+            printf("ERR_UNDECLARED: %s already declarred.\n", content->value->token_value);
         }
         table = peek(stack->next);
     }

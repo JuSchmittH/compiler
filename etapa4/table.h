@@ -26,7 +26,7 @@ TABLE *table_new();
 
 CONTENT *content_new(VL *item, int key, int type);
 
-void table_insert(TABLE* table, VL* item, int type);
+void table_insert(TABLE* table, CONTENT* content, int index);
 
 int table_hash(int key);
 
