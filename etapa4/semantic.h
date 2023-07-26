@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "stack.h"
 #include "table.h"
+#include "ast.h"
 
 #define ERR_UNDECLARED  10 //2.2
 #define ERR_DECLARED    11 //2.2
