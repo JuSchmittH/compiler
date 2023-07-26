@@ -34,11 +34,10 @@ void table_insert(TABLE* table, CONTENT* content, int index)
     if (newContent == NULL)
     {
         //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
-        table->rows[index] = calloc(1, sizeof(CONTENT));
         table->rows[index] = content;
         table->count++;
-        printf("inseriu\n\n");
     }
+        printf("inseriu\n\n");
 }
 
 int table_hash(int key)
