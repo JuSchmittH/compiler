@@ -13,7 +13,7 @@ void validate_declared_vars(TABLE* table, VL* item, int type)
     CONTENT* newContent = content_new(item, index, type);
 
     if (!table_find(table, newContent)) {
-        table_insert(table, newContent);
+        table_insert(table, newContent, index);
     }
     else {
         exit(ERR_DECLARED);
