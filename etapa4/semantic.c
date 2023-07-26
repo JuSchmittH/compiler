@@ -1,10 +1,12 @@
 #include "semantic.h"
 
-// STACK *global_scope_new(){
-//     return stack_new(table_new());
-// }
+STACK *global_scope_new()
+{
+    return stack_new(table_new());
+}
 
-void validate_declared_vars(TABLE* table, VL* item, int type){
+void validate_declared_vars(TABLE* table, VL* item, int type)
+{
     if (!table_find(table, newItem)) {
         table_insert(table, item, type);
     }
@@ -14,7 +16,8 @@ void validate_declared_vars(TABLE* table, VL* item, int type){
     }
 }
 
-void validate_undeclared_vars(STACK* stack, CONTENT* content){
+void validate_undeclared_vars(STACK* stack, CONTENT* content)
+{
     int variableFound = 0;
     TABLE *table = peek(stack);
 
