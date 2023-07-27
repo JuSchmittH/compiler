@@ -7,6 +7,7 @@ STACK *global_scope_new()
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
+    printf("ele chega aqui de novo?\n\n");
 
     TABLE* table = peek(stack);
 
