@@ -20,7 +20,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
         exit(ERR_DECLARED);
     }
 
-    table_insert(table, newContent, index);
+    //table_insert(table, newContent, index);
     printf("é o insert\n\n");//TODO ta dando segmentation fault no insert se comentar a linha 19 passa
     
 }
