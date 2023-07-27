@@ -99,9 +99,11 @@
 
 %%
 
-inicio: cria_escopo programa
+inicio: cria_escopo programa fecha_escopo
 
-cria_escopo:                                                {pilha = global_scope_new();}
+cria_escopo:                                                { pilha = global_scope_new(); }
+
+fecha_escopo:                                               { close_global_scope(pilha); }
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }

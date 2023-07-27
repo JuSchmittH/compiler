@@ -14,6 +14,8 @@
 
 STACK *global_scope_new();
 
+void close_global_scope(STACK *stack);
+
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature);
 
 void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nature);

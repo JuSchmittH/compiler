@@ -32,3 +32,12 @@ TABLE *peek(STACK* stack)
     //TODO add validation for whe stack is empty
     return stack->table;
 }
+
+void free_stack(STACK** stack)
+{
+    while (!isEmpty(stack)) {
+        STACK* temp = *stack;
+        pop(stack)
+        free(temp);
+    }
+}

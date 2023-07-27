@@ -20,4 +20,6 @@ void pop(STACK** stack);
   
 TABLE *peek(STACK* stack);
 
+void free_stack(STACK** stack);
+
 #endif
