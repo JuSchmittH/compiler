@@ -15,7 +15,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     int index = table_hash(key);
 
     CONTENT* newContent = content_new(item, nature, index, type);
-
+    printf("ele chega aqui de novo e aqui?\n\n");
     if (table_find(table, newContent) == 1) {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
