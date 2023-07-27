@@ -5,7 +5,7 @@ STACK *global_scope_new()
     return stack_new(table_new());
 }
 
-void close_global_scope(STACK *stack)
+void close_global_scope(STACK **stack)
 {
     free_stack(stack);
 }
