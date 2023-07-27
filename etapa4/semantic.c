@@ -9,8 +9,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
 {
     TABLE* table = peek(stack);
 
-    int key = table->count + 1;
-    int index = table_hash(key);
+    int index = table_hash(table->count);
 
     CONTENT* newContent = content_new(item, nature, index, type);
 

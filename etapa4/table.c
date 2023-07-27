@@ -30,12 +30,12 @@ CONTENT *content_new(VL *item, enum nature nature, int key, int type){
 void table_insert(TABLE* table, CONTENT* content, int index)
 {
     CONTENT* newContent = table->rows[index];
-    printf("index %d\n\n", index);
 
     if (newContent == NULL)
     {
         //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
         table->rows[index] = content;
+        printf("table->rows[index] \nkey: %d\nnature: %d\ntype: %d\ntoken_value: %s\ntoken_type: %d\n\n", table->rows[index]->key, table->rows[index]->nature, table->rows[index]->type, table->rows[index]->value->token_value, table->rows[index]->value->token_type);
         table->count++;
     }
 }
@@ -53,8 +53,7 @@ int table_find(TABLE* table, CONTENT* content)
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
             //TODO: if we add a hash we can compare by key
-             printf("tableContent->type \ntype: %d\n\n", tableContent->type);
-             printf("tableContent->value->token_value \ntype: %s\n\n", tableContent->value->token_value);
+             printf("tableContent \nkey: %d\nnature: %d\ntype: %d\ntoken_value: %s\ntoken_type: %d\n\n", tableContent->key, tableContent->nature, tableContent->type, tableContent->value->token_value, tableContent->value->token_type);
 
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
                 tableContent->type == content->type)
