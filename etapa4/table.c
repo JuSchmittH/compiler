@@ -55,7 +55,7 @@ int table_find(TABLE* table, CONTENT* content)
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
             //TODO: if we add a hash we can compare by key
-            printf("tableContent \nkey: %d\nnature: %d\ntype: %d\ntoken_value: %s\ntoken_type: %d\n\n", tableContent->key, tableContent->nature, tableContent->type, tableContent->value->token_value, tableContent->value->token_type);
+            printf("tableContent %d\n\n", i);
 
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
                 tableContent->type == content->type)
