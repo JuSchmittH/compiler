@@ -35,9 +35,9 @@ TABLE *peek(STACK* stack)
 
 void free_stack(STACK** stack)
 {
-    while (!isEmpty(stack)) {
+    while (!isEmpty(*stack)) {
         STACK* temp = *stack;
-        pop(stack)
+        pop(stack);
         free(temp);
     }
 }
