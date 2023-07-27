@@ -7,23 +7,19 @@ STACK *global_scope_new()
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
-    printf("ele chega aqui de novo?\n\n");
-
     TABLE* table = peek(stack);
 
     int key = table->count + 1;
     int index = table_hash(key);
 
     CONTENT* newContent = content_new(item, nature, index, type);
-    printf("ele chega aqui de novo e aqui?\n\n");
+
     if (table_find(table, newContent) == 1) {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
     }
 
-    table_insert(table, newContent, index);
-    printf("é o insert\n\n");//TODO ta dando segmentation fault no insert se comentar a linha 23 passa
-    
+    table_insert(table, newContent, index);    
 }
 
 void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nature)
