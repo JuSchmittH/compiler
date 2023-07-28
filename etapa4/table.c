@@ -31,15 +31,12 @@ void table_insert(TABLE* table, CONTENT* content, int index)
 {
     CONTENT* newContent = table->rows[index];
 
-    // if (newContent == NULL)
-    // {
-    //     //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
-    //     table->rows[index] = content;
-    //     table->count++;
-    // }
-
-    table->rows[index] = content;
-    table->count++;
+    if (newContent == NULL)
+    {
+        //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
+        table->rows[index] = content;
+        table->count++;
+    }
 }
 
 int table_hash(int key)
@@ -51,19 +48,15 @@ int table_hash(int key)
 int table_find(TABLE* table, CONTENT* content)
 {
     int response = 0;
-    printf("table->count %d\n\n", table->count);
     if (table->count > 0) {
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
             //TODO: if we add a hash we can compare by key
-            printf("chegou no comp\n\n");
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
                 tableContent->type == content->type)
             {
-                printf("entrou no comp \n\n");
                 if (tableContent->nature == content->nature)
                 {
-                    printf("entrou no nature \n\n");
                     return 1;
                 }
 

@@ -12,6 +12,7 @@ void global_scope_close(STACK **stack)
 
 void scope_new(STACK **stack)
 {
+    printf("abriu scope\n\n");
     push(stack,table_new());
 }
 
