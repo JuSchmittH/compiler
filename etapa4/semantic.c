@@ -12,11 +12,13 @@ void global_scope_close(STACK **stack)
 
 void scope_new(STACK **stack)
 {
+    printf("escopo novo\n\n");
     push(stack,table_new());
 }
 
 void scope_close(STACK **stack)
 {
+    printf("fecha escopo\n\n");
     pop(stack);
 }
 
