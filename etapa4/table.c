@@ -48,6 +48,7 @@ int table_hash(int key)
 int table_find(TABLE* table, CONTENT* content)
 {
     int response = 0;
+    printf("table->count %d\n\n", table->count);
     if (table->count > 0) {
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
