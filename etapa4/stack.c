@@ -34,7 +34,7 @@ TABLE *peek_first(STACK *stack)
 
     while (!isEmpty(temp)) {
         printf("while\n\n");
-        table = = peek(stack);
+        table = peek(stack);
         temp = stack->next;
     }
 
