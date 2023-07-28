@@ -18,6 +18,8 @@ void push(STACK** stack, TABLE *table);
   
 void pop(STACK** stack);
   
+TABLE *peek_first(STACK *stack);
+
 TABLE *peek(STACK* stack);
 
 void free_stack(STACK** stack);

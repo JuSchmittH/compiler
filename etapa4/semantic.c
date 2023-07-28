@@ -23,7 +23,13 @@ void scope_close(STACK **stack)
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
-    TABLE* table = peek(stack);
+    TABLE* table;
+    if(nature == function) {
+        table = peek_first(stack);
+    }
+    else {
+        table = peek(stack);
+    }
 
     int index = table_hash(table->count);
 

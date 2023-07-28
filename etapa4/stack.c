@@ -26,6 +26,19 @@ void pop(STACK** stack)
     if (!isEmpty(*stack))
         *stack = (*stack)->next; 
 }
+
+TABLE *peek_first(STACK *stack)
+{
+    STACK* temp = stack;
+    TABLE table = peek(stack);
+
+    while (!isEmpty(stack)) {
+        table = peek(stack->next);
+        temp = stack->next;
+    }
+
+    return table;
+}
   
 TABLE *peek(STACK* stack)
 {
