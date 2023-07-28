@@ -51,7 +51,7 @@ int table_find(TABLE* table, CONTENT* content)
     int response = 0;
     if (table->count > 0) {
         printf("chegou aqui - find\n\n");
-        for (int i = 0; i <= table->count; i++) {
+        for (int i = 0; i < table->count; i++) {
             CONTENT* tableContent = table->rows[i];
             printf("count%d - %s\n\n", i, tableContent->value->token_value);
             //TODO: if we add a hash we can compare by key
