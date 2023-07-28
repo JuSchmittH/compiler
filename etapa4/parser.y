@@ -116,7 +116,7 @@ lista: elemento lista                                       { if($1 != NULL ) { 
 elemento: funcao                                            { $$ = $1; }
     | decl_var_global                                       { $$ = $1; }
 
-decl_var_global: TK_PR_INT lista_var_global ';'                         { $$ = NULL; }
+decl_var_global: TK_PR_INT lista_int_var_global ';'                     { $$ = NULL; }
     | TK_PR_FLOAT lista_float_var_global ';'                            { $$ = NULL; }
     | TK_PR_BOOL lista_bool_var_global ';'                              { $$ = NULL; }
 
