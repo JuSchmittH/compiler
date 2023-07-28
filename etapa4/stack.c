@@ -9,7 +9,7 @@ STACK *stack_new(TABLE *table)
     return newStack;
 }
 
-int isEmpty(STACK* root)
+int isEmpty(STACK** root)
 {
     return !root;
 }

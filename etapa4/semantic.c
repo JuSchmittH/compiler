@@ -5,9 +5,19 @@ STACK *global_scope_new()
     return stack_new(table_new());
 }
 
-void close_global_scope(STACK **stack)
+void global_scope_close(STACK **stack)
 {
     free_stack(stack);
+}
+
+void scope_new(STACK **stack)
+{
+    push(stack,table_new());
+}
+
+void scope_close(STACK **stack)
+{
+    pop(stack);
 }
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)

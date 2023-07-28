@@ -12,7 +12,7 @@ typedef struct stack_node {
 
 STACK *stack_new(TABLE *table);
 
-int isEmpty(STACK* root);
+int isEmpty(STACK** root);
 
 void push(STACK** stack, TABLE *table);
   

@@ -14,7 +14,11 @@
 
 STACK *global_scope_new();
 
-void close_global_scope(STACK **stack);
+void global_scope_close(STACK **stack);
+
+void scope_new(STACK **stack);
+
+void scope_close(STACK **stack);
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature);
 
