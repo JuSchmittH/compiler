@@ -33,7 +33,6 @@ TABLE *peek_first(STACK *stack)
     TABLE *table;
 
     while (!isEmpty(temp)) {
-        printf("while\n\n");
         table = peek(temp);
         temp = temp->next;
     }

@@ -133,7 +133,7 @@ cabecalho_bool: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = a
 
 parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
     | cria_escopo '(' ')'                                   { $$ = NULL; }
-    
+
 cria_escopo:                                                { scope_new(&pilha); }
 
 lista_param: lista_param ',' param                          { $$ = NULL; }
@@ -272,10 +272,10 @@ op_pre_6: TK_OC_AND                                         { $$ = ast_new(notde
 
 op_pre_7: TK_OC_OR                                          { $$ = ast_new(notdefined,$1); } 
 
-literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); }
-    | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); }
-    | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); }
-    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }
+literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, literal);}
+    | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, literal);}
+    | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, literal);}
+    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, literal);}
 
 tipo: TK_PR_INT                                             { $$ = NULL; }                                           
     | TK_PR_FLOAT                                           { $$ = NULL; }                                       

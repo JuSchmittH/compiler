@@ -12,7 +12,6 @@ void global_scope_close(STACK **stack)
 
 void scope_new(STACK **stack)
 {
-    printf("abriu scope\n\n");
     push(stack,table_new());
 }
 
@@ -24,9 +23,8 @@ void scope_close(STACK **stack)
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
     TABLE* table;
-    printf("if nature\n\n");
+
     if(nature == funcao) {
-        printf("peek first\n\n");
         table = peek_first(stack);
     }
     else {
@@ -36,7 +34,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     int index = table_hash(table->count);
 
     CONTENT* newContent = content_new(item, nature, index, type);
-    printf("chegou no if\n\n");
+    
     if (table_find(table, newContent) == 1) {
         printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
