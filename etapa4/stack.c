@@ -11,7 +11,7 @@ STACK *stack_new(TABLE *table)
 
 int isEmpty(STACK* root)
 {
-    return root == NULL;
+    return root != NULL;
 }
 
 void push(STACK** stack, TABLE *table)
