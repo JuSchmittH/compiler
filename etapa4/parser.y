@@ -114,10 +114,18 @@ lista: elemento lista                                       { if($1 != NULL ) { 
 elemento: funcao                                            { $$ = $1; }
     | decl_var_global                                       { $$ = $1; }
 
-decl_var_global: tipo lista_var_global ';'                  { $$ = NULL; }
+decl_var_global: TK_PR_INT lista_var_global ';'                         { $$ = NULL; }
+    | TK_PR_FLOAT lista_float_var_global ';'                            { $$ = NULL; }
+    | TK_PR_BOOL lista_bool_var_global ';'                              { $$ = NULL; }
 
-lista_var_global: lista_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; }
-    | TK_IDENTIFICADOR                                      { $$ = NULL; }
+lista_int_var_global: lista_int_var_global ',' TK_IDENTIFICADOR         { $$ = NULL; validate_declaration(pilha, $3, inteiro, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, inteiro, identificador); }
+
+lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; validate_declaration(pilha, $3, pontoflutuante, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, pontoflutuante, identificador); }
+
+lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, $3, booleano, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
 
 funcao: cabecalho corpo                                     { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
 
