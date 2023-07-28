@@ -24,7 +24,7 @@ void scope_close(STACK **stack)
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
     TABLE* table;
-    if(nature == function) {
+    if(nature == funcao) {
         table = peek_first(stack);
     }
     else {
