@@ -99,11 +99,11 @@
 
 %%
 
-inicio: cria_escopo programa fecha_escopo
+inicio: cria_escopo_global programa fecha_escopo_global
 
-cria_escopo:                                                { pilha = global_scope_new(); }
+cria_escopo_global:                                                { pilha = global_scope_new(); }
 
-fecha_escopo:                                               { close_global_scope(&pilha); }
+fecha_escopo_global:                                               { global_scope_close(&pilha); }
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
@@ -125,11 +125,13 @@ cabecalho: cabecalho_int                                    { $$ = $1; }
     | cabecalho_float                                       { $$ = $1; }
     | cabecalho_bool                                        { $$ = $1; }
 
-cabecalho_int: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
+cabecalho_int: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
 
-cabecalho_float: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
+cabecalho_float: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
 
-cabecalho_bool: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
+cabecalho_bool: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
+
+cria_escopo:                                                { scope_new(&pilha); }
 
 parametros: '(' lista_param ')'                             { $$ = NULL; }
     | '(' ')'                                               { $$ = NULL; }
@@ -139,7 +141,9 @@ lista_param: lista_param ',' param                          { $$ = NULL; }
 
 param: tipo TK_IDENTIFICADOR                                { $$ = NULL; }
 
-corpo: bloco_cmd                                            { $$ = $1; }
+corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
+
+fecha_escopo:                                               { scope_close(&pilha); }
 
 bloco_cmd: '{' lista_cmd_simples '}'                        { $$ = $2; }
     | '{' '}'                                               { $$ = NULL; }
@@ -165,7 +169,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                             }
     | cmd ';'                                               { $$ = $1; }
 
-cmd: bloco_cmd                                              { $$ = $1; }
+cmd: cria_escopo bloco_cmd fecha_escopo                     { $$ = $1; }
     | decl_var_local                                        { $$ = $1; }
     | atribuicao                                            { $$ = $1; }
     | fluxo_ctrl                                            { $$ = $1; }
@@ -211,10 +215,10 @@ op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new(notde
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' bloco_cmd TK_PR_ELSE bloco_cmd      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
-    | TK_PR_IF '(' expressao ')' bloco_cmd                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
+condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
+    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
 
-interativa: TK_PR_WHILE '(' expressao ')' bloco_cmd         { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $5); }
+interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $5); }
 
 expressao: operadores                                       { $$ = $1; }
 
