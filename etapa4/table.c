@@ -52,11 +52,14 @@ int table_find(TABLE* table, CONTENT* content)
         for (int i = 0; i <= table->count; i++) {
             CONTENT* tableContent = table->rows[i];
             //TODO: if we add a hash we can compare by key
+            printf("chegou no comp\n\n");
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0 && 
                 tableContent->type == content->type)
             {
+                printf("entrou no comp \n\n");
                 if (tableContent->nature == content->nature)
                 {
+                    printf("entrou no nature \n\n");
                     return 1;
                 }
 
