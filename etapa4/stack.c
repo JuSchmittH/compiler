@@ -11,7 +11,7 @@ STACK *stack_new(TABLE *table)
 
 int isEmpty(STACK* root)
 {
-    return root != NULL;
+    return root == NULL;
 }
 
 void push(STACK** stack, TABLE *table)
@@ -30,11 +30,11 @@ void pop(STACK** stack)
 TABLE *peek_first(STACK *stack)
 {
     STACK *temp = stack;
-    TABLE *table = peek(stack);
+    TABLE *table;
 
     while (!isEmpty(temp)) {
         printf("while\n\n");
-        table = peek(stack->next);
+        table = = peek(stack);
         temp = stack->next;
     }
 
