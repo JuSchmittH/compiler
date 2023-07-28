@@ -50,7 +50,9 @@
 %type<ast> lista
 %type<ast> elemento
 %type<ast> decl_var_global
-%type<ast> lista_var_global
+%type<ast> lista_int_var_global
+%type<ast> lista_float_var_global
+%type<ast> lista_bool_var_global
 %type<ast> funcao
 %type<ast> cabecalho
 %type<ast> cabecalho_int
