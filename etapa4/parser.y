@@ -169,7 +169,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                             }
     | cmd ';'                                               { $$ = $1; }
 
-cmd: cria_escopo bloco_cmd fecha_escopo                     { $$ = $1; }
+cmd: cria_escopo bloco_cmd fecha_escopo                     { $$ = $; }
     | decl_var_local                                        { $$ = $1; }
     | atribuicao                                            { $$ = $1; }
     | fluxo_ctrl                                            { $$ = $1; }
@@ -215,10 +215,10 @@ op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new(notde
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } if($7 != NULL){ ast_add_child($$, $7); } }
-    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($5 != NULL){ ast_add_child($$, $5); } }
+condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } if($10 != NULL){ ast_add_child($$, $10); } }
+    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } }
 
-interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $5); }
+interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); }
 
 expressao: operadores                                       { $$ = $1; }
 
