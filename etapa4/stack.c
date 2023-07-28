@@ -29,10 +29,10 @@ void pop(STACK** stack)
 
 TABLE *peek_first(STACK *stack)
 {
-    STACK* temp = stack;
-    TABLE table = peek(stack);
+    STACK *temp = stack;
+    TABLE *table = peek(stack);
 
-    while (!isEmpty(stack)) {
+    while (!isEmpty(temp)) {
         table = peek(stack->next);
         temp = stack->next;
     }
