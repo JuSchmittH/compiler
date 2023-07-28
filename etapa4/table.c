@@ -31,13 +31,15 @@ void table_insert(TABLE* table, CONTENT* content, int index)
 {
     CONTENT* newContent = table->rows[index];
 
-    if (newContent == NULL)
-    {
-        //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
-        table->rows[index] = content;
-        table->count++;
-        printf("table->count %d dentro do insert\n\n", table->count);
-    }
+    // if (newContent == NULL)
+    // {
+    //     //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
+    //     table->rows[index] = content;
+    //     table->count++;
+    // }
+
+    table->rows[index] = content;
+    table->count++;
 }
 
 int table_hash(int key)
