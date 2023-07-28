@@ -125,16 +125,16 @@ cabecalho: cabecalho_int                                    { $$ = $1; }
     | cabecalho_float                                       { $$ = $1; }
     | cabecalho_bool                                        { $$ = $1; }
 
-cabecalho_int: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
+cabecalho_int: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
 
-cabecalho_float: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
+cabecalho_float: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
 
-cabecalho_bool: TK_IDENTIFICADOR cria_escopo parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
+cabecalho_bool: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
 
+parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
+    | cria_escopo '(' ')'                                   { $$ = NULL; }
+    
 cria_escopo:                                                { scope_new(&pilha); }
-
-parametros: '(' lista_param ')'                             { $$ = NULL; }
-    | '(' ')'                                               { $$ = NULL; }
 
 lista_param: lista_param ',' param                          { $$ = NULL; }
     | param                                                 { $$ = NULL; }
