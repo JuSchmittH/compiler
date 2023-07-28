@@ -169,7 +169,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                             }
     | cmd ';'                                               { $$ = $1; }
 
-cmd: cria_escopo bloco_cmd fecha_escopo                     { $$ = $; }
+cmd: cria_escopo bloco_cmd fecha_escopo                     { $$ = $2; }
     | decl_var_local                                        { $$ = $1; }
     | atribuicao                                            { $$ = $1; }
     | fluxo_ctrl                                            { $$ = $1; }
