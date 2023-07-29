@@ -208,7 +208,12 @@ float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validat
 bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, booleano, identificador);}
 
-atribuicao: TK_IDENTIFICADOR '=' expressao                  { $$ = ast_new(notdefined, vl_new(yylineno, 1, "=")); ast_add_child($$, ast_new(unknown,$1)); ast_add_child($$, $3); }
+atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
+                                                                validate_undeclared(pilha, $1, getType($3), funcao);
+                                                                $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
+                                                                ast_add_child($$, ast_new(unknown,$1));
+                                                                ast_add_child($$, $3);
+                                                            }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";

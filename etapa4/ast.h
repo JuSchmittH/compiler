@@ -25,4 +25,8 @@ AST *ast_new(enum type type, VL *item);
 
 void ast_add_child(AST *tree, AST *child);
 
+enum type getType(AST *node);
+
+void print_ast_node(AST *node);
+
 #endif //AST_HEADER
