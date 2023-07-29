@@ -39,7 +39,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     CONTENT* newContent = content_new(item, nature, index, type);
     //TODO REMOVE printf("chegou aqui %s on line %d \n\n", item->token_value, item->line_number);
     if (table_find(table, newContent) == 1) {
-        printf("ERR_DECLARED: %s on line %d already declarred.\n", item->token_value, item->line_number);
+        printf("ERR_DECLARED: %s on line %d already declared.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
     }
 
