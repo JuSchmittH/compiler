@@ -11,3 +11,7 @@ VL *vl_new(int line_number, int token_type, char *token_value){
   }
   return valor_lexico;
 }
+
+void printVL(VL *vl) {
+  printf("Print VL: %s\n", vl->token_value);
+}

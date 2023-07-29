@@ -14,4 +14,6 @@ typedef struct valor_lexico {
 
 VL *vl_new(int line_number, int token_type, char *token_value);
 
+void printVL(VL *vl);
+
 #endif //VL_HEADER
