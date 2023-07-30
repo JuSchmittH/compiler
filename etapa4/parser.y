@@ -63,7 +63,9 @@
 %type<ast> lista_int_param
 %type<ast> lista_float_param
 %type<ast> lista_bool_param
-%type<ast> param
+%type<ast> int_param
+%type<ast> float_param
+%type<ast> bool_param
 %type<ast> corpo
 %type<ast> bloco_cmd
 %type<ast> lista_cmd_simples
