@@ -55,13 +55,13 @@ int validate_undeclared(STACK *stack, VL* item, enum nature nature)
 
     while (stack) {
         switch(table_find_without_type(table, content)) {
-            case 0: return notdefined;
+            case 0: return 0;
                     break;
-            case 1: return inteiro;
+            case 1: return 1;
                     break;
-            case 2: return pontoflutuante;
+            case 2: return 2;
                     break;
-            case 3: return booleano;
+            case 3: return 3;
                     break;
             case 6: printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
@@ -81,5 +81,5 @@ int validate_undeclared(STACK *stack, VL* item, enum nature nature)
 
     printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
     exit(ERR_UNDECLARED);
-    return unknown;
+    return 4;
 }
