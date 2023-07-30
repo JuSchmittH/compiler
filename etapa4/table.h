@@ -27,7 +27,7 @@ typedef struct table_node
 {
     CONTENT** rows;
     int count;
-    table_node* next; //Link between tables can be helpfull to the futures steps acordding to the professor
+    struct table_node* next; //Link between tables can be helpfull to the futures steps acordding to the professor
 } TABLE;
 
 TABLE *table_new();
