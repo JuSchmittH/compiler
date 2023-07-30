@@ -89,7 +89,7 @@ int table_find_without_type(TABLE* table, CONTENT* content)
                 if (tableContent->nature == content->nature)
                 {
                     response = 1;
-                    printf("entrou no nature: %d\n", response);
+                    //TODO REMOVE printf("entrou no nature: %d\n", response);
                 } else {
                     response = tableContent->nature;
                 }

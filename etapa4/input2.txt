@@ -1,6 +1,6 @@
 f() -> int {
   int a, b, c <= 3, d, e <= 4;
   //undeclared
-  f = 3;
+  g = 3;
   return 10;
 }

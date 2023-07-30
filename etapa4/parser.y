@@ -60,6 +60,9 @@
 %type<ast> cabecalho_bool
 %type<ast> parametros
 %type<ast> lista_param
+%type<ast> lista_int_param
+%type<ast> lista_float_param
+%type<ast> lista_bool_param
 %type<ast> param
 %type<ast> corpo
 %type<ast> bloco_cmd
@@ -146,10 +149,24 @@ parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
     
 cria_escopo:                                                { scope_new(&pilha); }
 
-lista_param: lista_param ',' param                          { $$ = NULL; }
-    | param                                                 { $$ = NULL; }
+lista_param: lista_int_param                                { $$ = NULL; }
+    | lista_float_param                                     { $$ = NULL; }
+    | lista_bool_param                                      { $$ = NULL; }
 
-param: tipo TK_IDENTIFICADOR                                { $$ = NULL; }
+lista_int_param: lista_int_param ',' int_param              { $$ = NULL; }
+    | int_param                                             { $$ = NULL; }
+
+lista_float_param: lista_float_param ',' float_param        { $$ = NULL; }
+    | float_param                                           { $$ = NULL; }
+
+lista_bool_param: lista_bool_param ',' bool_param           { $$ = NULL; }
+    | bool_param                                            { $$ = NULL; }
+
+int_param: TK_PR_INT TK_IDENTIFICADOR                       { $$ = NULL; validate_declaration(pilha, $2, inteiro, identificador);}
+
+float_param: TK_PR_FLOAT TK_IDENTIFICADOR                   { $$ = NULL; validate_declaration(pilha, $2, pontoflutuante, identificador);}
+
+bool_param: TK_PR_BOOL TK_IDENTIFICADOR                     { $$ = NULL; validate_declaration(pilha, $2, booleano, identificador);}
 
 corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
 
