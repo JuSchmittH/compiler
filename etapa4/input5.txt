@@ -1,13 +1,13 @@
 //CORRETO
 f(int h) -> int {
   int a, b, c <= 3, d, e <= 4;
-  h <= 10;
+  h = 10 ;
   return 10;
 }
 
 h(int j, bool i) -> int {
   int a, b, c <= 3, d, e <= 4;
-  j <= 10;
-  i <= 0;
+  j = 10;
+  i = 0;
   return 10;
 }
