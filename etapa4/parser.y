@@ -93,7 +93,7 @@
 %type<ast> op_pre_5
 %type<ast> op_pre_6
 %type<ast> op_pre_7
-%type<ast> literal
+%type<ast> literais
 
 %%
 
@@ -192,13 +192,13 @@ lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != N
     | bool_var_local                                                { $$ = $1; }
 
 int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, $1, inteiro, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, inteiro, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, inteiro, identificador);}
 
 float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $1, pontoflutuante, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, pontoflutuante, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, pontoflutuante, identificador);}
 
 bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
-    | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, booleano, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
                                                                 enum type type  = validate_undeclared(pilha, $1, identificador);
@@ -231,7 +231,7 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 expressao: operadores                                       { $$ = $1; }
 
 operandos: TK_IDENTIFICADOR                                 { enum type type  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(type,$1); }
-    | literal                                               { $$ = $1; }
+    | literais                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
 operadores: op_or                                           { $$ = $1; } 
@@ -280,7 +280,7 @@ op_pre_6: TK_OC_AND                                         { $$ = ast_new(notde
 
 op_pre_7: TK_OC_OR                                          { $$ = ast_new(notdefined,$1); } 
 
-literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); literal_declaration(pilha, $1, inteiro, literal); }
+literais: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); literal_declaration(pilha, $1, inteiro, literal); }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}
     | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}                                  
