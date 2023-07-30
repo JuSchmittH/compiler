@@ -73,7 +73,7 @@ int table_find(TABLE* table, CONTENT* content)
 
 int table_find_without_type(TABLE* table, CONTENT* content)
 { 
-    int response = 0;
+    int response = -1;
     if (table->count > 0) {
         //TODO REMOVE printf("chegou aqui - find\n\n");
         for (int i = 0; i < table->count; i++) {
@@ -88,7 +88,7 @@ int table_find_without_type(TABLE* table, CONTENT* content)
                 //TODO REMOVE printf("content nature: %d\n\n", content->nature);
                 if (tableContent->nature == content->nature)
                 {
-                    response = 1;
+                    response = tableContent->type;
                     //TODO REMOVE printf("entrou no nature: %d\n", response);
                 } else {
                     response = tableContent->nature;
