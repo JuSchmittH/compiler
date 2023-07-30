@@ -10,10 +10,18 @@ TABLE *table_new()
     for (int i = 0; i < TABLE_SIZE; i++)
         table->rows[i] = NULL;
 
+    table->next = NULL;
+
     return table;
 }
 
-//TODO check if VL has everything we need maybe use AST
+TABLE *table_add(TABLE *table)
+{
+    TABLE* newTable = table_new();
+    newTable->next = *table;
+    return table;
+}
+
 CONTENT *content_new(VL *item, enum nature nature, int key, int type){
     CONTENT *ret = NULL;
     ret = calloc(1, sizeof(CONTENT));
@@ -26,7 +34,6 @@ CONTENT *content_new(VL *item, enum nature nature, int key, int type){
     return ret;
 }
 
-//TODO check if VL has everything we need maybe use AST
 void table_insert(TABLE* table, CONTENT* content, int index)
 {
     CONTENT* newContent = table->rows[index];

@@ -27,10 +27,12 @@ typedef struct table_node
 {
     CONTENT** rows;
     int count;
-    //TODO add link between tables can be helpfull to the futures steps acordding to the professor
+    table_node* next; //Link between tables can be helpfull to the futures steps acordding to the professor
 } TABLE;
 
 TABLE *table_new();
+
+TABLE *table_add(TABLE *table);
 
 CONTENT *content_new(VL *item, enum nature nature, int key, int type);
 

@@ -13,7 +13,7 @@ void global_scope_close(STACK **stack)
 void scope_new(STACK **stack)
 {
     //TODO REMOVE printf("escopo novo\n\n");
-    push(stack,table_new());
+    push(stack,table_add(peek(*stack)));
 }
 
 void scope_close(STACK **stack)
