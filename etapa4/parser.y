@@ -201,19 +201,19 @@ bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validat
     | TK_IDENTIFICADOR TK_OC_LE literal                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
-                                                                int type = validate_undeclared(pilha, $1, identificador);
+                                                                enum type type  = validate_undeclared(pilha, $1, identificador);
                                                                 $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
                                                                 ast_add_child($$, ast_new(type,$1));
                                                                 ast_add_child($$, $3);
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
-                                                                int type = validate_undeclared(pilha, $1, funcao);
+                                                                enum type type  = validate_undeclared(pilha, $1, funcao);
                                                                 char call[] = "call ";
                                                                 $$ = ast_new(type,vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
                                                                 ast_add_child($$, $3);
                                                             }
-    | TK_IDENTIFICADOR '(' ')'                              { int type = validate_undeclared(pilha, $1, funcao); $$ = ast_new(type,$1); }
+    | TK_IDENTIFICADOR '(' ')'                              { enum type type  = validate_undeclared(pilha, $1, funcao); $$ = ast_new(type,$1); }
 
 argumentos: expressao ',' argumentos                        { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
     | expressao                                             { $$ = $1; }
@@ -230,7 +230,7 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { int type = validate_undeclared(pilha, $1, identificador); $$ = ast_new(type,$1); }
+operandos: TK_IDENTIFICADOR                                 { enum type type  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(type,$1); }
     | literal                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 

@@ -46,7 +46,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     table_insert(table, newContent, index);    
 }
 
-int validate_undeclared(STACK *stack, VL* item, enum nature nature)
+enum type validate_undeclared(STACK *stack, VL* item, enum nature nature)
 {
     TABLE *table = peek(stack);
     int index = table_hash(table->count);
@@ -55,13 +55,13 @@ int validate_undeclared(STACK *stack, VL* item, enum nature nature)
 
     while (stack) {
         switch(table_find_without_type(table, content)) {
-            case 0: return 0;
+            case 0: return notdefined;
                     break;
-            case 1: return 1;
+            case 1: return inteiro;
                     break;
-            case 2: return 2;
+            case 2: return pontoflutuante;
                     break;
-            case 3: return 3;
+            case 3: return booleano;
                     break;
             case 6: printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
@@ -81,5 +81,5 @@ int validate_undeclared(STACK *stack, VL* item, enum nature nature)
 
     printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
     exit(ERR_UNDECLARED);
-    return 4;
+    return unknown;
 }

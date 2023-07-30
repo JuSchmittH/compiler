@@ -22,6 +22,6 @@ void scope_close(STACK **stack);
 
 void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature);
 
-int validate_undeclared(STACK *stack, VL* item, enum nature nature);
+enum type validate_undeclared(STACK *stack, VL* item, enum nature nature);
 
 #endif
