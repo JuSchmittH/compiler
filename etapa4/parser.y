@@ -55,17 +55,9 @@
 %type<ast> lista_bool_var_global
 %type<ast> funcao
 %type<ast> cabecalho
-%type<ast> cabecalho_int
-%type<ast> cabecalho_float
-%type<ast> cabecalho_bool
 %type<ast> parametros
 %type<ast> lista_param
-%type<ast> lista_int_param
-%type<ast> lista_float_param
-%type<ast> lista_bool_param
-%type<ast> int_param
-%type<ast> float_param
-%type<ast> bool_param
+%type<ast> param
 %type<ast> corpo
 %type<ast> bloco_cmd
 %type<ast> lista_cmd_simples
@@ -133,41 +125,23 @@ lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = N
 lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, $3, booleano, identificador); }
     | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
 
-funcao: cabecalho corpo                                     { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
+funcao: cabecalho corpo                                       { $$ = $1; if($2 != NULL) { ast_add_child($$, $2); } }
 
-cabecalho: cabecalho_int                                    { $$ = $1; }
-    | cabecalho_float                                       { $$ = $1; }
-    | cabecalho_bool                                        { $$ = $1; }
-
-cabecalho_int: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT          { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
-
-cabecalho_float: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT      { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
-
-cabecalho_bool: TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
+cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
 
 parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
     | cria_escopo '(' ')'                                   { $$ = NULL; }
     
 cria_escopo:                                                { scope_new(&pilha); }
 
-lista_param: lista_int_param                                { $$ = NULL; }
-    | lista_float_param                                     { $$ = NULL; }
-    | lista_bool_param                                      { $$ = NULL; }
+lista_param: lista_param ',' param                          { $$ = NULL; }
+    | param                                                 { $$ = NULL; }
 
-lista_int_param: lista_int_param ',' int_param              { $$ = NULL; }
-    | int_param                                             { $$ = NULL; }
-
-lista_float_param: lista_float_param ',' float_param        { $$ = NULL; }
-    | float_param                                           { $$ = NULL; }
-
-lista_bool_param: lista_bool_param ',' bool_param           { $$ = NULL; }
-    | bool_param                                            { $$ = NULL; }
-
-int_param: TK_PR_INT TK_IDENTIFICADOR                       { $$ = NULL; validate_declaration(pilha, $2, inteiro, identificador);}
-
-float_param: TK_PR_FLOAT TK_IDENTIFICADOR                   { $$ = NULL; validate_declaration(pilha, $2, pontoflutuante, identificador);}
-
-bool_param: TK_PR_BOOL TK_IDENTIFICADOR                     { $$ = NULL; validate_declaration(pilha, $2, booleano, identificador);}
+param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, inteiro, identificador);}
+    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, pontoflutuante, identificador);}
+    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, booleano, identificador);}
 
 corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
 
@@ -256,7 +230,7 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { $$ = ast_new(unknown,$1); }
+operandos: TK_IDENTIFICADOR                                 { $$ = ast_new(unknown,$1); validate_undeclared(pilha, $1, unknown, identificador); }
     | literal                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
@@ -309,7 +283,7 @@ op_pre_7: TK_OC_OR                                          { $$ = ast_new(notde
 literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); }
-    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }                                        
+    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }                                  
 
 %%
 void yyerror (const char *s){
