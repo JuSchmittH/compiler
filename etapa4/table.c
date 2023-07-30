@@ -18,7 +18,7 @@ TABLE *table_new()
 TABLE *table_add(TABLE *table)
 {
     TABLE* newTable = table_new();
-    newTable->next = *table;
+    newTable->next = table;
     return table;
 }
 
