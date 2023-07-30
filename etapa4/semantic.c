@@ -53,19 +53,31 @@ void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nat
 
     CONTENT* content = content_new(item, nature, index, type);
 
-    while (!isEmpty(stack)) {
-        switch(table_find(table, content)) {
-            case 0: printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
-                    exit(ERR_UNDECLARED);
+    int found = 0;
+
+    while (stack) {
+        switch(table_find_without_type(table, content)) {
+            case 1: found = 1;
+                    stack = NULL;
                     break;
-            case 3: printf("ERR_VARIABLE: %s on line %d already declarred but only as a variable.\n", content->value->token_value, content->value->line_number);
+            case 3: printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
                     break;
-            case 4: printf("ERR_FUNCTION: %s on line %d already declarred but only as a function.\n", content->value->token_value, content->value->line_number);
+            case 4: printf("ERR_FUNCTION: %s on line %d already declared but only as a function.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_FUNCTION);
                     break;
-            default: table = peek(stack->next);
-                     break;
+            default: if (stack-> next != NULL) {
+                        stack = stack->next;
+                        table = peek(stack);
+                    } else {
+                        stack = NULL;
+                    }
+                    break;
         }
+    }
+
+    if (found == 0) {
+        printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
+        exit(ERR_UNDECLARED);
     }
 }

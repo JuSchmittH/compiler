@@ -70,3 +70,33 @@ int table_find(TABLE* table, CONTENT* content)
 
     return response;
 }
+
+int table_find_without_type(TABLE* table, CONTENT* content)
+{ 
+    int response = 0;
+    if (table->count > 0) {
+        //TODO REMOVE printf("chegou aqui - find\n\n");
+        for (int i = 0; i < table->count; i++) {
+            CONTENT* tableContent = table->rows[i];
+            //TODO REMOVE rintf("count%d - %s\n\n", i, tableContent->value->token_value);
+            //TODO: if we add a hash we can compare by key
+            if (strcmp(tableContent->value->token_value, content->value->token_value) == 0)
+            {
+                //TODO REMOVE printf("table value: %s\n", tableContent->value->token_value);
+                //TODO REMOVE printf("content value: %s\n", content->value->token_value);
+                //TODO REMOVE printf("table nature: %d\n", tableContent->nature);
+                //TODO REMOVE printf("content nature: %d\n\n", content->nature);
+                if (tableContent->nature == content->nature)
+                {
+                    response = 1;
+                    printf("entrou no nature: %d\n", response);
+                } else {
+                    response = tableContent->nature;
+                }
+            }
+            //TODO REMOVE printf("for: %d\n", response);
+        }
+    }
+    //TODO REMOVE printf("finde: %d\n", response);
+    return response;
+}
