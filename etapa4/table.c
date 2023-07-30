@@ -19,7 +19,7 @@ TABLE *table_add(TABLE *table)
 {
     TABLE* newTable = table_new();
     newTable->next = table;
-    return table;
+    return newTable;
 }
 
 CONTENT *content_new(VL *item, enum nature nature, int key, int type){
