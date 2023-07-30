@@ -46,6 +46,19 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     table_insert(table, newContent, index);    
 }
 
+void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
+{
+    TABLE* table = peek(stack);
+
+    int index = table_hash(table->count);
+
+    CONTENT* newContent = content_new(item, nature, index, type);
+    
+    if (table_find(table, newContent) != 1) {
+        table_insert(table, newContent, index);
+    }
+}
+
 enum type validate_undeclared(STACK *stack, VL* item, enum nature nature)
 {
     TABLE *table = peek(stack);
