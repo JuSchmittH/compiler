@@ -81,4 +81,5 @@ int validate_undeclared(STACK *stack, VL* item, enum nature nature)
 
     printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
     exit(ERR_UNDECLARED);
+    return unknown;
 }
