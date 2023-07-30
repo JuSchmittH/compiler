@@ -102,7 +102,6 @@
 %type<ast> op_pre_6
 %type<ast> op_pre_7
 %type<ast> literal
-%type<ast> tipo
 
 %%
 
@@ -310,11 +309,7 @@ op_pre_7: TK_OC_OR                                          { $$ = ast_new(notde
 literal: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); }
-    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }
-
-tipo: TK_PR_INT                                             { $$ = NULL; }                                           
-    | TK_PR_FLOAT                                           { $$ = NULL; }                                       
-    | TK_PR_BOOL                                            { $$ = NULL; }                                          
+    | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); }                                        
 
 %%
 void yyerror (const char *s){

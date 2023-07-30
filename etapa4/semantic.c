@@ -57,7 +57,8 @@ void validate_undeclared(STACK *stack, VL* item, enum type type, enum nature nat
 
     while (stack) {
         switch(table_find_without_type(table, content)) {
-            case 1: stack = NULL;
+            case 1: found = 1;
+                    stack = NULL;
                     break;
             case 3: printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
