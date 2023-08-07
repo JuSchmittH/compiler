@@ -5,12 +5,13 @@
 #include<stdio.h>
 #include "vl.h"
 
+//TODO: define types for ast nodes, check how to initiate this
 enum type {
   notdefined, 
   inteiro, 
   pontoflutuante, 
   booleano,
-  unknown
+  unknown //TODO added this in the places where I dont know what o put it
 };
 
 typedef struct ast_node {

@@ -42,6 +42,7 @@ TABLE *peek_first(STACK *stack)
   
 TABLE *peek(STACK* stack)
 {
+    //TODO add validation for whe stack is empty
     return stack->table;
 }
 

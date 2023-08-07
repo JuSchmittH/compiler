@@ -12,11 +12,13 @@ void global_scope_close(STACK **stack)
 
 void scope_new(STACK **stack)
 {
+    //TODO REMOVE printf("escopo novo\n\n");
     push(stack,table_add(peek(*stack)));
 }
 
 void scope_close(STACK **stack)
 {
+    //TODO REMOVE printf("fecha escopo\n\n");
     pop(stack);
 }
 
@@ -26,6 +28,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
 
     if(nature == funcao) {
         table = peek_first(stack);
+        //TODO REMOVE printf("funcao\n\n");
     }
     else {
         table = peek(stack);
@@ -34,6 +37,7 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
     int index = table_hash(table->count);
 
     CONTENT* newContent = content_new(item, nature, index, type);
+    //TODO REMOVE printf("chegou aqui %s on line %d \n\n", item->token_value, item->line_number);
     if (table_find(table, newContent) == 1) {
         printf("ERR_DECLARED: %s on line %d already declared.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);

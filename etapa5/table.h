@@ -6,7 +6,7 @@
 
 #ifndef TABLE_HEADER
 #define TABLE_HEADER
-#define TABLE_SIZE 100
+#define TABLE_SIZE 100 //TODO remove this once we discover how to do it without setting size
 
 enum nature {
   literal = 5, 
