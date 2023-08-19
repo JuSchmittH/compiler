@@ -4,6 +4,7 @@
 
 #include<stdio.h>
 #include "vl.h"
+#include "iloc.h"
 
 //TODO: define types for ast nodes, check how to initiate this
 enum type {
@@ -16,6 +17,7 @@ enum type {
 
 typedef struct ast_node {
   VL *item;
+  ILOC_Op code;
   enum type node_type;
   int number_of_children;
   struct ast_node **children;
