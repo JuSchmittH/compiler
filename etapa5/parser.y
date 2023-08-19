@@ -1,5 +1,7 @@
 %{
     //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
+    //Estamos fazendo a tradução em uma passagem
+
     #include <stdio.h>
     #include <string.h>
     #include "stack.h"

@@ -1,5 +1,0 @@
-f() -> int {
-  int a, b, c <= 3, d, e <= 4;
-  int e <= 10;
-  return 10;
-}
