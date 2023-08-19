@@ -215,13 +215,14 @@ bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validat
     | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
+                                                                //TODO fazedr isso aqui retornar o content pra poder pgaer o ref e o displacement
                                                                 enum type type  = validate_undeclared(pilha, $1, identificador);
                                                                 $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
                                                                 ast_add_child($$, ast_new(type,$1));
                                                                 ast_add_child($$, $3);
                                                                 
                                                                 //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>rfp des 
-                                                                //ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, ref, displacement, right);
+                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, ref, displacement, right);
                                                                 strcpy($$->code, concatCode($3->code, operation));
                                                             }
 
