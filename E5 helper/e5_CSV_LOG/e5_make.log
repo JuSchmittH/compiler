@@ -1,0 +1,141 @@
+
+GrupoB
+
+~/ensino/private/comp/e5/GrupoB ~/ensino/private/comp/e5
+flex scanner.l
+bison -d parser.y --report-file=FILE
+gcc -g -c lex.yy.c main.c tabela.c parser.tab.c tabela.c 
+gcc -g -o etapa5 lex.yy.o parser.tab.o main.o tabela.o  -lfl
+~/ensino/private/comp/e5
+
+GrupoC
+
+~/ensino/private/comp/e5/GrupoC ~/ensino/private/comp/e5
+cargo build --release
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded anyhow v1.0.75
+   Compiling libc v0.2.147
+   Compiling serde v1.0.183
+   Compiling autocfg v1.1.0
+   Compiling memchr v2.5.0
+   Compiling num-traits v0.2.16
+   Compiling semver v1.0.18
+   Compiling serde_derive v1.0.183
+   Compiling rustversion v1.0.14
+   Compiling anyhow v1.0.75
+   Compiling rustc_version v0.4.0
+   Compiling time-core v0.1.1
+   Compiling deranged v0.3.7
+   Compiling itoa v1.0.9
+   Compiling vob v3.0.3
+   Compiling num_threads v0.1.6
+   Compiling time v0.3.25
+   Compiling vergen v8.2.4
+   Compiling proc-macro2 v1.0.66
+   Compiling aho-corasick v1.0.4
+   Compiling lrpar v0.13.2
+   Compiling regex-syntax v0.7.4
+   Compiling unicode-ident v1.0.11
+   Compiling regex-automata v0.3.6
+   Compiling hashbrown v0.14.0
+   Compiling equivalent v1.0.1
+   Compiling indexmap v2.0.0
+   Compiling quote v1.0.32
+   Compiling regex v1.9.3
+   Compiling lrlex v0.13.2
+   Compiling packedvec v1.2.4
+   Compiling lazy_static v1.4.0
+   Compiling cfgrammar v0.13.2
+   Compiling sparsevec v0.2.0
+   Compiling fnv v1.0.7
+   Compiling cfg-if v1.0.0
+   Compiling filetime v0.2.22
+   Compiling lrtable v0.13.2
+   Compiling bincode v1.3.3
+   Compiling unicode-width v0.1.10
+   Compiling cactus v1.0.6
+   Compiling static_assertions v1.1.0
+   Compiling getopts v0.2.21
+   Compiling cc v1.0.82
+   Compiling libc-stdhandle v0.1.0
+   Compiling syn v2.0.28
+   Compiling thiserror v1.0.46
+   Compiling thiserror-impl v1.0.46
+   Compiling etapa5 v0.1.0 (/home/schnorr/ensino.new/private/comp/e5/GrupoC)
+    Finished release [optimized] target(s) in 41.34s
+cp target/release/etapa5 . 
+~/ensino/private/comp/e5
+
+GrupoD
+
+~/ensino/private/comp/e5/GrupoD ~/ensino/private/comp/e5
+bison -d parser.y
+flex scanner.l
+gcc -g -c lex.yy.c parser.tab.c funcoes.c
+gcc -g -o etapa5 main.c parser.tab.o lex.yy.o funcoes.o -lfl -Wall
+rm -f lex.yy.c lex.yy.o parser.tab.c parser.tab.o parser.tab.h parser.output funcoes.o
+~/ensino/private/comp/e5
+
+GrupoM
+
+~/ensino/private/comp/e5/GrupoM ~/ensino/private/comp/e5
+mkdir -p ./build
+bison -d -r all ./src/parser.y -b ./build/parser
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./build/parser.tab.c -o ./build/parser.tab.o
+flex --yylineno -o ./build/lex.yy.c ./src/scanner.l
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./build/lex.yy.c -o ./build/lex.yy.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/lexeme.c -o ./build/lexeme.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/ast.c -o ./build/ast.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/context.c -o ./build/context.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/semantic.c -o ./build/semantic.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/iloc.c -o ./build/iloc.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build -c ./src/main.c -o ./build/main.o
+gcc -lfl -g -Wall -Wextra -I ./hdr -I ./build ./build/*.o -o etapa5
+~/ensino/private/comp/e5
+
+GrupoP
+
+~/ensino/private/comp/e5/GrupoP ~/ensino/private/comp/e5
+gcc -c tipolexico.c
+gcc -c arvore.c
+gcc -c tabela.c
+gcc -c escopo.c
+gcc -c operacao.c
+bison -d parser.y
+gcc -c parser.tab.c
+flex scanner.l 
+gcc -c lex.yy.c
+gcc -c main.c
+gcc -o etapa5 parser.tab.o lex.yy.o tipolexico.o arvore.o tabela.o escopo.o operacao.o main.o
+~/ensino/private/comp/e5
+
+GrupoQ
+
+~/ensino/private/comp/e5/GrupoQ ~/ensino/private/comp/e5
+flex scanner.l
+bison -d parser.y --report-file=FILE
+parser.y:148.11-28: warning: empty rule without %empty [-Wempty-rule]
+  148 | new_node: {adicionarNodo();};
+      |           ^~~~~~~~~~~~~~~~~~
+      |           %empty
+parser.y: warning: fix-its can be applied.  Rerun with option '--update'. [-Wother]
+gcc -g -c lex.yy.c main.c ast.c parser.tab.c utils.c table.c code.c
+gcc -g -o etapa5 lex.yy.o parser.tab.o main.o ast.o utils.o table.o code.o
+~/ensino/private/comp/e5
+
+GrupoZ
+
+~/ensino/private/comp/e5/GrupoZ ~/ensino/private/comp/e5
+gcc -c lextype.c
+gcc -c tree.c
+gcc -c table_content.c
+gcc -c hash.c
+bison -d parser.y
+gcc -c parser.tab.c
+flex scanner.l 
+gcc -c lex.yy.c
+gcc -c main.c
+gcc -c tac.c
+gcc -o etapa5 parser.tab.o lex.yy.o lextype.o tree.o table_content.o hash.o tac.o main.o
+~/ensino/private/comp/e5
