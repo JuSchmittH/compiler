@@ -119,14 +119,14 @@ decl_var_global: TK_PR_INT lista_int_var_global ';'                     { $$ = N
     | TK_PR_FLOAT lista_float_var_global ';'                            { $$ = NULL; }
     | TK_PR_BOOL lista_bool_var_global ';'                              { $$ = NULL; }
 
-lista_int_var_global: lista_int_var_global ',' TK_IDENTIFICADOR         { $$ = NULL; validate_declaration(pilha, $3, inteiro, identificador); }
+lista_int_var_global: lista_int_var_global ',' TK_IDENTIFICADOR         { $$ = NULL; validate_declaration(pilha, "rbss", $3, inteiro, identificador); }
     | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, inteiro, identificador); }
 
-lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; validate_declaration(pilha, $3, pontoflutuante, identificador); }
-    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, pontoflutuante, identificador); }
+lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; validate_declaration(pilha, "rbss", $3, pontoflutuante, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, "rbss", $1, pontoflutuante, identificador); }
 
-lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, $3, booleano, identificador); }
-    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
+lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, "rbss", $3, booleano, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, "rbss", $1, booleano, identificador); }
 
 funcao: cabecalho corpo                                       { 
                                                                     $ = $1; 
@@ -139,9 +139,9 @@ funcao: cabecalho corpo                                       {
                                                                     //$2 pra cima pro code da funçao ir p cima ver em outros lugares
 }
 
-cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, inteiro, funcao); }
-    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, pontoflutuante, funcao); }
-    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, booleano, funcao);}
+cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, "", $1, inteiro, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, "", $1, pontoflutuante, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, "", $1, booleano, funcao);}
 
 parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
     | cria_escopo '(' ')'                                   { $$ = NULL; }
@@ -151,9 +151,9 @@ cria_escopo:                                                { scope_new(&pilha);
 lista_param: lista_param ',' param                          { $$ = NULL; }
     | param                                                 { $$ = NULL; }
 
-param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, inteiro, identificador);}
-    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, pontoflutuante, identificador);}
-    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, booleano, identificador);}
+param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $2, inteiro, identificador);}
+    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, "rfp", $2, pontoflutuante, identificador);}
+    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $2, booleano, identificador);}
 
 corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
 
@@ -205,32 +205,23 @@ lista_var_float_local: float_var_local ',' lista_var_float_local    { if($1 != N
 lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
     | bool_var_local                                                { $$ = $1; }
 
-int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, $1, inteiro, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, inteiro, identificador);}
+int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, "rfp", $1, inteiro, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, inteiro, identificador);}
 
-float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $1, pontoflutuante, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, pontoflutuante, identificador);}
+float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, "rfp", $1, pontoflutuante, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, pontoflutuante, identificador);}
 
-bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $1, booleano, identificador); }
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, booleano, identificador);}
+bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $1, booleano, identificador); }
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
                                                                 enum type type  = validate_undeclared(pilha, $1, identificador);
                                                                 $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
                                                                 ast_add_child($$, ast_new(type,$1));
                                                                 ast_add_child($$, $3);
-                                                                char * des;
-
-                                                                if(isGlobal(pilha, $1)){
-                                                                    strcpy(des, "rbss");
-                                                                }
-                                                                else {
-                                                                    strcpy(des, "rfp");
-                                                                }
-
+                                                                
                                                                 //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>rfp des 
-                                                                //TODO fix this C3 definition
-                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, des, "C3", right);
+                                                                //ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, ref, displacement, right);
                                                                 strcpy($$->code, concatCode($3->code, operation));
                                                             }
 

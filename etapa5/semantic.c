@@ -12,23 +12,20 @@ void global_scope_close(STACK **stack)
 
 void scope_new(STACK **stack)
 {
-    //TODO REMOVE printf("escopo novo\n\n");
     push(stack,table_add(peek(*stack)));
 }
 
 void scope_close(STACK **stack)
 {
-    //TODO REMOVE printf("fecha escopo\n\n");
     pop(stack);
 }
 
-void validate_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
+void validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enum nature nature)
 {
     TABLE* table;
 
     if(nature == funcao) {
         table = peek_first(stack);
-        //TODO REMOVE printf("funcao\n\n");
     }
     else {
         table = peek(stack);
@@ -36,8 +33,8 @@ void validate_declaration(STACK *stack, VL* item, enum type type, enum nature na
 
     int index = table_hash(table->count);
 
-    CONTENT* newContent = content_new(item, nature, index, type);
-    //TODO REMOVE printf("chegou aqui %s on line %d \n\n", item->token_value, item->line_number);
+    CONTENT* newContent = content_new(item, ref, nature, index, type);
+
     if (table_find(table, newContent) == 1) {
         printf("ERR_DECLARED: %s on line %d already declared.\n", item->token_value, item->line_number);
         exit(ERR_DECLARED);
@@ -52,7 +49,7 @@ void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nat
 
     int index = table_hash(table->count);
 
-    CONTENT* newContent = content_new(item, nature, index, type);
+    CONTENT* newContent = content_new(item, "rfp", nature, index, type);
     
     if (table_find(table, newContent) != 1) {
         table_insert(table, newContent, index);
@@ -64,7 +61,7 @@ enum type validate_undeclared(STACK *stack, VL* item, enum nature nature)
     TABLE *table = peek(stack);
     int index = table_hash(table->count);
 
-    CONTENT* content = content_new(item, nature, index, unknown);
+    CONTENT* content = content_new(item, "", nature, index, unknown);
 
     while (stack) {
         switch(table_find_without_type(table, content)) {

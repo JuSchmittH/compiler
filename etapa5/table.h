@@ -20,6 +20,8 @@ typedef struct table_content
     int location;
     enum nature nature;    
     int type;
+    int displacement;
+    char* ref;
     VL* value;
 } CONTENT;
 
@@ -34,7 +36,7 @@ TABLE *table_new();
 
 TABLE *table_add(TABLE *table);
 
-CONTENT *content_new(VL *item, enum nature nature, int key, int type);
+CONTENT *content_new(VL *item, char* ref, enum nature nature, int key, int type);
 
 void table_insert(TABLE* table, CONTENT* content, int index);
 

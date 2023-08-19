@@ -22,7 +22,7 @@ TABLE *table_add(TABLE *table)
     return newTable;
 }
 
-CONTENT *content_new(VL *item, enum nature nature, int key, int type){
+CONTENT *content_new(VL *item, char* ref, enum nature nature, int key, int type){
     CONTENT *ret = NULL;
     ret = calloc(1, sizeof(CONTENT));
     if (ret != NULL){
@@ -30,6 +30,8 @@ CONTENT *content_new(VL *item, enum nature nature, int key, int type){
         ret->nature = nature;
         ret->type = type;
         ret->value = item;
+        ret->displacement = 0;
+        ret->ref = ref;
     }
     return ret;
 }
@@ -37,13 +39,12 @@ CONTENT *content_new(VL *item, enum nature nature, int key, int type){
 void table_insert(TABLE* table, CONTENT* content, int index)
 {
     CONTENT* newContent = table->rows[index];
+    //TODO aqui adicionar o displace
 
     if (newContent == NULL)
     {
-        //TODO here we would check the limit of the table but since we wantnot to have a limit see how to implement this
         table->rows[index] = content;
         table->count++;
-        //TODO REMOVE printf("chegou aqui - insert\n\n");
     }
 }
 
