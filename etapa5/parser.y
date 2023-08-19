@@ -219,17 +219,18 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
                                                                 ast_add_child($$, ast_new(type,$1));
                                                                 ast_add_child($$, $3);
+                                                                char * des;
 
                                                                 if(isGlobal(pilha, $1)){
-
+                                                                    strcpy(des, "rbss");
                                                                 }
                                                                 else {
-
+                                                                    strcpy(des, "rfp");
                                                                 }
 
                                                                 //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>rfp des 
                                                                 //TODO fix this C3 definition
-                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, "rbss", C3);
+                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, des, "C3", right);
                                                                 strcpy($$->code, concatCode($3->code, operation));
                                                             }
 
