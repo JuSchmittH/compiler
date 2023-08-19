@@ -6,18 +6,17 @@
 #include "vl.h"
 #include "iloc.h"
 
-//TODO: define types for ast nodes, check how to initiate this
 enum type {
   notdefined, 
   inteiro, 
   pontoflutuante, 
-  booleano,
-  unknown //TODO added this in the places where I dont know what o put it
+  booleano
 };
 
 typedef struct ast_node {
   VL *item;
   ILOC_Op code;
+  char *temp;
   enum type node_type;
   int number_of_children;
   struct ast_node **children;

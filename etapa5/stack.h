@@ -24,4 +24,6 @@ TABLE *peek(STACK* stack);
 
 void free_stack(STACK** stack);
 
+int isGlobal(STACK *stack, CONTENT *content);
+
 #endif

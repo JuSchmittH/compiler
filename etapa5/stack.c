@@ -54,3 +54,9 @@ void free_stack(STACK** stack)
         free(temp);
     }
 }
+
+int isGlobal(STACK *stack, CONTENT *content)
+{
+    //TODO: implement this method to validate if identifier is equal or not
+    return 0;
+}

@@ -17,6 +17,7 @@
     #include "vl.h"
     #include "ast.h"
     #include "semantic.h"
+    #include "iloc.h"
  }
 
 %define parse.error verbose
@@ -132,7 +133,7 @@ funcao: cabecalho corpo                                       {
                                                                     if($2 != NULL) 
                                                                     { 
                                                                         ast_add_child($$, $2);
-                                                                        strcpy($$->code->operation, $2->code->cmoperationd);
+                                                                        strcpy($$->code->operation, $2->code->operation);
                                                                     } 
                                                                     //TODO coloquei esse comentario na aula (nao sei se ainda tem que fazer) :aqui vamos ter que jogar o 
                                                                     //$2 pra cima pro code da funçao ir p cima ver em outros lugares
@@ -177,8 +178,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             ast_add_child(last_node, $3);
                                                                         }
 
-                                                                        //1. $$ ->code = concat($1->code, $3->code);
-                                                                        //difer
+                                                                        strcpy($$->code, concat($1->code, $3->code));
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
@@ -220,9 +220,17 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, ast_new(type,$1));
                                                                 ast_add_child($$, $3);
 
-                                                                //1 consuta a tabela pra achar o endereço do tk identificador e saber se é local ou global_scope_close
-                                                                //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>(rfp|rbss) des 
-                                                                //3 pendurar na arvore $$ ->code concat($3->code, instruçao que geramos);
+                                                                if(isGlobal(pilha, $1)){
+
+                                                                }
+                                                                else {
+
+                                                                }
+
+                                                                //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>rfp des 
+                                                                //TODO fix this C3 definition
+                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, "rbss", C3);
+                                                                strcpy($$->code, concatCode($3->code, operation));
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
