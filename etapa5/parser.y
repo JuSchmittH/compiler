@@ -135,8 +135,6 @@ funcao: cabecalho corpo                                         {
                                                                         ast_add_child($$, $2);
                                                                         strcpy($$->code->operation, $2->code->operation);
                                                                     } 
-                                                                    //TODO coloquei esse comentario na aula (nao sei se ainda tem que fazer) :aqui vamos ter que jogar o 
-                                                                    //$2 pra cima pro code da funçao ir p cima ver em outros lugares
                                                                 }
 
 cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, "", $1, inteiro, funcao); }
@@ -229,10 +227,6 @@ chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
                                                                 char call[] = "call ";
                                                                 $$ = ast_new(content->type,vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
                                                                 ast_add_child($$, $3);
-                                                                //1. obtem o rotulo LX da tabela referente ao identifier
-                                                                //2. ger ainstruçao 
-                                                                //    jumpI LX
-                                                                //3. node->code = essa instruçao
                                                             }
     | TK_IDENTIFICADOR '(' ')'                              {   
                                                                 CONTENT* content  = validate_undeclared(pilha, $1, funcao); 
@@ -252,13 +246,6 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
-                                                                                        //1 gerar um rotulo LX
-                                                                                        //gerar rotulo LY
-                                                                                        //gerar roturo LZ
-                                                                                        //gerar temporario TX
-                                                                                        //gerar temporario TY
-                                                                                        //$$->code = concat("LX:", $3->code, loadI o => TX, cmp_EQ $3->temp, TX=>TY, cbr TY => LY, LZ,
-                                                                                        // LY:, $6->code, jumpI LX , LZ:)
                                                                                     }
 
 expressao: operadores                                       { $$ = $1; }
