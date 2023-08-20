@@ -15,6 +15,8 @@ AST *ast_new(enum type type, VL *item)
     ret->node_type = type;
     ret->number_of_children = 0;
     ret->children = NULL;
+    ret->code = "";
+    ret->temp = "";
   }
   return ret;
 }
@@ -30,7 +32,10 @@ void ast_add_child(AST *tree, AST *child)
   }
 }
 
-const char* types[] = {"notdefined", "inteiro", "pontoflutuante", "booleano", "unknown"};
+void set_code(AST* node, AST* originalNode)
+{
+    strcpy(node->code->operation, originalNode->code->operation);
+}
 
 void print_iloc(AST *node)
 {

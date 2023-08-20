@@ -129,11 +129,11 @@ lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = N
     | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, "rbss", booleano, identificador); }
 
 funcao: cabecalho corpo                                         { 
-                                                                    $ = $1; 
+                                                                    $$ = $1; 
                                                                     if($2 != NULL) 
                                                                     { 
                                                                         ast_add_child($$, $2);
-                                                                        strcpy($$->code->operation, $2->code->operation);
+                                                                        set_code($$, $2);
                                                                     } 
                                                                 }
 
@@ -175,8 +175,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             }
                                                                             ast_add_child(last_node, $3);
                                                                         }
-
-                                                                        strcpy($$->code, concat($1->code, $3->code));
+                                                                        set_code($$, concat($1->code->operation, $3->code->operation));
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
@@ -218,8 +217,8 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, ast_new(content->type, $1));
                                                                 ast_add_child($$, $3);
                                                                 
-                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, content->ref, content->displacement, right);
-                                                                strcpy($$->code, concatCode($3->code, operation));
+                                                                ILOC_OP *iloc = iloc_op_new("storeAI", $3.temp, content->ref, content->displacement, right);
+                                                                concat($$, concatCode($3->code->operation, iloc->operation))
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
