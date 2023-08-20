@@ -119,14 +119,14 @@ decl_var_global: TK_PR_INT lista_int_var_global ';'                     { $$ = N
     | TK_PR_FLOAT lista_float_var_global ';'                            { $$ = NULL; }
     | TK_PR_BOOL lista_bool_var_global ';'                              { $$ = NULL; }
 
-lista_int_var_global: lista_int_var_global ',' TK_IDENTIFICADOR         { $$ = NULL; validate_declaration(pilha, "rbss", $3, inteiro, identificador); }
-    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, inteiro, identificador); }
+lista_int_var_global: lista_int_var_global ',' TK_IDENTIFICADOR         { $$ = NULL; validate_declaration(pilha, $3, "rbss", inteiro, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, "rbss", inteiro, identificador); }
 
-lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; validate_declaration(pilha, "rbss", $3, pontoflutuante, identificador); }
-    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, "rbss", $1, pontoflutuante, identificador); }
+lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = NULL; validate_declaration(pilha, $3, "rbss", pontoflutuante, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, "rbss", pontoflutuante, identificador); }
 
-lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, "rbss", $3, booleano, identificador); }
-    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, "rbss", $1, booleano, identificador); }
+lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, $3, "rbss", booleano, identificador); }
+    | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, "rbss", booleano, identificador); }
 
 funcao: cabecalho corpo                                         { 
                                                                     $ = $1; 
@@ -137,9 +137,9 @@ funcao: cabecalho corpo                                         {
                                                                     } 
                                                                 }
 
-cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, "", $1, inteiro, funcao); }
-    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, "", $1, pontoflutuante, funcao); }
-    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, "", $1, booleano, funcao);}
+cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, "", inteiro, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, "", pontoflutuante, funcao); }
+    | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_BOOL        { $$ = ast_new(booleano,$1); validate_declaration(pilha, $1, "", booleano, funcao);}
 
 parametros: cria_escopo '(' lista_param ')'                 { $$ = NULL; }
     | cria_escopo '(' ')'                                   { $$ = NULL; }
@@ -149,9 +149,9 @@ cria_escopo:                                                { scope_new(&pilha);
 lista_param: lista_param ',' param                          { $$ = NULL; }
     | param                                                 { $$ = NULL; }
 
-param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $2, inteiro, identificador);}
-    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, "rfp", $2, pontoflutuante, identificador);}
-    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $2, booleano, identificador);}
+param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, "rfp", inteiro, identificador);}
+    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, "rfp", pontoflutuante, identificador);}
+    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, "rfp", booleano, identificador);}
 
 corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
 
@@ -203,14 +203,14 @@ lista_var_float_local: float_var_local ',' lista_var_float_local    { if($1 != N
 lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
     | bool_var_local                                                { $$ = $1; }
 
-int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, "rfp", $1, inteiro, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, inteiro, identificador);}
+int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
 
-float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, "rfp", $1, pontoflutuante, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, pontoflutuante, identificador);}
+float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
 
-bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, "rfp", $1, booleano, identificador); }
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, booleano, identificador);}
+bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $1, "rfp", booleano, identificador); }
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
                                                                 CONTENT* content  = validate_undeclared(pilha, $1, identificador);

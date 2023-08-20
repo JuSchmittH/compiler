@@ -15,7 +15,7 @@ enum type {
 
 typedef struct ast_node {
   VL *item;
-  ILOC_Op code;
+  ILOC_OP code;
   char *temp;
   enum type node_type;
   int number_of_children;
