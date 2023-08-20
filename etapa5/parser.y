@@ -215,30 +215,28 @@ bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validat
     | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, "rfp", $1, booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
-                                                                //TODO fazer isso aqui retornar o content pra poder pgaer o ref e o displacement
-                                                                enum type type  = validate_undeclared(pilha, $1, identificador);
+                                                                CONTENT* content  = validate_undeclared(pilha, $1, identificador);
                                                                 $$ = ast_new(notdefined, vl_new(yylineno, 1, "="));
-                                                                ast_add_child($$, ast_new(type,$1));
+                                                                ast_add_child($$, ast_new(content->type, $1));
                                                                 ast_add_child($$, $3);
                                                                 
-                                                                //2 gera storeAI (com o c3 sendo uma constante ) $3.temp =>rfp des 
-                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, ref, displacement, right);
+                                                                ILOC_OP *operation = iloc_op_new("storeAI", $3.temp, content->ref, content->displacement, right);
                                                                 strcpy($$->code, concatCode($3->code, operation));
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
-                                                                enum type type  = validate_undeclared(pilha, $1, funcao);
+                                                                CONTENT* content  = validate_undeclared(pilha, $1, funcao);
                                                                 char call[] = "call ";
-                                                                $$ = ast_new(type,vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
+                                                                $$ = ast_new(content->type,vl_new($1->line_number, $1->token_type, strcat(call,$1->token_value)));
                                                                 ast_add_child($$, $3);
                                                                 //1. obtem o rotulo LX da tabela referente ao identifier
                                                                 //2. ger ainstruçao 
-                                                                    jumpI LX
+                                                                //    jumpI LX
                                                                 //3. node->code = essa instruçao
                                                             }
     | TK_IDENTIFICADOR '(' ')'                              {   
-                                                                enum type type  = validate_undeclared(pilha, $1, funcao); 
-                                                                $$ = ast_new(type,$1); 
+                                                                CONTENT* content  = validate_undeclared(pilha, $1, funcao); 
+                                                                $$ = ast_new(content->type,$1); 
                                                             }
 
 argumentos: expressao ',' argumentos                        { $$ = $1; if($3 != NULL) { ast_add_child($$, $3); } }
@@ -265,7 +263,7 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { enum type type  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(type,$1); }
+operandos: TK_IDENTIFICADOR                                 { CONTENT* content  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(content->type,$1); }
     | literais                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 

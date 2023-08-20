@@ -24,6 +24,6 @@ void validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enu
 
 void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nature);
 
-enum type validate_undeclared(STACK *stack, VL* item, enum nature nature);
+CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature);
 
 #endif

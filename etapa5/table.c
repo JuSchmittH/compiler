@@ -76,7 +76,7 @@ int table_find(TABLE* table, CONTENT* content)
     return response;
 }
 
-int table_find_without_type(TABLE* table, CONTENT* content)
+CONTENT* table_find_without_type(TABLE* table, CONTENT* content)
 { 
     int response = -1;
     if (table->count > 0) {
@@ -84,14 +84,9 @@ int table_find_without_type(TABLE* table, CONTENT* content)
             CONTENT* tableContent = table->rows[i];
             if (strcmp(tableContent->value->token_value, content->value->token_value) == 0)
             {
-                if (tableContent->nature == content->nature)
-                {
-                    response = tableContent->type;
-                } else {
-                    response = tableContent->nature;
-                }
+                return tableContent;
             }
         }
     }
-    return response;
+    return NULL;
 }

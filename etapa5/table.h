@@ -44,6 +44,6 @@ int table_hash(int key);
 
 int table_find(TABLE* table, CONTENT* content);
 
-int table_find_without_type(TABLE* table, CONTENT* content);
+CONTENT* table_find_without_type(TABLE* table, CONTENT* content);
 
 #endif

@@ -56,40 +56,44 @@ void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nat
     }
 }
 
-enum type validate_undeclared(STACK *stack, VL* item, enum nature nature)
+CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature)
 {
     TABLE *table = peek(stack);
     int index = table_hash(table->count);
+    CONTENT* foundContent;
 
     CONTENT* content = content_new(item, "", nature, index, unknown);
 
     while (stack) {
-        switch(table_find_without_type(table, content)) {
-            case 0: return notdefined;
-                    break;
-            case 1: return inteiro;
-                    break;
-            case 2: return pontoflutuante;
-                    break;
-            case 3: return booleano;
-                    break;
-            case 6: printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
+        foundContent = table_find_without_type(table, content);
+
+        if (foundContent != NULL)
+        {
+            if (foundContent->nature != content->nature)
+            {
+                if (foundContent->nature == variable) {
+                    printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
-                    break;
-            case 7: printf("ERR_FUNCTION: %s on line %d already declared but only as a function.\n", content->value->token_value, content->value->line_number);
-                    exit(ERR_FUNCTION);
-                    break;
-            default: if (stack-> next != NULL) {
-                        stack = stack->next;
-                        table = peek(stack);
-                    } else {
-                        stack = NULL;
-                    }
-                    break;
+                }
+
+                printf("ERR_FUNCTION: %s on line %d already declared but only as a function.\n", content->value->token_value, content->value->line_number);
+                exit(ERR_FUNCTION);
+            }
+        }       
+
+        if (stack-> next != NULL) {
+            stack = stack->next;
+            table = peek(stack);
+        } else {
+            stack = NULL;
         }
     }
 
-    printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
-    exit(ERR_UNDECLARED);
-    return unknown;
+    if (foundContent == NULL)
+    {
+        printf("ERR_UNDECLARED: %s on line %d undeclared.\n", content->value->token_value, content->value->line_number);
+        exit(ERR_UNDECLARED);
+    }
+    
+    return foundContent;
 }
