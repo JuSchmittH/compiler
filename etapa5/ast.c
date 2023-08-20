@@ -32,16 +32,7 @@ void ast_add_child(AST *tree, AST *child)
 
 const char* types[] = {"notdefined", "inteiro", "pontoflutuante", "booleano", "unknown"};
 
-enum type getType(AST *node) {
-  print_ast_node(node);
-  return node->node_type;
-}
-
-void print_ast_node(AST *node) {
-  printf("++++++++++++++++++++++++++\n");
-  printf("Print node: \n");
-  printVL(node->item);
-  printf("Type: %s\n", types[node->node_type]);
-  printf("Children: %d\n", node->number_of_children);
-  printf("++++++++++++++++++++++++++\n");
+void print_iloc(AST *node)
+{
+    printf("%s\n", node->code->operation);
 }

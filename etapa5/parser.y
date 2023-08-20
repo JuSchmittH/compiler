@@ -128,7 +128,7 @@ lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = N
 lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, "rbss", $3, booleano, identificador); }
     | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, "rbss", $1, booleano, identificador); }
 
-funcao: cabecalho corpo                                       { 
+funcao: cabecalho corpo                                         { 
                                                                     $ = $1; 
                                                                     if($2 != NULL) 
                                                                     { 
@@ -137,7 +137,7 @@ funcao: cabecalho corpo                                       {
                                                                     } 
                                                                     //TODO coloquei esse comentario na aula (nao sei se ainda tem que fazer) :aqui vamos ter que jogar o 
                                                                     //$2 pra cima pro code da funçao ir p cima ver em outros lugares
-}
+                                                                }
 
 cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, "", $1, inteiro, funcao); }
     | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, "", $1, pontoflutuante, funcao); }
