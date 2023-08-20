@@ -30,7 +30,7 @@ CONTENT *content_new(VL *item, char* ref, enum nature nature, int key, int type)
         ret->nature = nature;
         ret->type = type;
         ret->value = item;
-        ret->displacement = 0;
+        ret->displacement = "0";
         ret->ref = ref;
     }
     return ret;

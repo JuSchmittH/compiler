@@ -32,6 +32,11 @@ void ast_add_child(AST *tree, AST *child)
   }
 }
 
+char* concat(AST* node, ILOC_OP *iloc) 
+{
+    return strcat(node->code->operation, iloc->operation);
+}
+
 void set_code(AST* node, AST* originalNode)
 {
     strcpy(node->code->operation, originalNode->code->operation);

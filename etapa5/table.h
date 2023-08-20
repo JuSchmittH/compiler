@@ -20,7 +20,7 @@ typedef struct table_content
     int location;
     enum nature nature;    
     int type;
-    int displacement;
+    char* displacement;
     char* ref;
     VL* value;
 } CONTENT;
