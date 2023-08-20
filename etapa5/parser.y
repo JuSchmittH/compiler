@@ -175,7 +175,8 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             }
                                                                             ast_add_child(last_node, $3);
                                                                         }
-                                                                        set_code($$, concat($1, $3->code));
+                                                                        concat($1, $3->code);
+                                                                        set_code($$, $1);
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
@@ -217,8 +218,9 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, ast_new(content->type, $1));
                                                                 ast_add_child($$, $3);
                                                                 
-                                                                ILOC_OP *iloc = iloc_op_new("storeAI", $3.temp, content->ref, content->displacement, right);
-                                                                set_code($$, concat($3->code, iloc))
+                                                                ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
+                                                                concat($3, iloc);
+                                                                set_code($$, $3);
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {

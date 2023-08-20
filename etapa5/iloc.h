@@ -3,7 +3,7 @@
 #ifndef ILOC_Op_HEADER
 #define ILOC_Op_HEADER
 
-#include<stdio.h>
+#include <stdio.h>
 #include "vl.h"
 
 enum op_type {
@@ -19,6 +19,6 @@ typedef struct ILOC_operation
     char *operation;
 } ILOC_OP;
 
-ILOC_OP *iloc_op_new(char* operation, char* r1, char* r2, char* r3, enum op_type type);
+ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type);
 
 #endif //ILOC_Op_HEADER

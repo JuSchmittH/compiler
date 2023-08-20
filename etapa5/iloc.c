@@ -1,6 +1,6 @@
 #include "iloc.h"
 
-ILOC_OP *iloc_op_new(char* operation, char* r1, char* r2, char* r3, enum op_type type)
+ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type)
 {
     char *ILOC;
 	strcpy(ILOC, operation);
@@ -55,7 +55,7 @@ ILOC_OP *iloc_op_new(char* operation, char* r1, char* r2, char* r3, enum op_type
 	//}
 
 	ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
-	strcpy(cmd->cmd, ILOC);
+	strcpy(cmd->operation, ILOC);
 
 	return cmd;
 }

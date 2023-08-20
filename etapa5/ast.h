@@ -10,12 +10,13 @@ enum type {
   notdefined, 
   inteiro, 
   pontoflutuante, 
-  booleano
+  booleano,
+  unknown// validar
 };
 
 typedef struct ast_node {
   VL *item;
-  ILOC_OP code;
+  ILOC_OP *code;
   char *temp;
   enum type node_type;
   int number_of_children;

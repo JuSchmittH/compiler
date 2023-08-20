@@ -15,7 +15,7 @@ AST *ast_new(enum type type, VL *item)
     ret->node_type = type;
     ret->number_of_children = 0;
     ret->children = NULL;
-    ret->code = "";
+    ret->code = NULL;
     ret->temp = "";
   }
   return ret;
