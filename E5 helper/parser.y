@@ -106,7 +106,7 @@ cria_escopo_global:                                                { pilha = glo
 
 fecha_escopo_global:                                               { global_scope_close(&pilha); }
 
-programa: lista                                             { $$ = $1; arvore = $$; }
+programa: lista                                             { $$ = $1; arvore = $$; //chamar uma funçao q eu pegar essa lista e imprime na tela }
     |                                                       { $$ = NULL; }
 
 lista: elemento lista                                       { if($1 != NULL ) { $$ = $1;  if($2 != NULL){ ast_add_child($$, $2); }} else if($2 != NULL) {$$ = $2;} }
