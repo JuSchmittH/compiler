@@ -60,13 +60,12 @@ CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature)
 {
     TABLE *table = peek(stack);
     int index = table_hash(table->count);
-    CONTENT* foundContent;
+    CONTENT* foundContent = NULL;
 
     CONTENT* content = content_new(item, "", nature, index, unknown);
 
-    while (stack) {
+    while (stack && !foundContent) {
         foundContent = table_find_without_type(table, content);
-
         if (foundContent != NULL)
         {
             if (foundContent->nature != content->nature)
@@ -79,8 +78,7 @@ CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature)
                 printf("ERR_FUNCTION: %s on line %d already declared but only as a function.\n", content->value->token_value, content->value->line_number);
                 exit(ERR_FUNCTION);
             }
-        }       
-
+        }      
         if (stack-> next != NULL) {
             stack = stack->next;
             table = peek(stack);

@@ -3,7 +3,7 @@
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type)
 {
     char *ILOC;
-	strcpy(ILOC, operation);
+	ILOC = strdup(operation);
 
     // if(type == left) {
 	// 	strcat(ILOC, " ");
@@ -55,7 +55,7 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 	//}
 
 	ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
-	strcpy(cmd->operation, ILOC);
+	cmd->operation = strdup(ILOC);
 
 	return cmd;
 }

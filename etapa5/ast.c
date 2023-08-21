@@ -34,10 +34,14 @@ void ast_add_child(AST *tree, AST *child)
 
 void set_code(AST* node, AST* originalNode)
 {
-    strcpy(node->code->operation, originalNode->code->operation);
+  if( node->code && originalNode->code ) {
+    node->code->operation = strdup(originalNode->code->operation);
+  }
 }
 
 void print_iloc(AST *node)
 {
+  if (node->code) {
     printf("%s\n", node->code->operation);
+  }
 }

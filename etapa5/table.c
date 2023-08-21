@@ -78,7 +78,6 @@ int table_find(TABLE* table, CONTENT* content)
 
 CONTENT* table_find_without_type(TABLE* table, CONTENT* content)
 { 
-    int response = -1;
     if (table->count > 0) {
         for (int i = 0; i < table->count; i++) {
             CONTENT* tableContent = table->rows[i];

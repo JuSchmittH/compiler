@@ -175,7 +175,9 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             }
                                                                             ast_add_child(last_node, $3);
                                                                         }
-                                                                        strcat($1->code->operation, $3->code->operation);
+                                                                        if ($1->code && $3->code){
+                                                                            strcat($1->code->operation, $3->code->operation);
+                                                                        }
                                                                         set_code($$, $1);
                                                                     }
                                                                 } 
@@ -219,7 +221,11 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, $3);
                                                                 
                                                                 ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-                                                                strcat($3->code->operation, iloc->operation);
+                                                                if (iloc->operation) {
+                                                                    if($3->code){
+                                                                        strcat($3->code->operation, iloc->operation);
+                                                                    }
+                                                                }
                                                                 set_code($$, $3);
                                                             }
 
