@@ -271,7 +271,7 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
                                                                                              strcat(iloc2->operation, $6->code->operation);
                                                                                         }
 
-                                                                                        ILOC_OP cmd2 = iloc_op_new("jumpI", labelIloc1, NULL, NULL, jump);
+                                                                                        ILOC_OP *cmd2 = iloc_op_new("jumpI", labelIloc1, NULL, NULL, jump);
                                                                                         strcat(iloc2->operation, cmd2->operation);
 
                                                                                         ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
