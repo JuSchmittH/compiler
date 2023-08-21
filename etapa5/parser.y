@@ -133,7 +133,7 @@ funcao: cabecalho corpo                                         {
                                                                     if($2 != NULL) 
                                                                     { 
                                                                         ast_add_child($$, $2);
-                                                                        set_code($$, $2);
+                                                                        set_code($$, $2->code->operation);
                                                                     } 
                                                                 }
 
@@ -178,7 +178,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                         if ($1->code && $3->code){
                                                                             strcat($1->code->operation, $3->code->operation);
                                                                         }
-                                                                        set_code($$, $1);
+                                                                        set_code($$, $1->code->operation);
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
@@ -224,7 +224,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 if($3->code){
                                                                     strcat($3->code->operation, iloc->operation);
                                                                 }
-                                                                set_code($$, $3);
+                                                                set_code($$, $3->code->operation);
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {

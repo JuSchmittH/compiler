@@ -34,10 +34,10 @@ void ast_add_child(AST *tree, AST *child)
   }
 }
 
-void set_code(AST* node, AST* originalNode)
+void set_code(AST* node, char* originalNode)
 {
-  if( node->code && originalNode->code ) {
-    node->code->operation = strdup(originalNode->code->operation);
+  if( node->code && originalNode ) {
+    node->code->operation = strdup(originalNode);
   }
 }
 
