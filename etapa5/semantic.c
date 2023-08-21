@@ -71,7 +71,7 @@ CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature)
         {
             if (foundContent->nature != content->nature)
             {
-                if (foundContent->nature == variable) {
+                if (foundContent->nature == identificador) {
                     printf("ERR_VARIABLE: %s on line %d already declared but only as a variable.\n", content->value->token_value, content->value->line_number);
                     exit(ERR_VARIABLE);
                 }

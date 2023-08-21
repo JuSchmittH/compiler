@@ -11,8 +11,7 @@
 enum nature {
   literal = 5, 
   identificador = 6,
-  funcao = 7,
-  variable = 1 //validar
+  funcao = 7
 };
 
 typedef struct table_content

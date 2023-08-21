@@ -219,8 +219,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, $3);
                                                                 
                                                                 ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-
-                                                                $3->code = iloc;
+                                                                strcat($3->code->operation, iloc->operation);
                                                                 set_code($$, $3);
                                                             }
 
