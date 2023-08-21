@@ -31,4 +31,6 @@ void set_code(AST* node, AST* originalNode);
 
 void print_iloc(AST *node);
 
+char* get_label();
+
 #endif //AST_HEADER

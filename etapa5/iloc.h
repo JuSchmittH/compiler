@@ -10,8 +10,9 @@ enum op_type {
     left,
     right,
     control,
-    cmp,
-    jump
+    cbr,
+    jump,
+    label
 };
 
 typedef struct ILOC_operation

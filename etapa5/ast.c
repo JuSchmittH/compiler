@@ -6,6 +6,8 @@
 #include "vl.h"
 #define ARQUIVO_SAIDA "saida.dot"
 
+int labelCount = 0;
+
 AST *ast_new(enum type type, VL *item)
 {
   AST *ret = NULL;
@@ -44,4 +46,13 @@ void print_iloc(AST *node)
   if (node->code) {
     printf("%s\n", node->code->operation);
   }
+}
+
+char* get_label(){
+  char* label;
+
+	labelCount++;
+	snprintf(label, 10, "%s%d", "L", labelCount);
+	
+	return label;
 }

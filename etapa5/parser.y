@@ -221,10 +221,8 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, $3);
                                                                 
                                                                 ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-                                                                if (iloc->operation) {
-                                                                    if($3->code){
-                                                                        strcat($3->code->operation, iloc->operation);
-                                                                    }
+                                                                if($3->code){
+                                                                    strcat($3->code->operation, iloc->operation);
                                                                 }
                                                                 set_code($$, $3);
                                                             }
@@ -253,6 +251,34 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
+                                                                                        
+                                                                                        char* labelIloc1 = get_label();
+                                                                                        char* labelIloc2 = get_label();
+                                                                                        char* labelIloc3 = get_label();
+
+                                                                                        ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
+                                                                                        strcat(iloc1->operation, ":");
+                                                                                        strcat(iloc1->operation, $3->code->operation);
+
+                                                                                        ILOC_OP cmd1 = iloc_op_new("cbr", $3->temp, labelIloc2, labelIloc3, cbr);
+                                                                                        strcat(iloc1->operation, cmd->operation);
+
+                                                                                        ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
+                                                                                        strcat(iloc1->operation, iloc2->operation);
+                                                                                        strcat(iloc2->operation, ":");
+
+                                                                                        if($6 != NULL) {
+                                                                                             strcat(iloc2->operation, $6->code->operation);
+                                                                                        }
+
+                                                                                        ILOC_OP cmd2 = iloc_op_new("jumpI", labelIloc1, NULL, NULL, jump);
+                                                                                        strcat(iloc2->operation, cmd2->operation);
+
+                                                                                        ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
+                                                                                        strcat(iloc2->operation, iloc3->operation);
+                                                                                        strcat(iloc2->operation, ": nop");
+
+                                                                                        set_code($$, iloc2->operation);
                                                                                     }
 
 expressao: operadores                                       { $$ = $1; }
