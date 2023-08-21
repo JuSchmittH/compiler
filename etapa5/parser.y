@@ -196,7 +196,21 @@ decl_var_local: TK_PR_INT lista_var_int_local               { $$ = $2; }
     |TK_PR_FLOAT lista_var_float_local                      { $$ = $2; }
     |TK_PR_BOOL lista_var_bool_local                        { $$ = $2; }
 
-lista_var_int_local: int_var_local ',' lista_var_int_local          { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
+lista_var_int_local: int_var_local ',' lista_var_int_local          { 
+                                                                        if($1 != NULL ) 
+                                                                        { 
+                                                                            $$ = $1;  
+                                                                            if($3 != NULL)
+                                                                            { 
+                                                                                ast_add_child($$, $3); 
+                                                                            }
+                                                                        } 
+                                                                        else if($3 != NULL)
+                                                                        {
+                                                                            $$ = $3;
+                                                                        } 
+                                                                        //TODO: aqui tem que ter um set 
+                                                                    }
     | int_var_local                                                 { $$ = $1; }
 
 lista_var_float_local: float_var_local ',' lista_var_float_local    { if($1 != NULL ) { $$ = $1;  if($3 != NULL){ ast_add_child($$, $3); }} else if($3 != NULL){$$ = $3;} }
@@ -220,11 +234,11 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 ast_add_child($$, ast_new(content->type, $1));
                                                                 ast_add_child($$, $3);
                                                                 
-                                                                ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-                                                                if($3->code){
+                                                                if (content->type == inteiro) {
+                                                                    ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
                                                                     strcat($3->code->operation, iloc->operation);
+                                                                    set_code($$, $3->code->operation);
                                                                 }
-                                                                set_code($$, $3->code->operation);
                                                             }
 
 chamada_funcao: TK_IDENTIFICADOR '(' argumentos ')'         {
@@ -246,8 +260,8 @@ op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new(notde
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } if($10 != NULL){ ast_add_child($$, $10); } }
-    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } }
+condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } if($10 != NULL){ ast_add_child($$, $10); } //TODO: aqui tem que ter um set  }
+    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } //TODO: aqui tem que ter um set }
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
@@ -283,29 +297,29 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { CONTENT* content  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(content->type,$1); }
+operandos: TK_IDENTIFICADOR                                 { CONTENT* content  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(content->type,$1); //TODO: aqui tem que ter um set }
     | literais                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
 operadores: op_or                                           { $$ = $1; } 
 
 op_or: op_and                                               { $$ = $1; } 
-    |  op_or op_pre_7 op_and                                { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    |  op_or op_pre_7 op_and                                { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 op_and: ops_equal                                           { $$ = $1; }
-    | op_and op_pre_6 ops_equal                             { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    | op_and op_pre_6 ops_equal                             { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 ops_equal: ops_comp                                         { $$ = $1; } 
-    | ops_equal op_pre_5 ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    | ops_equal op_pre_5 ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 ops_comp: ops_add_sub                                       { $$ = $1; } 
-    | ops_comp op_pre_4 ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    | ops_comp op_pre_4 ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 ops_add_sub: ops_mult_div                                   { $$ = $1; } 
-    | ops_add_sub op_pre_3 ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    | ops_add_sub op_pre_3 ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 ops_mult_div: ops_unario                                    { $$ = $1; }
-    | ops_mult_div op_pre_2 ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); }
+    | ops_mult_div op_pre_2 ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
 
 ops_unario: operandos                                       { $$ = $1; }
     | op_pre_1 ops_unario                                   { $$ = $1; ast_add_child($$, $2); }
@@ -333,7 +347,7 @@ op_pre_6: TK_OC_AND                                         { $$ = ast_new(notde
 
 op_pre_7: TK_OC_OR                                          { $$ = ast_new(notdefined,$1); } 
 
-literais: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); literal_declaration(pilha, $1, inteiro, literal); }
+literais: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); literal_declaration(pilha, $1, inteiro, literal); //TODO: aqui tem que ter um set }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}
     | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}                                  
