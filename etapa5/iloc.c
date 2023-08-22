@@ -1,5 +1,8 @@
 #include "iloc.h"
 
+int labelCount = 0;
+int tempoCount = 0;
+
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type)
 {
     char *ILOC;
@@ -58,4 +61,22 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 	cmd->operation = strdup(ILOC);
 
 	return cmd;
+}
+
+char* get_label(){
+  char* label;
+
+	labelCount++;
+	snprintf(label, 10, "%s%d", "L", labelCount);
+	
+	return label;
+}
+
+char* get_temp(){
+  char* temp;
+
+	labelCount++;
+	snprintf(temp, 10, "%s%d", "r", labelCount);
+
+	return temp;
 }

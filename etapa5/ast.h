@@ -11,7 +11,7 @@ enum type {
   inteiro, 
   pontoflutuante, 
   booleano,
-  unknown// validar
+  unknown
 };
 
 typedef struct ast_node {

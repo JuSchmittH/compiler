@@ -297,8 +297,17 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 
 expressao: operadores                                       { $$ = $1; }
 
-operandos: TK_IDENTIFICADOR                                 { CONTENT* content  = validate_undeclared(pilha, $1, identificador); $$ = ast_new(content->type,$1); //TODO: aqui tem que ter um set }
-    | literais                                               { $$ = $1; }
+operandos: TK_IDENTIFICADOR                                 { 
+                                                                CONTENT* content = validate_undeclared(pilha, $1, identificador);
+                                                                $$ = ast_new(content->type,$1);
+                                                                //TODO: aqui tem que ter um set
+                                                                if(content->type == inteiro) { // como testar um type é um inteiro com o tipo inteiro??
+                                                                    $$->temp = strdup(get_temp());
+                                                                    ILOC_OP* op_cmd = iloc_op_new("loadAI", content->base, content->offset, $$->temp, left);
+                                                                    $$->code = strdup(op_cmd->operation);
+                                                                }
+                                                            }
+    | literais                                              { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
 
 operadores: op_or                                           { $$ = $1; } 
@@ -347,7 +356,13 @@ op_pre_6: TK_OC_AND                                         { $$ = ast_new(notde
 
 op_pre_7: TK_OC_OR                                          { $$ = ast_new(notdefined,$1); } 
 
-literais: TK_LIT_INT                                         { $$ = ast_new(inteiro,$1); literal_declaration(pilha, $1, inteiro, literal); //TODO: aqui tem que ter um set }
+literais: TK_LIT_INT                                        { 
+                                                                $$ = ast_new(inteiro,$1);
+                                                                literal_declaration(pilha, $1, inteiro, literal);
+                                                                $$->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("loadI", content->base, content->offset, NULL, right);
+                                                                $$->code = strdup(op_cmd->operation);
+                                                            }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}
     | TK_LIT_TRUE                                           { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}                                  
