@@ -102,9 +102,9 @@
 
 inicio: cria_escopo_global programa fecha_escopo_global
 
-cria_escopo_global:                                                { pilha = global_scope_new(); }
+cria_escopo_global:                                         { pilha = global_scope_new(); }
 
-fecha_escopo_global:                                               { global_scope_close(&pilha); }
+fecha_escopo_global:                                        { global_scope_close(&pilha); }
 
 programa: lista                                             { $$ = $1; arvore = $$; }
     |                                                       { $$ = NULL; }
@@ -128,14 +128,14 @@ lista_float_var_global: lista_float_var_global ',' TK_IDENTIFICADOR     { $$ = N
 lista_bool_var_global: lista_bool_var_global ',' TK_IDENTIFICADOR       { $$ = NULL; validate_declaration(pilha, $3, "rbss", booleano, identificador); }
     | TK_IDENTIFICADOR                                                  { $$ = NULL; validate_declaration(pilha, $1, "rbss", booleano, identificador); }
 
-funcao: cabecalho corpo                                         { 
+funcao: cabecalho corpo                                     { 
                                                                     $$ = $1; 
                                                                     if($2 != NULL) 
                                                                     { 
                                                                         ast_add_child($$, $2);
                                                                         set_code($$, $2->code->operation);
                                                                     } 
-                                                                }
+                                                            }
 
 cabecalho: TK_IDENTIFICADOR  parametros TK_OC_MAP TK_PR_INT   { $$ = ast_new(inteiro,$1); validate_declaration(pilha, $1, "", inteiro, funcao); }
     | TK_IDENTIFICADOR parametros TK_OC_MAP TK_PR_FLOAT       { $$ = ast_new(pontoflutuante,$1); validate_declaration(pilha, $1, "", pontoflutuante, funcao); }
@@ -149,9 +149,9 @@ cria_escopo:                                                { scope_new(&pilha);
 lista_param: lista_param ',' param                          { $$ = NULL; }
     | param                                                 { $$ = NULL; }
 
-param: TK_PR_INT TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, "rfp", inteiro, identificador);}
-    | TK_PR_FLOAT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, "rfp", pontoflutuante, identificador);}
-    | TK_PR_BOOL TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $2, "rfp", booleano, identificador);}
+param: TK_PR_INT TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, "rfp", inteiro, identificador);}
+    | TK_PR_FLOAT TK_IDENTIFICADOR                          { $$ = NULL; validate_declaration(pilha, $2, "rfp", pontoflutuante, identificador);}
+    | TK_PR_BOOL TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $2, "rfp", booleano, identificador);}
 
 corpo: bloco_cmd fecha_escopo                               { $$ = $1; }
 
@@ -220,13 +220,13 @@ lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != N
     | bool_var_local                                                { $$ = $1; }
 
 int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                    { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
 
 float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                    { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
 
 bool_var_local: TK_IDENTIFICADOR                            { $$ = NULL; validate_declaration(pilha, $1, "rfp", booleano, identificador); }
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", booleano, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                    { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(booleano,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", booleano, identificador);}
 
 atribuicao: TK_IDENTIFICADOR '=' expressao                  { 
                                                                 CONTENT* content  = validate_undeclared(pilha, $1, identificador);
@@ -263,7 +263,7 @@ fluxo_ctrl: condicional                                     { $$ = $1; }
 condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } if($10 != NULL){ ast_add_child($$, $10); } //TODO: aqui tem que ter um set  }
     | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } //TODO: aqui tem que ter um set }
 
-interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
+interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo        { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
                                                                                         
                                                                                         char* labelIloc1 = get_label();
@@ -313,22 +313,178 @@ operandos: TK_IDENTIFICADOR                                 {
 operadores: op_or                                           { $$ = $1; } 
 
 op_or: op_and                                               { $$ = $1; } 
-    |  op_or op_pre_7 op_and                                { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+    |  op_or op_pre_7 op_and                                { 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("or", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 op_and: ops_equal                                           { $$ = $1; }
-    | op_and op_pre_6 ops_equal                             { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+    | op_and op_pre_6 ops_equal                             { 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("and", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 ops_equal: ops_comp                                         { $$ = $1; } 
-    | ops_equal op_pre_5 ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+    | ops_equal op_EQ ops_comp                           	{ 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_EQ", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+	| ops_equal op_NE ops_comp                           	{ 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_NE", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 ops_comp: ops_add_sub                                       { $$ = $1; } 
-    | ops_comp op_pre_4 ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+  	| ops_comp op_LT ops_add_sub                            { 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LT", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_comp op_GT ops_add_sub                         	{ 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GT", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_comp op_LE ops_add_sub                         	{ 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LE", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_comp op_GE ops_add_sub                         	{ 
+																$2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GE", $1->temp, $3->temp, $2->temp, control);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 ops_add_sub: ops_mult_div                                   { $$ = $1; } 
-    | ops_add_sub op_pre_3 ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+    | ops_add_sub op_add ops_mult_div                     	{ 
+                                                                $2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("add", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_add_sub op_sub ops_mult_div                     	{ 
+                                                          	      $2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("sub", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2;
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 ops_mult_div: ops_unario                                    { $$ = $1; }
-    | ops_mult_div op_pre_2 ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3); //TODO: aqui tem que ter um set }
+    | ops_mult_div op_div ops_unario                        { 
+
+                                                                $2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("div", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2; 
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_mult_div op_mult ops_unario                      	{ 
+                                                                $2->temp = strdup(get_temp());
+                                                                ILOC_OP* op_cmd = iloc_op_new("mult", $1->temp, $3->temp, $2->temp, left);
+                                                                strcat($2->code, $1->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, $3->code);
+                                                                strcat($2->code, "\n");
+                                                                strcat($2->code, op_cmd->operation);
+
+                                                                $$ = $2; 
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
+    | ops_mult_div op_per ops_unario                        { 
+                                                                $$ = $2; 
+                                                                ast_add_child($$, $1);
+                                                                ast_add_child($$, $3);
+                                                            }
 
 ops_unario: operandos                                       { $$ = $1; }
     | op_pre_1 ops_unario                                   { $$ = $1; ast_add_child($$, $2); }
@@ -337,20 +493,20 @@ ops_unario: operandos                                       { $$ = $1; }
 op_pre_1: '-'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "-")); }  
     | '!'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "!")); } 
 
-op_pre_2: '*'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "*")); }   
-    | '/'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "/")); }   
-    | '%'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "%")); }   
+op_mult: '*'                                                { $$ = ast_new(notdefined,vl_new(yylineno, 3, "*")); }   
+op_div: '/'                                                 { $$ = ast_new(notdefined,vl_new(yylineno, 3, "/")); }   
+op_per: '%'                                                 { $$ = ast_new(notdefined,vl_new(yylineno, 3, "%")); }  
 
-op_pre_3: '+'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "+")); } 
-    | '-'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, "-")); } 
+op_add: '+'                                                 { $$ = ast_new(notdefined,vl_new(yylineno, 3, "+")); } 
+op_sub: '-'                                                 { $$ = ast_new(notdefined,vl_new(yylineno, 3, "-")); } 
 
-op_pre_4: '<'                                               { $$ = ast_new(notdefined,vl_new(yylineno, 3, "<")); } 
-    | '>'                                                   { $$ = ast_new(notdefined,vl_new(yylineno, 3, ">")); }   
-    | TK_OC_LE                                              { $$ = ast_new(notdefined,$1); }
-    | TK_OC_GE                                              { $$ = ast_new(notdefined,$1); }   
+op_LT: '<'                                              	{ $$ = ast_new(notdefined,vl_new(yylineno, 3, "<")); } 
+op_GT: '>'                                                  { $$ = ast_new(notdefined,vl_new(yylineno, 3, ">")); }   
+op_LE: TK_OC_LE                                             { $$ = ast_new(notdefined,$1); }
+op_GE: TK_OC_GE                                             { $$ = ast_new(notdefined,$1); }   
 
-op_pre_5: TK_OC_EQ                                          { $$ = ast_new(notdefined,$1); }
-    | TK_OC_NE                                              { $$ = ast_new(notdefined,$1); } 
+op_EQ: TK_OC_EQ                                          	{ $$ = ast_new(notdefined,$1); }
+op_NE: TK_OC_NE                                             { $$ = ast_new(notdefined,$1); } 
 
 op_pre_6: TK_OC_AND                                         { $$ = ast_new(notdefined,$1); }  
 
@@ -358,9 +514,10 @@ op_pre_7: TK_OC_OR                                          { $$ = ast_new(notde
 
 literais: TK_LIT_INT                                        { 
                                                                 $$ = ast_new(inteiro,$1);
-                                                                literal_declaration(pilha, $1, inteiro, literal);
+                                                                CONTENT* int_content = literal_declaration(pilha, $1, inteiro, literal);
+
                                                                 $$->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("loadI", content->base, content->offset, NULL, right);
+                                                                ILOC_OP* op_cmd = iloc_op_new("loadI", int_content->value, $$->temp, NULL, right);
                                                                 $$->code = strdup(op_cmd->operation);
                                                             }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }

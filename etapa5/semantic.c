@@ -43,7 +43,7 @@ void validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enu
     table_insert(table, newContent, index);    
 }
 
-void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
+CONTENT* literal_declaration(STACK *stack, VL* item, enum type type, enum nature nature)
 {
     TABLE* table = peek(stack);
 
@@ -54,6 +54,8 @@ void literal_declaration(STACK *stack, VL* item, enum type type, enum nature nat
     if (table_find(table, newContent) != 1) {
         table_insert(table, newContent, index);
     }
+
+    return newContent;
 }
 
 CONTENT* validate_undeclared(STACK *stack, VL* item, enum nature nature)
