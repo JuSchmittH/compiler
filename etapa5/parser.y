@@ -326,7 +326,7 @@ operandos: TK_IDENTIFICADOR                                 {
                                                                 if(content->type == inteiro) { // como testar um type é um inteiro com o tipo inteiro??
                                                                     $$->temp = strdup(get_temp());
                                                                     ILOC_OP* op_cmd = iloc_op_new("loadAI", content->ref, content->displacement, $$->temp, left);
-                                                                    $$->code = strdup(op_cmd->operation);
+                                                                    $$->code = op_cmd;
                                                                 }
                                                             }
     | literais                                              { $$ = $1; }
@@ -338,11 +338,7 @@ op_or: op_and                                               { $$ = $1; }
     |  op_or op_pre_7 op_and                                { 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("or", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -353,11 +349,7 @@ op_and: ops_equal                                           { $$ = $1; }
     | op_and op_pre_6 ops_equal                             { 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("and", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -368,11 +360,7 @@ ops_equal: ops_comp                                         { $$ = $1; }
     | ops_equal op_EQ ops_comp                           	{ 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_EQ", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -381,11 +369,7 @@ ops_equal: ops_comp                                         { $$ = $1; }
 	| ops_equal op_NE ops_comp                           	{ 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_NE", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -396,11 +380,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
   	| ops_comp op_LT ops_add_sub                            { 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_LT", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -409,11 +389,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
     | ops_comp op_GT ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_GT", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -422,11 +398,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
     | ops_comp op_LE ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_LE", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -435,11 +407,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
     | ops_comp op_GE ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("cmp_GE", $1->temp, $3->temp, $2->temp, control);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -450,11 +418,7 @@ ops_add_sub: ops_mult_div                                   { $$ = $1; }
     | ops_add_sub op_add ops_mult_div                     	{ 
                                                                 $2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("add", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+                                                                $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -463,11 +427,7 @@ ops_add_sub: ops_mult_div                                   { $$ = $1; }
     | ops_add_sub op_sub ops_mult_div                     	{ 
                                                           	      $2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("sub", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+																$2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
                                                                 ast_add_child($$, $1);
@@ -479,11 +439,7 @@ ops_mult_div: ops_unario                                    { $$ = $1; }
 
                                                                 $2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("div", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+																$2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2; 
                                                                 ast_add_child($$, $1);
@@ -492,11 +448,7 @@ ops_mult_div: ops_unario                                    { $$ = $1; }
     | ops_mult_div op_mult ops_unario                      	{ 
                                                                 $2->temp = strdup(get_temp());
                                                                 ILOC_OP* op_cmd = iloc_op_new("mult", $1->temp, $3->temp, $2->temp, left);
-                                                                strcat($2->code, $1->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, $3->code);
-                                                                strcat($2->code, "\n");
-                                                                strcat($2->code, op_cmd->operation);
+																$2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2; 
                                                                 ast_add_child($$, $1);
@@ -539,8 +491,8 @@ literais: TK_LIT_INT                                        {
                                                                 CONTENT* int_content = literal_declaration(pilha, $1, inteiro, literal);
 
                                                                 $$->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("loadI", int_content->value, $$->temp, NULL, right);
-                                                                $$->code = strdup(op_cmd->operation);
+                                                                ILOC_OP* op_cmd = iloc_op_new("loadI", int_content->value->token_value, $$->temp, NULL, right);
+                                                                $$->code = op_cmd;
                                                             }
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}

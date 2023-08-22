@@ -22,4 +22,10 @@ typedef struct ILOC_operation
 
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type);
 
+char* get_label();
+
+char* get_temp();
+
+char* concatCode();
+
 #endif //ILOC_Op_HEADER

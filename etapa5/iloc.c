@@ -80,3 +80,11 @@ char* get_temp(){
 
 	return temp;
 }
+
+char* concatCode(char* code1, char* code2) {
+	char* code_result;
+	code_result = strdup(code1);
+	strcat(code_result, "\n");
+	strcat(code_result, code2);
+	return code_result;
+}
