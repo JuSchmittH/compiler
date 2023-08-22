@@ -90,10 +90,17 @@
 %type<ast> ops_mult_div
 %type<ast> ops_unario
 %type<ast> op_pre_1
-%type<ast> op_pre_2
-%type<ast> op_pre_3
-%type<ast> op_pre_4
-%type<ast> op_pre_5
+%type<ast> op_mult 
+%type<ast> op_div
+%type<ast> op_per  
+%type<ast> op_add
+%type<ast> op_sub
+%type<ast> op_LT
+%type<ast> op_GT  
+%type<ast> op_LE
+%type<ast> op_GE  
+%type<ast> op_EQ
+%type<ast> op_NE
 %type<ast> op_pre_6
 %type<ast> op_pre_7
 %type<ast> literais
@@ -260,8 +267,24 @@ op_retorno: TK_PR_RETURN expressao                          { $$ = ast_new(notde
 fluxo_ctrl: condicional                                     { $$ = $1; }
     | interativa                                            { $$ = $1; }
 
-condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo      { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } if($10 != NULL){ ast_add_child($$, $10); } //TODO: aqui tem que ter um set  }
-    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); } //TODO: aqui tem que ter um set }
+condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR_ELSE cria_escopo bloco_cmd fecha_escopo    { 
+																																$$ = ast_new(notdefined,$1);
+																																ast_add_child($$, $3);
+																																if($6 != NULL){ 
+																																	ast_add_child($$, $6);
+																																}
+																																if($10 != NULL){
+																																	ast_add_child($$, $10);
+																																}
+																																//TODO: aqui tem que ter um set
+																															}
+    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                 {
+																						$$ = ast_new(notdefined,$1);
+																						ast_add_child($$, $3); if($6 != NULL){
+																							ast_add_child($$, $6);
+																						} 
+																						//TODO: aqui tem que ter um set
+																					}
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo        { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
@@ -300,10 +323,9 @@ expressao: operadores                                       { $$ = $1; }
 operandos: TK_IDENTIFICADOR                                 { 
                                                                 CONTENT* content = validate_undeclared(pilha, $1, identificador);
                                                                 $$ = ast_new(content->type,$1);
-                                                                //TODO: aqui tem que ter um set
                                                                 if(content->type == inteiro) { // como testar um type é um inteiro com o tipo inteiro??
                                                                     $$->temp = strdup(get_temp());
-                                                                    ILOC_OP* op_cmd = iloc_op_new("loadAI", content->base, content->offset, $$->temp, left);
+                                                                    ILOC_OP* op_cmd = iloc_op_new("loadAI", content->ref, content->displacement, $$->temp, left);
                                                                     $$->code = strdup(op_cmd->operation);
                                                                 }
                                                             }
