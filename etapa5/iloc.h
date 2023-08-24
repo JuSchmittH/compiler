@@ -9,7 +9,7 @@
 enum op_type {
     left,
     right,
-    control,
+    cmp,
     cbr,
     jump,
     label

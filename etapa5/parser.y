@@ -183,7 +183,7 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             ast_add_child(last_node, $3);
                                                                         }
                                                                         if ($1->code && $3->code){
-                                                                            strcat($1->code->operation, $3->code->operation);
+                                                                            concatCode($1->code->operation, $3->code->operation);
                                                                         }
                                                                         set_code($$, $1->code->operation);
                                                                     }
@@ -243,7 +243,7 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 
                                                                 if (content->type == inteiro) {
                                                                     ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-                                                                    strcat($3->code->operation, iloc->operation);
+                                                                    concatCode($3->code->operation, iloc->operation);
                                                                     set_code($$, $3->code->operation);
                                                                 }
                                                             }

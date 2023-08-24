@@ -10,14 +10,17 @@ AST *ast_new(enum type type, VL *item)
 {
   AST *ret = NULL;
   ret = calloc(1, sizeof(AST));
+  ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
+
   if (ret != NULL){
     ret->item = item;
     ret->node_type = type;
     ret->number_of_children = 0;
     ret->children = NULL;
-    ret->code = NULL;
+    ret->code = cmd;
     ret->temp = "";
   }
+  
   return ret;
 }
 

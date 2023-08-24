@@ -5,60 +5,57 @@ int tempoCount = 0;
 
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type)
 {
-    char *ILOC;
-	ILOC = strdup(operation);
+    char *iloc;
+	iloc = strdup(operation);
 
-    // if(type == left) {
-	// 	strcat(ILOC, " ");
-	// 	strcat(ILOC, register1);
-	// 	strcat(ILOC, ", ");
-	// 	strcat(ILOC, register2);
-	// 	strcat(ILOC, " => ");
-	// 	strcat(ILOC, register3);
-	// }
-
-	//else if(type == right) {
-	if(type == right) {
-		strcat(ILOC, " ");
-		strcat(ILOC, register1);
-		strcat(ILOC, "  => ");
-		strcat(ILOC, register2);
-		if(register3 != NULL) {
+	switch(type) {
+		case left: 
+			strcat(ILOC, " ");
+			strcat(ILOC, register1);
+			strcat(ILOC, ", ");
+			strcat(ILOC, register2);
+			strcat(ILOC, " => ");
+			strcat(ILOC, register3);
+			break;
+		case right: 
+			strcat(ILOC, " ");
+			strcat(ILOC, register1);
+			strcat(ILOC, "  => ");
+			strcat(ILOC, register2);
+			if(register3 != NULL) {
+				strcat(ILOC, ", ");
+				strcat(ILOC, register3);
+			};
+			break;
+		case cmp:
+			strcat(ILOC, " ");
+			if(register1 != NULL) {
+				strcat(ILOC, register1);
+				strcat(ILOC, ", ");
+			}
+			if(register2 != NULL) {
+				strcat(ILOC, register2);
+			}
+			strcat(ILOC, "  -> ");
+			strcat(ILOC, " ");
+			strcat(ILOC, register3);
+			break;
+		case cbr: 
+			strcat(ILOC, " ");
+			strcat(ILOC, register1);
+			strcat(ILOC, "  -> ");
+			strcat(ILOC, register2);
 			strcat(ILOC, ", ");
 			strcat(ILOC, register3);
-		}
+			break;
+		case jump:
+			strcat(ILOC, " -> ");
+			strcat(ILOC, register1);
+			break;
 	}
 
-	// else if(type == control) {
-	// 	strcat(ILOC, " ");
-	// 	if(register1 != NULL) {
-	// 		strcat(ILOC, register1);
-	// 		strcat(ILOC, ", ");
-	// 	}
-	// 	if(register2 != NULL) {
-	// 		strcat(ILOC, register2);
-	// 	}
-	// 	strcat(ILOC, "  -> ");
-	// 	strcat(ILOC, " ");
-	// 	strcat(ILOC, register3);
-	// }
-
-	// else if(type == cmp) {
-	// 	strcat(ILOC, " ");
-	// 	strcat(ILOC, register1);
-	// 	strcat(ILOC, "  -> ");
-	// 	strcat(ILOC, register2);
-	// 	strcat(ILOC, ", ");
-	// 	strcat(ILOC, register3);
-	// }
-
-	// else if(type == jump) {
-	// 	strcat(ILOC, " -> ");
-	// 	strcat(ILOC, register1);
-	//}
-
 	ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
-	cmd->operation = strdup(ILOC);
+	cmd->operation = strdup(iloc);
 
 	return cmd;
 }
