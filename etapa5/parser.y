@@ -359,7 +359,7 @@ op_and: ops_equal                                           { $$ = $1; }
 ops_equal: ops_comp                                         { $$ = $1; } 
     | ops_equal op_EQ ops_comp                           	{ 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_EQ", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_EQ", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
@@ -368,7 +368,7 @@ ops_equal: ops_comp                                         { $$ = $1; }
                                                             }
 	| ops_equal op_NE ops_comp                           	{ 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_NE", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_NE", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
@@ -379,7 +379,7 @@ ops_equal: ops_comp                                         { $$ = $1; }
 ops_comp: ops_add_sub                                       { $$ = $1; } 
   	| ops_comp op_LT ops_add_sub                            { 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LT", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LT", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
@@ -388,7 +388,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
                                                             }
     | ops_comp op_GT ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GT", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GT", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
@@ -397,7 +397,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
                                                             }
     | ops_comp op_LE ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LE", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LE", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
@@ -406,7 +406,7 @@ ops_comp: ops_add_sub                                       { $$ = $1; }
                                                             }
     | ops_comp op_GE ops_add_sub                         	{ 
 																$2->temp = strdup(get_temp());
-                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GE", $1->temp, $3->temp, $2->temp, control);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GE", $1->temp, $3->temp, $2->temp, cmp);
                                                                 $2->code->operation = strdup(concatCode(concatCode($1->code->operation, $3->code->operation), op_cmd->operation));
 
                                                                 $$ = $2;
