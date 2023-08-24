@@ -10,47 +10,47 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 
 	switch(type) {
 		case left: 
-			strcat(ILOC, " ");
-			strcat(ILOC, register1);
-			strcat(ILOC, ", ");
-			strcat(ILOC, register2);
-			strcat(ILOC, " => ");
-			strcat(ILOC, register3);
+			strcat(iloc, " ");
+			strcat(iloc, register1);
+			strcat(iloc, ", ");
+			strcat(iloc, register2);
+			strcat(iloc, " => ");
+			strcat(iloc, register3);
 			break;
 		case right: 
-			strcat(ILOC, " ");
-			strcat(ILOC, register1);
-			strcat(ILOC, "  => ");
-			strcat(ILOC, register2);
+			strcat(iloc, " ");
+			strcat(iloc, register1);
+			strcat(iloc, "  => ");
+			strcat(iloc, register2);
 			if(register3 != NULL) {
-				strcat(ILOC, ", ");
-				strcat(ILOC, register3);
+				strcat(iloc, ", ");
+				strcat(iloc, register3);
 			};
 			break;
 		case cmp:
-			strcat(ILOC, " ");
+			strcat(iloc, " ");
 			if(register1 != NULL) {
-				strcat(ILOC, register1);
-				strcat(ILOC, ", ");
+				strcat(iloc, register1);
+				strcat(iloc, ", ");
 			}
 			if(register2 != NULL) {
-				strcat(ILOC, register2);
+				strcat(iloc, register2);
 			}
-			strcat(ILOC, "  -> ");
-			strcat(ILOC, " ");
-			strcat(ILOC, register3);
+			strcat(iloc, "  -> ");
+			strcat(iloc, " ");
+			strcat(iloc, register3);
 			break;
 		case cbr: 
-			strcat(ILOC, " ");
-			strcat(ILOC, register1);
-			strcat(ILOC, "  -> ");
-			strcat(ILOC, register2);
-			strcat(ILOC, ", ");
-			strcat(ILOC, register3);
+			strcat(iloc, " ");
+			strcat(iloc, register1);
+			strcat(iloc, "  -> ");
+			strcat(iloc, register2);
+			strcat(iloc, ", ");
+			strcat(iloc, register3);
 			break;
 		case jump:
-			strcat(ILOC, " -> ");
-			strcat(ILOC, register1);
+			strcat(iloc, " -> ");
+			strcat(iloc, register1);
 			break;
 	}
 
