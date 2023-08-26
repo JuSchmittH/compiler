@@ -11,6 +11,7 @@ AST *ast_new(enum type type, VL *item)
   AST *ret = NULL;
   ret = calloc(1, sizeof(AST));
   ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
+  cmd->operation = "";
 
   if (ret != NULL){
     ret->item = item;

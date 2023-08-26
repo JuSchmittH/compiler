@@ -24,7 +24,7 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 
 char* get_label();
 
-char* get_temp();
+void get_temp();
 
 char* concatCode();
 

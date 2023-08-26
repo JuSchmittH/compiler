@@ -1,7 +1,11 @@
 #include "iloc.h"
+#include "ast.h"
+#define _OPEN_SYS_ITOA_EXT
+#include <stdio.h>
+#include <stdlib.h>
 
 int labelCount = 0;
-int tempoCount = 0;
+int tempCount = 0;
 
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type)
 {
@@ -57,11 +61,12 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 	ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
 	cmd->operation = strdup(iloc);
 
+	printf("inside create iloc %s\n", cmd->operation);
 	return cmd;
 }
 
 char* get_label(){
-  char* label;
+  char label[10];
 
 	labelCount++;
 	snprintf(label, 10, "%s%d", "L", labelCount);
@@ -69,13 +74,12 @@ char* get_label(){
 	return label;
 }
 
-char* get_temp(){
-  char* temp;
+void get_temp(AST* ast){
+	tempCount++;
+	char temp[10];
 
-	labelCount++;
-	snprintf(temp, 10, "%s%d", "r", labelCount);
-
-	return temp;
+	snprintf(temp, 10, "%s%d", "r", tempCount);
+	ast->temp = strdup(temp);
 }
 
 char* concatCode(char* code1, char* code2) {
