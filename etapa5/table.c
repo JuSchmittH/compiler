@@ -1,5 +1,8 @@
 #include "table.h"
 
+int g_offset = 0;
+int l_offset = 0;
+
 TABLE *table_new()
 {
     TABLE* table = (TABLE*) malloc(sizeof(TABLE));
@@ -38,8 +41,18 @@ CONTENT *content_new(VL *item, char* ref, enum nature nature, int key, int type)
 
 void table_insert(TABLE* table, CONTENT* content, int index)
 {
+    char offset[10] = "0";
     CONTENT* newContent = table->rows[index];
-    //TODO aqui adicionar o displace
+
+    if(strcmp(content->ref, "rfp") == 0) {
+        sprintf(offset, "%d", l_offset);
+        l_offset += INT_TAM;
+    } else if (strcmp(content->ref, "rbss") == 0) {
+        sprintf(offset, "%d", g_offset);
+        g_offset += INT_TAM;
+    }
+
+    content->displacement = strdup(offset);
 
     if (newContent == NULL)
     {
