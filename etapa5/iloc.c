@@ -59,9 +59,7 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 	}
 
 	ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
-	cmd->operation = strdup(iloc);
-
-	printf("inside create iloc %s\n", cmd->operation);
+	strcpy(cmd->operation, iloc);
 	return cmd;
 }
 
@@ -82,10 +80,15 @@ void get_temp(AST* ast){
 	ast->temp = strdup(temp);
 }
 
-char* concatCode(char* code1, char* code2) {
-	char* code_result;
-	code_result = strdup(code1);
-	strcat(code_result, "\n");
-	strcat(code_result, code2);
-	return code_result;
+void concatCode(ILOC_OP* code1, ILOC_OP* code2) {
+	strcat(code1->operation, "\n");
+	strcat(code1->operation, code2->operation);
+}
+
+void concatString(ILOC_OP* code1, char* code2) {
+	strcat(code1->operation, code2);
+}
+
+void concatILOC(ILOC_OP* code1, ILOC_OP*  code2) {
+	strcat(code1->operation, code2->operation);
 }

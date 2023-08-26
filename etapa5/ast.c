@@ -11,7 +11,7 @@ AST *ast_new(enum type type, VL *item)
   AST *ret = NULL;
   ret = calloc(1, sizeof(AST));
   ILOC_OP* cmd = (ILOC_OP*)malloc(sizeof(ILOC_OP));
-  cmd->operation = "";
+  strcpy(cmd->operation, "nop");
 
   if (ret != NULL){
     ret->item = item;
@@ -36,10 +36,11 @@ void ast_add_child(AST *tree, AST *child)
   }
 }
 
-void set_code(AST* node, char* originalNode)
+void set_code(AST* node, ILOC_OP* originalNode)
 {
   if( node->code && originalNode ) {
-    node->code->operation = strdup(originalNode);
+    //node->code->operation = (char*)realloc(node->code->operation, sizeof(char) * strlen(originalNode));
+    strcpy(node->code->operation, originalNode->operation);
   }
 }
 

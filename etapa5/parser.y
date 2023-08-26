@@ -140,7 +140,7 @@ funcao: cabecalho corpo                                         {
                                                                     if($2 != NULL) 
                                                                     { 
                                                                         ast_add_child($$, $2);
-                                                                        set_code($$, $2->code->operation);
+                                                                        set_code($$, $2->code);
                                                                     } 
                                                                 }
 
@@ -183,9 +183,12 @@ lista_cmd_simples: cmd ';' lista_cmd_simples                {
                                                                             ast_add_child(last_node, $3);
                                                                         }
                                                                         if ($1->code && $3->code){
-                                                                           $1->code->operation = concatCode($1->code->operation, $3->code->operation);
+                                                                           concatCode($1->code, $3->code);
                                                                         }
-                                                                        set_code($$, $1->code->operation);
+                                                                        set_code($$, $1->code);
+																		//if( node->code && originalNode ) {
+																		//	strcpy(node->code->operation, originalNode);
+																		//}
                                                                     }
                                                                 } 
                                                                 else if($3 != NULL) {$$ = $3;}
@@ -243,11 +246,10 @@ atribuicao: TK_IDENTIFICADOR '=' expressao                  {
                                                                 
                                                                 if (content->type == inteiro) {
                                                                     ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
-																	if($3->code->operation && iloc->operation) {
-																		printf("inside if \n\n");
-																		$3->code->operation = concatCode($3->code->operation, iloc->operation);
+																	if($3->code && iloc) {
+																		concatCode($3->code, iloc);
 																	}
-                                                                    set_code($$, $3->code->operation);
+                                                                    set_code($$, $3->code);
                                                                 }
                                                             }
 
@@ -292,28 +294,28 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
                                                                                         char* labelIloc3 = get_label();
 
                                                                                         ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
-                                                                                        strcat(iloc1->operation, ":");
-                                                                                        strcat(iloc1->operation, $3->code->operation);
+                                                                                        concatString(iloc1, ":");
+                                                                                        concatILOC(iloc1, $3->code);
 
                                                                                         ILOC_OP *cmd1 = iloc_op_new("cbr", $3->temp, labelIloc2, labelIloc3, cbr);
-                                                                                        strcat(iloc1->operation, cmd1->operation);
+                                                                                        concatILOC(iloc1, cmd1);
 
                                                                                         ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
-                                                                                        strcat(iloc1->operation, iloc2->operation);
-                                                                                        strcat(iloc2->operation, ":");
+                                                                                        concatILOC(iloc1, iloc2);
+                                                                                        concatString(iloc2, ":");
 
                                                                                         if($6 != NULL) {
-                                                                                             strcat(iloc2->operation, $6->code->operation);
+                                                                                             concatILOC(iloc2, $6->code);
                                                                                         }
 
                                                                                         ILOC_OP *cmd2 = iloc_op_new("jumpI", labelIloc1, NULL, NULL, jump);
-                                                                                        strcat(iloc2->operation, cmd2->operation);
+                                                                                        concatILOC(iloc2, cmd2);
 
                                                                                         ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
-                                                                                        strcat(iloc2->operation, iloc3->operation);
-                                                                                        strcat(iloc2->operation, ": nop");
+                                                                                        concatILOC(iloc2, iloc3);
+                                                                                        concatString(iloc2, ": nop");
 
-                                                                                        set_code($$, iloc2->operation);
+                                                                                        set_code($$, iloc2);
                                                                                     }
 
 expressao: operadores                                       { $$ = $1; }
@@ -383,7 +385,7 @@ literais: TK_LIT_INT                                         {
 																CONTENT* cont = literal_declaration(pilha, $1, inteiro, literal);
 																get_temp($$);
 																ILOC_OP* op_cmd = iloc_op_new("loadI", cont->value->token_value, $$->temp, NULL, right);
-																set_code($$, op_cmd->operation);
+																set_code($$, op_cmd);
 															}
     | TK_LIT_FLOAT                                          { $$ = ast_new(pontoflutuante,$1); literal_declaration(pilha, $1, pontoflutuante, literal); }
     | TK_LIT_FALSE                                          { $$ = ast_new(booleano,$1); literal_declaration(pilha, $1, booleano, literal);}
