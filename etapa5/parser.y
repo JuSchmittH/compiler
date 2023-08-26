@@ -295,7 +295,20 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
 																																} 
 																																 
 																															}
-    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                                  { $$ = ast_new(notdefined,$1); ast_add_child($$, $3); if($6 != NULL){ ast_add_child($$, $6); }  }
+    | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                  { 
+																						$$ = ast_new(notdefined,$1);
+																						ast_add_child($$, $3);
+																						if($6 != NULL){ 
+																							ast_add_child($$, $6);
+																						}
+
+																						char* labelIloc1 = get_label();
+                                                                                        char* labelIloc2 = get_label();
+
+																						ILOC_OP *cmd1 = iloc_op_new("cbr", $3->temp, labelIloc1, labelIloc2, cbr);
+                                                                                        concatILOC($3->code, cmd1);
+
+																					}
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
                                                                                         $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
@@ -332,8 +345,14 @@ interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo    
 expressao: operadores                                       { $$ = $1; }
 
 operandos: TK_IDENTIFICADOR                                 { 
-																CONTENT* content  = validate_undeclared(pilha, $1, identificador); 
+																CONTENT* content = validate_undeclared(pilha, $1, identificador); 
 																$$ = ast_new(content->type,$1);
+
+																if(content->type == inteiro) {
+                                                                    get_temp($$);
+                                                                    ILOC_OP* op_cmd = iloc_op_new("loadAI", content->ref, content->displacement, $$->temp, left);
+                                                                    set_code($$->code, op_cmd);
+                                                                }
 															}
     | literais                                               { $$ = $1; }
     | chamada_funcao                                        { $$ = $1; }
@@ -341,28 +360,148 @@ operandos: TK_IDENTIFICADOR                                 {
 operadores: op_or                                           { $$ = $1; } 
 
 op_or: op_and                                               { $$ = $1; } 
-    |  op_or op_pre_or op_and                                { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    |  op_or op_pre_or op_and                               {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("or", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
 
 op_and: ops_equal                                           { $$ = $1; }
-    | op_and op_pre_and ops_equal                             { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    | op_and op_pre_and ops_equal                           {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("and", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
 
 ops_equal: ops_comp                                         { $$ = $1; } 
-    | ops_equal op_pre_eq ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_equal op_pre_ne ops_comp                           { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    | ops_equal op_pre_eq ops_comp                           {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_EQ", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_equal op_pre_ne ops_comp                          {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_NE", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
 
 ops_comp: ops_add_sub                                       { $$ = $1; } 
-    | ops_comp op_pre_lt ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_comp op_pre_gt ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_comp op_pre_le ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_comp op_pre_ge ops_add_sub                         { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    | ops_comp op_pre_lt ops_add_sub                        {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LT", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_comp op_pre_gt ops_add_sub                        {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GT", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_comp op_pre_le ops_add_sub                        {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_LE", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_comp op_pre_ge ops_add_sub                        {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("cmp_GE", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
 
 ops_add_sub: ops_mult_div                                   { $$ = $1; } 
-    | ops_add_sub op_pre_add ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_add_sub op_pre_sub ops_mult_div                     { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    | ops_add_sub op_pre_add ops_mult_div                     {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("add", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_add_sub op_pre_sub ops_mult_div                   {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("sub", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
 
 ops_mult_div: ops_unario                                    { $$ = $1; }
-    | ops_mult_div op_pre_mult ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
-    | ops_mult_div op_pre_div ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
+    | ops_mult_div op_pre_mult ops_unario                   {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("mult", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
+    | ops_mult_div op_pre_div ops_unario                    {
+																get_temp($2);
+                                                                ILOC_OP* op_cmd = iloc_op_new("div", $1->temp, $3->temp, $2->temp, left);
+																concatCode($1->code, $3->code);
+																concatCode($1->code, op_cmd);
+																set_code($2, $1->code);
+
+																$$ = $2;
+																ast_add_child($$, $1);
+																ast_add_child($$, $3);
+															}
     | ops_mult_div op_pre_per ops_unario                      { $$ = $2; ast_add_child($$, $1); ast_add_child($$, $3);  }
 
 ops_unario: operandos                                       { $$ = $1; }
