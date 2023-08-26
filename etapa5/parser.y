@@ -293,20 +293,61 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
 																																{ 
 																																	ast_add_child($$, $10);
 																																} 
-																																 
+																																
+                                                                                                                                char* labelIloc1 = get_label();
+                                                                                                                                char* labelIloc2 = get_label();
+                                                                                                                                char* labelIloc3 = get_label();
+
+                                                                                                                                ILOC_OP *cmd1 = iloc_op_new("cbr", $3->temp, labelIloc1, labelIloc2, cbr);
+                                                                                                                                concatCode($3->code, cmd1);
+
+                                                                                                                                ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
+                                                                                                                                concatILOC(cmd1, iloc1);
+                                                                                                                                concatString(iloc1, ": ");
+
+                                                                                                                                if($6 != NULL){
+																																	concatILOC(iloc1, $6->code);
+																																}
+
+                                                                                                                                ILOC_OP *cmd2 = iloc_op_new("jumpI", labelIloc3, NULL, NULL, jump);
+                                                                                                                                concatCode(iloc1, cmd2);
+
+                                                                                                                                ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
+                                                                                                                                concatString(iloc2, ": ");
+                                                                                                                                concatILOC(iloc2, $10->code);
+
+                                                                                                                                ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
+                                                                                                                                concatILOC(iloc2,iloc3);
+                                                                                                                                concatString(iloc2, ": nop");
+
+                                                                                                                                concatCode(iloc1, iloc2);
+                                                                                                                                set_code($$, iloc1);
 																															}
     | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                  { 
 																						$$ = ast_new(notdefined,$1);
 																						ast_add_child($$, $3);
-																						if($6 != NULL){ 
-																							ast_add_child($$, $6);
-																						}
 
 																						char* labelIloc1 = get_label();
                                                                                         char* labelIloc2 = get_label();
 
 																						ILOC_OP *cmd1 = iloc_op_new("cbr", $3->temp, labelIloc1, labelIloc2, cbr);
-                                                                                        concatILOC($3->code, cmd1);
+                                                                                        concatCode($3->code, cmd1);
+
+                                                                                        ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
+                                                                                        concatILOC(cmd1, iloc1);
+                                                                                        concatString(iloc1, ": ");
+
+                                                                                        if($6 != NULL)
+                                                                                        {
+                                                                                            ast_add_child($$, $6);
+                                                                                            concatILOC(iloc1, $6->code);
+                                                                                        }
+                                                                                        
+                                                                                        ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
+                                                                                        concatILOC(iloc1, iloc2);
+                                                                                        concatString(iloc1, ": nop");
+
+                                                                                        set_code($$, iloc1);
 
 																					}
 
@@ -351,7 +392,7 @@ operandos: TK_IDENTIFICADOR                                 {
 																if(content->type == inteiro) {
                                                                     get_temp($$);
                                                                     ILOC_OP* op_cmd = iloc_op_new("loadAI", content->ref, content->displacement, $$->temp, left);
-                                                                    set_code($$->code, op_cmd);
+                                                                    set_code($$, op_cmd);
                                                                 }
 															}
     | literais                                               { $$ = $1; }

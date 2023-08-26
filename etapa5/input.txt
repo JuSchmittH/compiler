@@ -1,11 +1,11 @@
 int a;
-
-foo() -> int {
-    a = 1;
-    int a <= 3;
-    a = 2;
-}
+int b;
 
 main() -> int {
-    a = 1;
+    a = 10;
+	
+	while(a>0) {
+
+	};
+
 }
