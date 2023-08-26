@@ -2,6 +2,8 @@
 #ifndef AST_HEADER
 #define AST_HEADER
 
+#include <string.h>
+#include <stdlib.h>
 #include<stdio.h>
 #include "vl.h"
 #include "iloc.h"
@@ -27,8 +29,12 @@ AST *ast_new(enum type type, VL *item);
 
 void ast_add_child(AST *tree, AST *child);
 
-void set_code(AST* node, ILOC_OP* originalNode);
-
 void print_iloc(AST *node);
+
+char* get_label();
+
+void get_temp(AST* ast);
+
+void set_code(AST* node, ILOC_OP* originalNode);
 
 #endif //AST_HEADER

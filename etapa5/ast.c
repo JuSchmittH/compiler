@@ -1,10 +1,10 @@
 //Trabalho de Compiladores 2023/1 - Grupo G - Luma e Juliana
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+
 #include "ast.h"
-#include "vl.h"
 #define ARQUIVO_SAIDA "saida.dot"
+
+int labelCount = 0;
+int tempCount = 0;
 
 AST *ast_new(enum type type, VL *item)
 {
@@ -36,6 +36,22 @@ void ast_add_child(AST *tree, AST *child)
   }
 }
 
+void print_iloc(AST *node)
+{
+  if (node->code) {
+    printf("%s\n", node->code->operation);
+  }
+}
+
+char* get_label(){
+  char label[10];
+
+	labelCount++;
+	snprintf(label, 10, "%s%d", "L", labelCount);
+	
+	return label;
+}
+
 void set_code(AST* node, ILOC_OP* originalNode)
 {
   if( node->code && originalNode ) {
@@ -44,9 +60,10 @@ void set_code(AST* node, ILOC_OP* originalNode)
   }
 }
 
-void print_iloc(AST *node)
-{
-  if (node->code) {
-    printf("%s\n", node->code->operation);
-  }
+void get_temp(AST* ast){
+	tempCount++;
+	char temp[10];
+
+	snprintf(temp, 10, "%s%d", "r", tempCount);
+	ast->temp = strdup(temp);
 }

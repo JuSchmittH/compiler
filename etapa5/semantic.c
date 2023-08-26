@@ -20,7 +20,7 @@ void scope_close(STACK **stack)
     pop(stack);
 }
 
-void validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enum nature nature)
+CONTENT* validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enum nature nature)
 {
     TABLE* table;
 
@@ -40,7 +40,9 @@ void validate_declaration(STACK *stack, VL* item, char* ref, enum type type, enu
         exit(ERR_DECLARED);
     }
 
-    table_insert(table, newContent, index);    
+    table_insert(table, newContent, index);
+
+    return newContent;
 }
 
 CONTENT* literal_declaration(STACK *stack, VL* item, enum type type, enum nature nature)

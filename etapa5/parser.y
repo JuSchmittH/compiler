@@ -230,7 +230,18 @@ lista_var_bool_local: bool_var_local ',' lista_var_bool_local       { if($1 != N
     | bool_var_local                                                { $$ = $1; }
 
 int_var_local: TK_IDENTIFICADOR                             { $$ = NULL; validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
-    | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(inteiro,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", inteiro, identificador);}
+    | TK_IDENTIFICADOR TK_OC_LE literais                     { 
+																$$ = ast_new(notdefined,$2);
+																ast_add_child($$, ast_new(inteiro,$1));
+																ast_add_child($$, $3);
+																CONTENT* content = validate_declaration(pilha, $1, "rfp", inteiro, identificador);
+
+																ILOC_OP *iloc = iloc_op_new("storeAI", $3->temp, content->ref, content->displacement, right);
+																if($3->code && iloc) {
+																	concatCode($3->code, iloc);
+																}
+																set_code($$, $3->code);
+															}
 
 float_var_local: TK_IDENTIFICADOR                           { $$ = NULL; validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}
     | TK_IDENTIFICADOR TK_OC_LE literais                     { $$ = ast_new(notdefined,$2); ast_add_child($$, ast_new(pontoflutuante,$1)); ast_add_child($$, $3); validate_declaration(pilha, $1, "rfp", pontoflutuante, identificador);}

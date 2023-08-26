@@ -22,7 +22,7 @@ void exporta (void *arvore)
     print_iloc(arvore);
     for (int i = 0; i < arvore_ast->number_of_children; i++){
       //printf("%p, %p;\n", arvore_ast, arvore_ast->children[i]);
-      exporta(arvore_ast->children[i]);
+      //exporta(arvore_ast->children[i]);
     }
   }else{
     printf("Erro: %s recebeu parâmetro arvore = %p.\n", __FUNCTION__, arvore_ast);

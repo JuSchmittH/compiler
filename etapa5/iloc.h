@@ -5,6 +5,7 @@
 #define ILOC_Op_MAX 1024
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "vl.h"
 
 enum op_type {
@@ -23,11 +24,7 @@ typedef struct ILOC_operation
 
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type);
 
-char* get_label();
-
-void get_temp(AST* ast);
-
-void concatCode();
+void concatCode(ILOC_OP* code1, ILOC_OP* code2);
 
 void concatString(ILOC_OP* code1, char* code2);
 
