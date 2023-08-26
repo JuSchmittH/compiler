@@ -24,7 +24,7 @@ typedef struct ILOC_operation
 
 ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* register3, enum op_type type);
 
-void concatCode(ILOC_OP* code1, ILOC_OP* code2);
+ILOC_OP *concatCode(ILOC_OP* code1, ILOC_OP* code2);
 
 void concatString(ILOC_OP* code1, char* code2);
 

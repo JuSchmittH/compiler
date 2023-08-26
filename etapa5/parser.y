@@ -302,31 +302,32 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
                                                                                                                                 concatCode($3->code, cmd1);
 
                                                                                                                                 ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
-                                                                                                                                concatILOC(cmd1, iloc1);
-                                                                                                                                concatString(iloc1, ": ");
+                                                                                                                                concatCode($3->code, iloc1);
+                                                                                                                                concatString($3->code, ": ");
 
                                                                                                                                 if($6 != NULL){
-																																	concatILOC(iloc1, $6->code);
+																																	concatCode($3->code, $6->code);
 																																}
 
                                                                                                                                 ILOC_OP *cmd2 = iloc_op_new("jumpI", labelIloc3, NULL, NULL, jump);
-                                                                                                                                concatCode(iloc1, cmd2);
+                                                                                                                                concatCode($3->code, cmd2);
 
                                                                                                                                 ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
                                                                                                                                 concatString(iloc2, ": ");
-                                                                                                                                concatILOC(iloc2, $10->code);
+                                                                                                                                if($10 && $10->code) {
+                                                                                                                                    concatCode(iloc2, $10->code);
+                                                                                                                                } else {
+                                                                                                                                    concatString(iloc2, " nop");
+                                                                                                                                }
 
                                                                                                                                 ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
-                                                                                                                                concatILOC(iloc2,iloc3);
+                                                                                                                                concatCode(iloc2,iloc3);
                                                                                                                                 concatString(iloc2, ": nop");
 
-                                                                                                                                concatCode(iloc1, iloc2);
-                                                                                                                                set_code($$, iloc1);
+                                                                                                                                concatCode($3->code, iloc2);
+                                                                                                                                set_code($$, $3->code);
 																															}
     | TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo                  { 
-																						$$ = ast_new(notdefined,$1);
-																						ast_add_child($$, $3);
-
 																						char* labelIloc1 = get_label();
                                                                                         char* labelIloc2 = get_label();
 
@@ -334,53 +335,59 @@ condicional: TK_PR_IF '(' expressao ')' cria_escopo bloco_cmd fecha_escopo TK_PR
                                                                                         concatCode($3->code, cmd1);
 
                                                                                         ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
-                                                                                        concatILOC(cmd1, iloc1);
-                                                                                        concatString(iloc1, ": ");
+                                                                                        concatCode($3->code, iloc1);
+                                                                                        concatString($3->code, ": ");
+
+                                                                                        $$ = ast_new(notdefined,$1);
+																						ast_add_child($$, $3);
 
                                                                                         if($6 != NULL)
                                                                                         {
                                                                                             ast_add_child($$, $6);
-                                                                                            concatILOC(iloc1, $6->code);
+                                                                                            concatCode($3->code, $6->code);
                                                                                         }
                                                                                         
                                                                                         ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
-                                                                                        concatILOC(iloc1, iloc2);
-                                                                                        concatString(iloc1, ": nop");
+                                                                                        concatCode($3->code, iloc2);
+                                                                                        concatString($3->code, ": nop");
 
-                                                                                        set_code($$, iloc1);
+                                                                                        set_code($$, $3->code);
 
 																					}
 
 interativa: TK_PR_WHILE '(' expressao ')' cria_escopo bloco_cmd fecha_escopo         { 
-                                                                                        $$ = ast_new(notdefined,$1); ast_add_child($$, $3); ast_add_child($$, $6); 
+                                                                                        $$ = ast_new(notdefined,$1);
+                                                                                        ast_add_child($$, $3);
                                                                                         
-                                                                                        char* labelIloc1 = get_label();
-                                                                                        char* labelIloc2 = get_label();
-                                                                                        char* labelIloc3 = get_label();
+                                                                                        char* labelIloc1 = strdup(get_label());
+                                                                                        char* labelIloc2 = strdup(get_label());
+                                                                                        char* labelIloc3 = strdup(get_label());
 
                                                                                         ILOC_OP *iloc1 = iloc_op_new(labelIloc1, NULL, NULL, NULL, label);
                                                                                         concatString(iloc1, ":");
-                                                                                        concatILOC(iloc1, $3->code);
+                                                                                        concatCode(iloc1, $3->code);
 
                                                                                         ILOC_OP *cmd1 = iloc_op_new("cbr", $3->temp, labelIloc2, labelIloc3, cbr);
-                                                                                        concatILOC(iloc1, cmd1);
+                                                                                        concatCode(iloc1, cmd1);
 
                                                                                         ILOC_OP *iloc2 = iloc_op_new(labelIloc2, NULL, NULL, NULL, label);
-                                                                                        concatILOC(iloc1, iloc2);
-                                                                                        concatString(iloc2, ":");
+                                                                                        concatCode(iloc1, iloc2);
+                                                                                        concatString(iloc1, ":");
 
                                                                                         if($6 != NULL) {
-                                                                                             concatILOC(iloc2, $6->code);
+
+                                                                                            ast_add_child($$, $6); 
+                                                                                            concatCode(iloc1, $6->code);
                                                                                         }
 
                                                                                         ILOC_OP *cmd2 = iloc_op_new("jumpI", labelIloc1, NULL, NULL, jump);
-                                                                                        concatILOC(iloc2, cmd2);
+                                                                                        concatCode(iloc1, cmd2);
 
                                                                                         ILOC_OP *iloc3 = iloc_op_new(labelIloc3, NULL, NULL, NULL, label);
-                                                                                        concatILOC(iloc2, iloc3);
-                                                                                        concatString(iloc2, ": nop");
+                                                                                        concatCode(iloc1, iloc3);
+                                                                                        concatString(iloc1, ": nop");
 
-                                                                                        set_code($$, iloc2);
+                                                                                        set_code($$, iloc1);
                                                                                     }
 
 expressao: operadores                                       { $$ = $1; }

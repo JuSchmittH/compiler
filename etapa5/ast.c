@@ -44,7 +44,7 @@ void print_iloc(AST *node)
 }
 
 char* get_label(){
-  char label[10];
+  char* label;
 
 	labelCount++;
 	snprintf(label, 10, "%s%d", "L", labelCount);

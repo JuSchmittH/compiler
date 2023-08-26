@@ -56,9 +56,10 @@ ILOC_OP *iloc_op_new(char* operation, char* register1, char* register2, char* re
 	return cmd;
 }
 
-void concatCode(ILOC_OP* code1, ILOC_OP* code2) {
+ILOC_OP* concatCode(ILOC_OP* code1, ILOC_OP* code2) {
 	strcat(code1->operation, "\n");
 	strcat(code1->operation, code2->operation);
+	return code1;
 }
 
 void concatString(ILOC_OP* code1, char* code2) {
